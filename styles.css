@@ -1,0 +1,47 @@
+.h_main {
+    display:flex;
+    flex-direction:column;
+
+    width:100%;
+    height:100%;
+    background-color:white;
+    font-size:24px;
+    align-items:center;
+}
+
+.h_main_title {
+    width:200px;
+    text-align:center;
+    background-color:black;
+    margin:20px;
+    color:white;
+    padding:10px;
+}
+
+.h_sub {
+    display:flex;
+    flex-direction:row;
+    justify-content:center;
+    align-items:center;
+    background-color:rgb(224,224,224);
+    width:100%;
+    height:600px;
+}
+
+.h_question {
+    background-color:rgb(179,179,179);
+    height:90%;
+    width: 450px;
+    margin:20px;
+
+    box-shadow: -10px 10px 10px rgb(150,150,150);
+}
+
+.h_visual {
+    background-color:rgb(179,179,179);
+    height:90%;
+    width: 450px;
+    margin:20px;
+
+    box-shadow: 10px 10px 10px rgb(150,150,150);
+}
