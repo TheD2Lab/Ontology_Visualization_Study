@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <head>
     <link rel="stylesheet" href="styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="link-tree.js"></script>
+    <script src="circle-packing.js"></script>
 </head>
 
 <!--Main body of the webpage-->
@@ -9,14 +13,14 @@
     <div id="introPage" class="h_sub" style="display:flex">
         <!--Display for information regarding the study, and how participants should approach it-->
         <div class="h_intro_info">
-            <div style="min-height:95%;width:90%;background-color:rgb(224,224,224);margin-top:20px;border:none;border-radius:10px;">
+            <div style="min-height:95%;width:90%;background-color:rgb(240,240,240);margin-top:20px;border:none;border-radius:10px;">
                 <div style="font-size:30px;padding:20px;color:rgb(25,25,25);">How to Participate</div>
                 <div style="font-size:20px;padding:20px;color:rgb(25,25,25);">For this study, you will partake in 12 multiple-choice questions that will test your ontology knowledge. Please take your time and read each question carefully!</div>
             </div>
         </div>
         <!--Dispaly for information regarding the ontology models used, and information that could make answering them easier and more intuitive-->
         <div class="h_intro_background">
-            <div style="min-height:87%;width:90%;background-color:rgb(224,224,224);margin-top:20px;border:none;border-radius:10px;">
+            <div style="min-height:87%;width:90%;background-color:rgb(240,240,240);margin-top:20px;border:none;border-radius:10px;">
                 <div style="font-size:30px;padding:20px;color:rgb(25,25,25);">Background Information</div>
                 <div style="font-size:20px;padding:20px;color:rgb(25,25,25);">This will be background information regarding the ontology models that are in the study</div>
             </div>
@@ -57,44 +61,52 @@
                 //List of all questions
                 const pageQuestions = 
                 {
-                    1: "Question 1:\n\nThe answer to this is A",
-                    2: "Question 2:\n\nThe answer to this is B",
-                    3: "Question 3:\n\nThe answer to this is C",
-                    4: "Question 4:\n\nThe answer to this is D",
-                    5: "Question 5:\n\nThe answer to this is A",
-                    6: "Question 6:\n\nThe answer to this is B",
-                    7: "Question 7:\n\nThe answer to this is C",
-                    8: "Question 8:\n\nThe answer to this is D",
-                    9: "Question 9:\n\nThe answer to this is A",
-                    10: "Question 10:\n\nThe answer to this is B",
-                    11: "Question 11:\n\nThe answer to this is C",
-                    12: "Question 12:\n\nThe answer to this is D",
+                    1: "Question 1:\n\nGiven the current model, can an entity be both an #Opera and an #Operetta?",
+                    2: "Question 2:\n\nGiven the current model, can an entity be both an #Operetta and a #MusicDrama?",
+                    3: "Question 3:\n\nHow many objects will be left in the #Opera intersection?",
+                    4: "Question 4:\n\nHow many subclasses does the class #MusicDrama contain?",
+                    5: "Question 5:\n\nHow many total connections do you see in this model?",
+                    6: "Question 6:\n\nIs there a relationship between #USSoccerTeam and #TennisTeam?",
+                    7: "Question 7:\n\nWhich class in the model is #FootballTeam mapped to? ",
+                    8: "Question 8:\n\nHow many total connections do you see in this model?",
+                    9: "Question 9:\n\nWould it be logical to put a sameAs relationship between #FootballTeam and a class #SwimmingTeam?",
+                    10: "Question 10:\n\nHow many mappings are there from the #Sports class?",
+                    11: "Question 11:\n\nYou have an entity “Sandwich” that is not a vegetarian option. Which class would it then be mapped to?",
+                    12: "Question 12:\n\nWould the model still function if a third class #VeganOptions was added?",
+                    13: "Question 12:\n\nHow many total connections do you see in this model?",
+                    14: "Question 12:\n\nAre all members of #VegetarianOptions and #StandardOptions members of the #RestaurantItems class?",
+                    15: "Question 12:\n\nHow many connections does the #VegetarianOptions class have?",
                 };
 
                 //List of all answers
                 const pageAnswers = 
                 {
-                    1: "A) Answer A\nB) Answer B\nC) Answer C\nD) Answer D",
-                    2: "A) Answer A\nB) Answer B\nC) Answer C\nD) Answer D",
-                    3: "A) Answer A\nB) Answer B\nC) Answer C\nD) Answer D",
-                    4: "A) Answer A\nB) Answer B\nC) Answer C\nD) Answer D",
-                    5: "A) Answer A\nB) Answer B\nC) Answer C\nD) Answer D",
-                    6: "A) Answer A\nB) Answer B\nC) Answer C\nD) Answer D",
-                    7: "A) Answer A\nB) Answer B\nC) Answer C\nD) Answer D",
-                    8: "A) Answer A\nB) Answer B\nC) Answer C\nD) Answer D",
-                    9: "A) Answer A\nB) Answer B\nC) Answer C\nD) Answer D",
-                    10: "A) Answer A\nB) Answer B\nC) Answer C\nD) Answer D",
-                    11: "A) Answer A\nB) Answer B\nC) Answer C\nD) Answer D",
-                    12: "A) Answer A\nB) Answer B\nC) Answer C\nD) Answer D"
+                    1: "A) Yes, they will always be both\nB) No, they can never be both\nC) Yes, but only if specified\nD) No, an entity cannot be either",
+                    2: "A) Yes, they will always be both\nB) No, they can never be both\nC) Yes, but only if specified\nD) No, an entity cannot be either",
+                    3: "A) 1\nB) 2\nC) 3\nD) 4",
+                    4: "A) 2\nB) 3\nC) 4\nD) 5",
+                    5: "A) 1\nB) 3\nC) 5\nD) 7",
+                    6: "A) Yes, they are disjoint\nB) No, they are completely separate\nC) Yes, they are contained in the same class\nD) Yes, they are equivalent classes",
+                    7: "A) #TennisTeam\nB) #USSoccerTeam\nC) #BowlingTeam\nD) No classes",
+                    8: "A) 1\nB) 2\nC) 3\nD) 4",
+                    9: "A) Yes, they are both #Sports\nB) Yes, they are both US teams\nC) No, two classes cannot be SameAs\nD) No, they are differnt sports",
+                    10: "A) 1\nB) 2\nC) 3\nD) 4",
+                    11: "A) #VegetarianOptions\nB) #StandardOptions\nC) #VeganOptions\nD) No classes",
+                    12: "A) Yes, there can be infinite complementary classes\nB) Yes, 3 classes are required for complementOf\nC) No, complementOf only works with 2 classes\nD) No, Vegan and Vegetarian are the same",
+                    13: "A) 1\nB) 2\nC) 3\nD) 4",
+                    14: "A) Yes, they are required to be\nB) Yes, but only if specified\nC) No, they are members of #MenuItems\nD) No, they are not members of any class",
+                    15: "A) 3\nB) 2\nC) 1\nD) 0"
                 };
 
                 //List of all correct answers (by index)
-                const pageSolutions = [0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3];
+                const pageSolutions = [1, 0, 3, 2, 1, 2, 1, 0, 3, 2, 1, 2, 1, 0, 2];
             </script>
         </div>
         
         <!--Div for visualization, implementing D3 later on-->
-        <div class="h_visual"></div>
+        <div class="h_visual">
+            <div id="tree-container" style="width:95%;height:95%;background-color:rgb(240,240,240);border:none;border-radius:10px;"></div>
+        </div>
     </div>
 
     <!--Display for the final thank you and results page-->
@@ -180,4 +192,49 @@
             return correct_ans;
         }
     </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Define the data for the tree
+
+            const data = {
+                "name": "disjoint",
+                "children": [
+                    {
+                    "name": "Music Drama", "value": 800,
+                    "children": [
+                    {
+                        "name": "Opera", "value": 200
+                    },
+                    {
+                        "name": "Opereta", "value": 300
+                    },
+                    {
+                        "name": "Musical", "value": 400
+                    }
+                    ]
+                    }
+                ]
+            };
+
+            const container = document.getElementById("tree-container");
+            const containerWidth = 851;
+            const containerHeight = 851;
+    
+            // Set up tree options if desired
+            const options = {
+                width: containerWidth,
+                height: containerHeight,
+                label: d => d.name, // Display the name property
+                fill: "#66c2a5",
+                stroke: "#1b9e77"
+            };
+        
+            // Create the tree visualization
+            const svg = Tree(data, options);
+        
+            // Append the SVG to the div container
+            document.getElementById("tree-container").appendChild(svg);
+        });
+      </script>
 </body>
