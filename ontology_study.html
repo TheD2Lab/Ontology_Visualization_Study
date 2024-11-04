@@ -15,7 +15,7 @@
         <div class="h_intro_info">
             <div style="min-height:95%;width:90%;background-color:rgb(240,240,240);margin-top:20px;border:none;border-radius:10px;">
                 <div style="font-size:30px;padding:20px;color:rgb(25,25,25);">How to Participate</div>
-                <div style="font-size:20px;padding:20px;color:rgb(25,25,25);">For this study, you will partake in 12 multiple-choice questions that will test your ontology knowledge. Please take your time and read each question carefully!</div>
+                <div style="font-size:20px;padding:20px;color:rgb(25,25,25);">For this study, you will partake in 15 multiple-choice questions that will test your ontology knowledge. Please take your time and read each question carefully!</div>
             </div>
         </div>
         <!--Dispaly for information regarding the ontology models used, and information that could make answering them easier and more intuitive-->
@@ -56,7 +56,7 @@
 
             <!--Script containing the questions and answers for the question page-->
             <script>
-                const questionNum = 12;
+                const questionNum = 15;
 
                 //List of all questions
                 const pageQuestions = 
@@ -73,9 +73,9 @@
                     10: "Question 10:\n\nHow many mappings are there from the #Sports class?",
                     11: "Question 11:\n\nYou have an entity “Sandwich” that is not a vegetarian option. Which class would it then be mapped to?",
                     12: "Question 12:\n\nWould the model still function if a third class #VeganOptions was added?",
-                    13: "Question 12:\n\nHow many total connections do you see in this model?",
-                    14: "Question 12:\n\nAre all members of #VegetarianOptions and #StandardOptions members of the #RestaurantItems class?",
-                    15: "Question 12:\n\nHow many connections does the #VegetarianOptions class have?",
+                    13: "Question 13:\n\nHow many total connections do you see in this model?",
+                    14: "Question 14:\n\nAre all members of #VegetarianOptions and #StandardOptions members of the #RestaurantItems class?",
+                    15: "Question 15:\n\nHow many connections does the #VegetarianOptions class have?",
                 };
 
                 //List of all answers
@@ -176,6 +176,8 @@
             //Push the time spent on the page to the final duration tracker, and reset the current time tracker
             page_time.push(timeSpent);
             startTime = endTime;
+
+            updateVisual();
             
         }
 
@@ -191,13 +193,10 @@
             }
             return correct_ans;
         }
-    </script>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Define the data for the tree
+        // Define the data for the tree
 
-            const data = {
+        const data = {
                 "name": "disjoint",
                 "children": [
                     {
@@ -217,6 +216,25 @@
                 ]
             };
 
+            const data2 = {
+                "name": "United States",
+                "children": [
+                    {
+                        "name": "California",
+                        "children": [
+                            {"name": "San Bernardino"},
+                            {"name": "Los Angeles"}
+                        ]
+                    },
+                    {
+                        "name": "Texas",
+                        "children": [
+                            {"name": "Dallas"}
+                        ]
+                    }
+	            ]
+            }
+
             const container = document.getElementById("tree-container");
             const containerWidth = 851;
             const containerHeight = 851;
@@ -231,10 +249,19 @@
             };
         
             // Create the tree visualization
-            const svg = Tree(data, options);
+            const svg = Tree(data2, options);
+            const svg2 = chart(data, options);
         
             // Append the SVG to the div container
             document.getElementById("tree-container").appendChild(svg);
-        });
-      </script>
+
+            function updateVisual()
+            {
+                if(page_num == 6)
+                {
+                    document.getElementById("tree-container").removeChild(svg);
+                    document.getElementById("tree-container").appendChild(svg2);
+                }
+            }
+    </script>
 </body>

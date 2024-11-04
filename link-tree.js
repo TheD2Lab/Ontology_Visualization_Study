@@ -14,13 +14,13 @@ function Tree(data, { // data is either tabular (array of objects) or hierarchy 
   linkTarget = "_blank", // the target attribute for links (if any)
   width = 800, // outer width, in pixels
   height = 800, // outer height, in pixels
-  r = 3, // radius of nodes
+  r = 10, // radius of nodes
   padding = 1, // horizontal padding for first and last column
   fill = "#999", // fill for nodes
   fillOpacity, // fill opacity for nodes
   stroke = "#555", // stroke for links
-  strokeWidth = 1.5, // stroke width for links
-  strokeOpacity = 0.4, // stroke opacity for links
+  strokeWidth = 6, // stroke width for links
+  strokeOpacity = 0.6, // stroke opacity for links
   strokeLinejoin, // stroke line join for links
   strokeLinecap, // stroke line cap for links
   halo = "#fff", // color of label halo 
@@ -44,7 +44,7 @@ function Tree(data, { // data is either tabular (array of objects) or hierarchy 
   const L = label == null ? null : descendants.map(d => label(d.data, d));
 
   // Compute the layout.
-  const dx = 10;
+  const dx = height / 5;
   const dy = width / (root.height + padding);
   tree().nodeSize([dx, dy])(root);
 
@@ -68,7 +68,7 @@ function Tree(data, { // data is either tabular (array of objects) or hierarchy 
       .attr("height", "auto")
       .attr("style", "max-width: 100%; height: auto; height: intrinsic;")
       .attr("font-family", "sans-serif")
-      .attr("font-size", 10);
+      .attr("font-size", 20);
 
   svg.append("g")
       .attr("fill", "none")

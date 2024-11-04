@@ -4,7 +4,7 @@
 
   const color = d3.scaleLinear()
       .domain([0, 5])
-            .range(["hsl(152,80%,80%)", "hsl(228,30%,40%)"])
+            .range(["rgb(200,200,200)", "rgb(100,100,100)"])
             .interpolate(d3.interpolateHcl);
 
   // Compute the layout
@@ -21,7 +21,7 @@
       .attr("viewBox", `-${width / 2} -${height / 2} ${width} ${height}`)
       .attr("width", width)
       .attr("height", height)
-      .attr("style", `max-width: 100%; height: auto; display: block; margin: 0 -14px; background: ${color(0)}; cursor: pointer;`);
+      .attr("style", `max-width: 100%; height: auto; display: flex; align-items:center; justify-content:center; cursor: pointer;`);
 
   const node = svg.append("g")
     .selectAll("circle")
@@ -35,7 +35,7 @@
 
   // Append the text labels.
   const label = svg.append("g")
-      .style("font", "10px sans-serif")
+      .style("font", "20px sans-serif")
       .attr("pointer-events", "none")
       .attr("text-anchor", "middle")
     .selectAll("text")
