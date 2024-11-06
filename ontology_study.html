@@ -5,6 +5,7 @@
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="link-tree.js"></script>
     <script src="circle-packing.js"></script>
+    <script src="aoi-selection.js"></script>
 </head>
 
 <!--Main body of the webpage-->
@@ -107,6 +108,10 @@
         <div class="h_visual">
             <div id="tree-container" style="width:95%;height:95%;background-color:rgb(240,240,240);border:none;border-radius:10px;"></div>
         </div>
+
+        <canvas id="aoiCanvas" width="800" height="600" style="position: absolute; top: 0; left: 0; z-index: 10; pointer-events: none;"></canvas>
+        <button onclick="enableAOISelection()" style="position: relative; z-index: 11;">Start AOI Selection</button>
+
     </div>
 
     <!--Display for the final thank you and results page-->
