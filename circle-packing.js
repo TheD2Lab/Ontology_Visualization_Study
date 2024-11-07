@@ -1,6 +1,6 @@
  function chart(data){
-  const width = 800;
-  const height = 800;
+  const width = 1026;
+  const height = 1026;
 
   const color = d3.scaleLinear()
       .domain([0, 5])
