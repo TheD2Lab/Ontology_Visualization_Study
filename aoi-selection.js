@@ -23,23 +23,30 @@ document.addEventListener("DOMContentLoaded", function () {
         document.addEventListener("dragstart", preventSelection);
     }
 
-    // Re-enable text selection
     function enableTextSelection() {
         document.body.classList.remove("disable-selection");
         document.removeEventListener("selectstart", preventSelection);
         document.removeEventListener("dragstart", preventSelection);
     }
 
-    // Prevent default behavior for selection
     function preventSelection(e) {
         e.preventDefault();
     }
 
-    // Enable AOI selection mode when called
+    // Calculate scale factor
+    function getScaleFactor() {
+        const rect = aoiCanvas.getBoundingClientRect();
+        return {
+            scaleX: aoiCanvas.width / rect.width,
+            scaleY: aoiCanvas.height / rect.height
+        };
+    }
+
+    // Enable AOI selection mode
     window.enableAOISelection = function () {
         aoiCanvas.style.pointerEvents = 'auto';
-        isDrawing = false;  // Reset isDrawing flag
-        disableTextSelection();  // Disable text selection
+        isDrawing = false;
+        disableTextSelection();
         console.log("AOI selection enabled.");
     };
 
@@ -48,9 +55,12 @@ document.addEventListener("DOMContentLoaded", function () {
         if (aoiCanvas.style.pointerEvents === 'none') return; // Ignore if canvas is disabled
 
         isDrawing = true;
-        const rect = aoiCanvas.getBoundingClientRect();
-        startX = e.clientX - rect.left;
-        startY = e.clientY - rect.top;
+
+        // Calculate starting coordinates with scale factor
+        const scaleFactor = getScaleFactor();
+        startX = (e.clientX - aoiCanvas.getBoundingClientRect().left) * scaleFactor.scaleX;
+        startY = (e.clientY - aoiCanvas.getBoundingClientRect().top) * scaleFactor.scaleY;
+
         currentRect = {}; // Reset current rectangle
     });
 
@@ -58,9 +68,12 @@ document.addEventListener("DOMContentLoaded", function () {
     aoiCanvas.addEventListener("mousemove", (e) => {
         if (!isDrawing) return;
 
-        const rect = aoiCanvas.getBoundingClientRect();
-        let mouseX = e.clientX - rect.left;
-        let mouseY = e.clientY - rect.top;
+        // Calculate current mouse position with scale factor
+        const scaleFactor = getScaleFactor();
+        let mouseX = (e.clientX - aoiCanvas.getBoundingClientRect().left) * scaleFactor.scaleX;
+        let mouseY = (e.clientY - aoiCanvas.getBoundingClientRect().top) * scaleFactor.scaleY;
+
+        // Update the rectangle based on the start and current mouse position
         currentRect = {
             x: startX,
             y: startY,
@@ -78,18 +91,18 @@ document.addEventListener("DOMContentLoaded", function () {
         isDrawing = false;
         aois.push(currentRect);
         currentRect = {};
-        console.log("AOI recorded:", aois);
+
+        console.log("AOI recorded:", aois);  // Log recorded AOI data
         aoiCanvas.style.pointerEvents = 'none';  // Disable canvas interactions until re-enabled
         enableTextSelection(); // Re-enable text selection
     });
 
-    // Draw the canvas and all AOIs
+    // Draw all AOIs and current rectangle
     function drawCanvas() {
         ctx.clearRect(0, 0, aoiCanvas.width, aoiCanvas.height);
         aois.forEach(aoi => drawRectangle(aoi));
     }
 
-    // Draw a rectangle on the canvas
     function drawRectangle(rect) {
         ctx.beginPath();
         ctx.rect(rect.x, rect.y, rect.width, rect.height);
