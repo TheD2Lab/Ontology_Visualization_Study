@@ -134,6 +134,76 @@
         //Establish a starting variable for keeping track of time when navigating the page. This should begin as soon as the web page is accessed
         let startTime = new Date().getTime();
 
+        // Define the data for the tree
+
+        const data = {
+            "name": "United States",
+            "children": [
+                {
+                    "name": "California",
+                    "children": [
+                        {"name": "San Bernardino"},
+                        {"name": "Los Angeles"}
+                    ]
+                },
+                {
+                    "name": "Texas",
+                    "children": [
+                        {"name": "Dallas"}
+                    ]
+                }
+            ]
+        }
+
+        const data2 = {
+            "name": "disjoint",
+            "children": [
+                {
+                "name": "Music Drama", "value": 800,
+                "children": [
+                {
+                    "name": "Opera", "value": 200
+                },
+                {
+                    "name": "Opereta", "value": 300
+                },
+                {
+                    "name": "Musical", "value": 400
+                }
+                ]
+                }
+            ]
+        }
+
+        const container = document.getElementById("tree-container");
+        const containerWidth = 851;
+        const containerHeight = 851;
+
+        // Set up tree options if desired
+        const options = {
+            width: containerWidth,
+            height: containerHeight,
+            label: d => d.name, // Display the name property
+            fill: "#66c2a5",
+            stroke: "#1b9e77"
+        };
+    
+        // Create the tree visualization
+        const svg = Tree(data, options);
+        const svg2 = chart(data2, options);
+    
+        // Append the SVG to the div container
+        document.getElementById("tree-container").appendChild(svg);
+
+        function updateVisual()
+        {
+            if (page_num == 6)
+            {
+                document.getElementById("tree-container").removeChild(svg);
+                document.getElementById("tree-container").appendChild(svg2);
+            }
+        }
+
         //Function for iterationg through pages
         function changePage(ans=-1)
         {
@@ -194,6 +264,7 @@
             return correct_ans;
         }
 
+<<<<<<< Updated upstream
         // Define the data for the tree
 
         const data = {
@@ -263,5 +334,9 @@
                     document.getElementById("tree-container").appendChild(svg2);
                 }
             }
+=======
+    <script>
+        
+>>>>>>> Stashed changes
     </script>
 </body>
