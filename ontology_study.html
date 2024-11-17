@@ -15,15 +15,15 @@
         <!--Display for information regarding the study, and how participants should approach it-->
         <div class="h_intro_info">
             <div style="min-height:100%;width:100%;background-color:rgb(240,240,240);">
-                <div style="font-size:30px;padding:20px;color:rgb(25,25,25);">How to Participate</div>
-                <div style="font-size:20px;padding:20px;color:rgb(25,25,25);">For this study, you will partake in 15 multiple-choice questions that will test your ontology knowledge. Please take your time and read each question carefully!</div>
+                <div style="font-size:50px;padding:20px;color:rgb(25,25,25);">How to Participate</div>
+                <div style="font-size:40px;padding:20px;color:rgb(25,25,25);">For this study, you will partake in 15 multiple-choice questions that will test your ontology knowledge. Please take your time and read each question carefully!</div>
             </div>
         </div>
         <!--Dispaly for information regarding the ontology models used, and information that could make answering them easier and more intuitive-->
         <div class="h_intro_background">
             <div style="height:950px;width:100%;background-color:rgb(240,240,240);">
-                <div style="font-size:30px;padding:20px;color:rgb(25,25,25);">Background Information</div>
-                <div style="font-size:20px;padding:20px;color:rgb(25,25,25);">This will be background information regarding the ontology models that are in the study</div>
+                <div style="font-size:50px;padding:20px;color:rgb(25,25,25);">Background Information</div>
+                <div style="font-size:40px;padding:20px;color:rgb(25,25,25);">This will be background information regarding the ontology models that are in the study</div>
             </div>
             <button class="h_begin_button" onclick="changePage()">Continue</button>
         </div>
@@ -209,8 +209,8 @@
         };
     
         // Create the tree visualization
-        const svg = Tree(data, options);
-        const svg2 = chart(data2, options);
+        const svg = chart(data2, options);
+        const svg2 = Tree(data, options);
     
         // Append the SVG to the div container
         document.getElementById("tree-container").appendChild(svg);
@@ -220,7 +220,11 @@
             if (page_num == 6)
             {
                 document.getElementById("tree-container").removeChild(svg);
-                document.getElementById("tree-container").appendChild(svg2);
+                //document.getElementById("tree-container").appendChild(svg2);
+            }
+            if (page_num == 11)
+            {
+                document.getElementById("tree-container").removeChild(svg2);
             }
         }
 
