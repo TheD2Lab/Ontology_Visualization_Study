@@ -3,14 +3,14 @@
 }
 
 html {
-    display:flex;
-    flex-direction:column;
-    align-items:center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .h_main {
-    display:flex;
-    flex-direction:column;
+    display: flex;
+    flex-direction: column;
 
     width:100vw;
     height:100vh;
@@ -27,33 +27,30 @@ html {
     align-items:center;
     width:1824px;
     height:1026px;;
-}
 
 .h_outro {
-    font-size:50px;
-    color:black;
-    padding:20px;
+    font-size: 50px;
+    color: black;
+    padding: 20px;
 
     background-color:var(--white-color);
 }
 
-.h_intro_info
-{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:space-between;
+.h_intro_info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
 
     height:1026px;
     width: 700px;
 }
 
-.h_intro_background
-{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:space-between;
+.h_intro_background {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
 
     height:1026px;
     width: 700px;
@@ -67,10 +64,10 @@ html {
     padding:10px;
 }
 .h_begin_button:hover {
-    background-color:rgb(200,200,200);
+    background-color: rgb(200,200,200);
 }
 .h_begin_button:active {
-    background-color:rgb(175,175,175);
+    background-color: rgb(175,175,175);
 }
 
 .h_question {
@@ -83,16 +80,16 @@ html {
     width:700px;
 }
 
-.h_sub_question  {
-    display:flex;
-    flex-direction:column;
-    justify-content:space-between;
+.h_sub_question {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 
     height:800px;
     width:700px;
     background-color:var(--white-color);
 
-    color:rgb(25,25,25);
+    color: rgb(25,25,25);
 }
 
 .h_visual {
@@ -121,9 +118,26 @@ html {
     width:700px;
     font-size:20px;
 }
+
+#aoiCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+}
 .ans_button:hover {
-    background-color:rgb(200,200,200);
+    background-color: rgb(200,200,200);
 }
 .ans_button:active {
-    background-color:rgb(175,175,175);
+    background-color: rgb(175,175,175);
+}
+
+.disable-selection {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }

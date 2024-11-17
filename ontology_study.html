@@ -5,6 +5,7 @@
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="link-tree.js"></script>
     <script src="circle-packing.js"></script>
+    <script src="aoi-selection.js"></script>
 </head>
 
 <!--Main body of the webpage-->
@@ -107,7 +108,26 @@
         <div class="h_visual">
             <div id="tree-container" style="width:100%;height:100%;background-color:rgb(240,240,240);"></div>
         </div>
+
+        <canvas id="aoiCanvas" width="1920" height="1080" style="position: absolute; top: 0; left: 0; z-index: 10; pointer-events: none;"></canvas>
+        <!--<button onclick="enableAOISelection()" style="position: relative; z-index: 11;">Start AOI Selection</button>
+        <button onclick="saveAOIs()" style="position: relative; z-index: 11; margin-top: 10px;">Save AOIs</button>-->
+                
+
     </div>
+
+    <script>
+        document.addEventListener('keydown', function (event) {
+            if (event.ctrlKey && event.key === 'z') { // Check if Ctrl and 'S' are pressed
+                event.preventDefault(); // Prevent the default browser action (e.g., save dialog)
+                enableAOISelection(); // Call your custom function
+            }
+            else if (event.ctrlKey && event.key === 'x') { // Check if Ctrl and 'S' are pressed
+                event.preventDefault(); // Prevent the default browser action (e.g., save dialog)
+                saveAOIs(); // Call your custom function
+        }
+        });
+    </script>
 
     <!--Display for the final thank you and results page-->
     <div id="outroPage" class="h_sub" style="Display:none">
