@@ -210,7 +210,16 @@
     
         // Create the tree visualization
         const svg = chart(data2, options);
-        const svg2 = Tree(data, options);
+
+        const svg2 = document.createElement("img");
+        svg2.src = "1.png"; // Replace with your image path
+        svg2.style.width = "100%"
+        svg2.style.height = "100%"
+
+        const svg3 = document.createElement("img");
+        svg3.src = "treemap.png"; // Replace with your image path
+        svg3.style.width = "100%"
+        svg3.style.height = "100%"
     
         // Append the SVG to the div container
         document.getElementById("tree-container").appendChild(svg);
@@ -220,11 +229,13 @@
             if (page_num == 6)
             {
                 document.getElementById("tree-container").removeChild(svg);
-                //document.getElementById("tree-container").appendChild(svg2);
+                document.getElementById("tree-container").appendChild(svg2);
+            
             }
             if (page_num == 11)
             {
                 document.getElementById("tree-container").removeChild(svg2);
+                document.getElementById("tree-container").appendChild(svg3);
             }
         }
 
