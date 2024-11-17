@@ -14,22 +14,13 @@ function Tree(data, { // data is either tabular (array of objects) or hierarchy 
   linkTarget = "_blank", // the target attribute for links (if any)
   width = 800, // outer width, in pixels
   height = 800, // outer height, in pixels
-<<<<<<< Updated upstream
   r = 10, // radius of nodes
-=======
-  r = 5, // radius of nodes
->>>>>>> Stashed changes
   padding = 1, // horizontal padding for first and last column
   fill = "#999", // fill for nodes
   fillOpacity, // fill opacity for nodes
   stroke = "#555", // stroke for links
-<<<<<<< Updated upstream
   strokeWidth = 6, // stroke width for links
   strokeOpacity = 0.6, // stroke opacity for links
-=======
-  strokeWidth = 3, // stroke width for links
-  strokeOpacity = 0.4, // stroke opacity for links
->>>>>>> Stashed changes
   strokeLinejoin, // stroke line join for links
   strokeLinecap, // stroke line cap for links
   halo = "#fff", // color of label halo 
