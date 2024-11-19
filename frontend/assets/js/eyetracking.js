@@ -1,37 +1,37 @@
 document.addEventListener("DOMContentLoaded", function () {
     let isTracking = false;
 
-    // Start WebGazer
+    // Initialize WebGazer
     function initializeWebGazer() {
         console.log("Initializing WebGazer...");
         WebGazer.setRegression("ridge")
             .setTracker("clmtrackr")
             .begin()
-            .showVideo(false)
+            .showVideoPreview(false)
             .showFaceOverlay(false)
-            .showFaceFeedbackBox(false)
-            .onPrediction(handlePrediction);
+            .showFaceFeedbackBox(false);
+
+        WebGazer.setGazeListener((data, timestamp) => {
+            if (data) {
+                updateGazeIndicator(data.x, data.y);
+                checkAOI(data.x, data.y);
+            }
+        });
 
         console.log("WebGazer initialized.");
     }
 
-    // Handle gaze data
-    function handlePrediction(data, timestamp) {
-        if (!data || !isTracking) return;
-
-        const gazeX = data.x;
-        const gazeY = data.y;
-
-        console.log(`Gaze Point: X=${gazeX}, Y=${gazeY}`);
-
-        // Optionally check AOI here
-        if (window.loadedAOIs) {
-            checkAOI(gazeX, gazeY);
-        }
+    // Update gaze indicator on screen
+    function updateGazeIndicator(x, y) {
+        const indicator = document.getElementById("gazeIndicator");
+        indicator.style.display = "block";
+        indicator.style.left = `${x}px`;
+        indicator.style.top = `${y}px`;
     }
 
     // Check if gaze is within AOI
     function checkAOI(x, y) {
+        if (!window.loadedAOIs) return;
         window.loadedAOIs.forEach((aoi, index) => {
             if (
                 x >= aoi.x &&
@@ -44,14 +44,14 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Start tracking
+    // Start tracking gaze data
     window.startTracking = function () {
         if (isTracking) return;
         isTracking = true;
         console.log("Started tracking gaze data.");
     };
 
-    // Stop tracking
+    // Stop tracking gaze data
     window.stopTracking = function () {
         if (!isTracking) return;
         isTracking = false;
@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", function () {
             .catch((err) => console.error("Error loading AOI data:", err));
     };
 
-    // Save gaze data to a JSON file
+    // Save gaze data to JSON file
     window.saveGazeData = function (gazeData) {
         const blob = new Blob([JSON.stringify(gazeData)], { type: "application/json" });
         const link = document.createElement("a");

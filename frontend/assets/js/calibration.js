@@ -1,12 +1,12 @@
 document.addEventListener("DOMContentLoaded", function () {
     let calibrationPoints = [];
+    let currentPointIndex = 0;
     let isCalibrating = false;
 
     // Calibration settings
     const calibrationSettings = {
         numberOfPoints: 9, // Number of calibration points (e.g., a 3x3 grid)
         pointSize: 20,     // Size of calibration points in pixels
-        duration: 2000     // Time to show each point in milliseconds
     };
 
     // Start calibration
@@ -18,11 +18,26 @@ document.addEventListener("DOMContentLoaded", function () {
 
         isCalibrating = true;
         console.log("Starting calibration...");
-        displayCalibrationPoints();
+        generateGridPoints(calibrationSettings.numberOfPoints);
+        displayNextCalibrationPoint();
     };
 
-    // Display calibration points
-    function displayCalibrationPoints() {
+    // Generate calibration grid points
+    function generateGridPoints(numPoints) {
+        const gridSize = Math.sqrt(numPoints);
+        calibrationPoints = [];
+        for (let row = 0; row < gridSize; row++) {
+            for (let col = 0; col < gridSize; col++) {
+                calibrationPoints.push({
+                    x: (col + 0.5) * (100 / gridSize),
+                    y: (row + 0.5) * (100 / gridSize),
+                });
+            }
+        }
+    }
+
+    // Display the next calibration point
+    function displayNextCalibrationPoint() {
         const container = document.getElementById("calibration-container");
         if (!container) {
             console.error("Calibration container not found!");
@@ -30,52 +45,36 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         container.innerHTML = ""; // Clear existing points
-        calibrationPoints = generateGridPoints(calibrationSettings.numberOfPoints);
 
-        calibrationPoints.forEach((point, index) => {
-            const pointElement = document.createElement("div");
-            pointElement.className = "calibration-point";
-            pointElement.style.left = `${point.x}%`;
-            pointElement.style.top = `${point.y}%`;
-            pointElement.style.width = `${calibrationSettings.pointSize}px`;
-            pointElement.style.height = `${calibrationSettings.pointSize}px`;
+        if (currentPointIndex >= calibrationPoints.length) {
+            console.log("Calibration complete.");
+            isCalibrating = false;
+            container.innerHTML = "<h3>Calibration Complete!</h3>";
+            transitionToAOISelection();
+            return;
+        }
 
-            container.appendChild(pointElement);
+        const point = calibrationPoints[currentPointIndex];
+        const pointElement = document.createElement("div");
+        pointElement.className = "calibration-point";
+        pointElement.style.left = `${point.x}%`;
+        pointElement.style.top = `${point.y}%`;
+        pointElement.style.width = `${calibrationSettings.pointSize}px`;
+        pointElement.style.height = `${calibrationSettings.pointSize}px`;
 
-            setTimeout(() => {
-                pointElement.classList.add("active");
-                captureGazeData(index, pointElement);
-            }, index * calibrationSettings.duration);
+        container.appendChild(pointElement);
+
+        pointElement.addEventListener("click", () => {
+            console.log(`Point ${currentPointIndex + 1} captured`);
+            currentPointIndex++;
+            displayNextCalibrationPoint();
         });
     }
 
-    // Capture gaze data during calibration
-    function captureGazeData(index, pointElement) {
-        setTimeout(() => {
-            console.log(`Capturing data for point ${index + 1}`);
-            // Example: Capture gaze data here using WebGazer.js
-            // const gazeData = WebGazer.getCurrentPrediction();
-
-            pointElement.classList.remove("active");
-            if (index === calibrationPoints.length - 1) {
-                console.log("Calibration complete.");
-                isCalibrating = false;
-            }
-        }, calibrationSettings.duration);
-    }
-
-    // Generate calibration grid points
-    function generateGridPoints(numPoints) {
-        const gridSize = Math.sqrt(numPoints);
-        const points = [];
-        for (let row = 0; row < gridSize; row++) {
-            for (let col = 0; col < gridSize; col++) {
-                points.push({
-                    x: (col + 0.5) * (100 / gridSize),
-                    y: (row + 0.5) * (100 / gridSize)
-                });
-            }
-        }
-        return points;
+    // Transition to AOI selection
+    function transitionToAOISelection() {
+        document.getElementById("calibration-container").style.display = "none";
+        document.getElementById("aoi-selection-container").style.display = "block";
+        console.log("Switched to AOI selection.");
     }
 });
