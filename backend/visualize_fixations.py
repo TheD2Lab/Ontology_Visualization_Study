@@ -11,7 +11,7 @@ eps_values = [0.05, 0.08, 0.1, 0.12]  # Varying spatial proximity values for DBS
 min_samples_values = [5, 7, 10]  # Varying min_samples values for DBSCAN
 
 def apply_dbscan_and_plot(data, eps, min_samples):
-    # Normalize X, Y, and Timestamp (required for DBSCAN clustering on normalized features)
+    # Normalize X, Y, and Timestamp (required for DBSCAN clustering on normalized features)   
     data['x_normalized'] = (data['x'] - data['x'].min()) / (data['x'].max() - data['x'].min())
     data['y_normalized'] = (data['y'] - data['y'].min()) / (data['y'].max() - data['y'].min())
     data['timestamp_normalized'] = (data['timestamp'] - data['timestamp'].min()) / (data['timestamp'].max() - data['timestamp'].min())
