@@ -18,16 +18,16 @@
     <div id="introPage" class="h_sub" style="display:flex">
         <!--Display for information regarding the study, and how participants should approach it-->
         <div class="h_intro_info">
-            <div style="min-height:95%;width:90%;background-color:rgb(240,240,240);margin-top:20px;border:none;border-radius:10px;">
-                <div style="font-size:30px;padding:20px;color:rgb(25,25,25);">How to Participate</div>
-                <div style="font-size:20px;padding:20px;color:rgb(25,25,25);">For this study, you will partake in 15 multiple-choice questions that will test your ontology knowledge. Please take your time and read each question carefully!</div>
+            <div style="min-height:100%;width:100%;background-color:rgb(240,240,240);">
+                <div style="font-size:50px;padding:20px;color:rgb(25,25,25);">How to Participate</div>
+                <div style="font-size:40px;padding:20px;color:rgb(25,25,25);">For this study, you will partake in 15 multiple-choice questions that will test your ontology knowledge. Please take your time and read each question carefully!</div>
             </div>
         </div>
         <!--Dispaly for information regarding the ontology models used, and information that could make answering them easier and more intuitive-->
         <div class="h_intro_background">
-            <div style="min-height:87%;width:90%;background-color:rgb(240,240,240);margin-top:20px;border:none;border-radius:10px;">
-                <div style="font-size:30px;padding:20px;color:rgb(25,25,25);">Background Information</div>
-                <div style="font-size:20px;padding:20px;color:rgb(25,25,25);">This will be background information regarding the ontology models that are in the study</div>
+            <div style="height:950px;width:100%;background-color:rgb(240,240,240);">
+                <div style="font-size:50px;padding:20px;color:rgb(25,25,25);">Background Information</div>
+                <div style="font-size:40px;padding:20px;color:rgb(25,25,25);">This will be background information regarding the ontology models that are in the study</div>
             </div>
             <button class="h_begin_button" onclick="changePage()">Continue</button>
         </div>
@@ -110,15 +110,28 @@
         
         <!--Div for visualization, implementing D3 later on-->
         <div class="h_visual">
-            <div id="tree-container" style="width:95%;height:95%;background-color:rgb(240,240,240);border:none;border-radius:10px;"></div>
+            <div id="tree-container" style="width:100%;height:100%;background-color:rgb(240,240,240);"></div>
         </div>
 
-        <canvas id="aoiCanvas" width="800" height="600" style="position: absolute; top: 0; left: 0; z-index: 10; pointer-events: none;"></canvas>
-        <button onclick="enableAOISelection()" style="position: relative; z-index: 11;">Start AOI Selection</button>
-        <button onclick="saveAOIs()" style="position: relative; z-index: 11; margin-top: 10px;">Save AOIs</button>
+        <canvas id="aoiCanvas" width="1920" height="1080" style="position: absolute; top: 0; left: 0; z-index: 10; pointer-events: none;"></canvas>
+        <!--<button onclick="enableAOISelection()" style="position: relative; z-index: 11;">Start AOI Selection</button>
+        <button onclick="saveAOIs()" style="position: relative; z-index: 11; margin-top: 10px;">Save AOIs</button>-->
                 
 
     </div>
+
+    <script>
+        document.addEventListener('keydown', function (event) {
+            if (event.ctrlKey && event.key === 'z') { // Check if Ctrl and 'S' are pressed
+                event.preventDefault(); // Prevent the default browser action (e.g., save dialog)
+                enableAOISelection(); // Call your custom function
+            }
+            else if (event.ctrlKey && event.key === 'x') { // Check if Ctrl and 'S' are pressed
+                event.preventDefault(); // Prevent the default browser action (e.g., save dialog)
+                saveAOIs(); // Call your custom function
+        }
+        });
+    </script>
 
     <!--Display for the final thank you and results page-->
     <div id="outroPage" class="h_sub" style="Display:none">
@@ -144,6 +157,91 @@
 
         //Establish a starting variable for keeping track of time when navigating the page. This should begin as soon as the web page is accessed
         let startTime = new Date().getTime();
+
+        // Define the data for the tree
+
+        const data = {
+            "name": "United States",
+            "children": [
+                {
+                    "name": "California",
+                    "children": [
+                        {"name": "San Bernardino"},
+                        {"name": "Los Angeles"}
+                    ]
+                },
+                {
+                    "name": "Texas",
+                    "children": [
+                        {"name": "Dallas"}
+                    ]
+                }
+            ]
+        }
+
+        const data2 = {
+            "name": "disjoint",
+            "children": [
+                {
+                "name": "Music Drama", "value": 800,
+                "children": [
+                {
+                    "name": "Opera", "value": 200
+                },
+                {
+                    "name": "Opereta", "value": 300
+                },
+                {
+                    "name": "Musical", "value": 400
+                }
+                ]
+                }
+            ]
+        }
+
+        const container = document.getElementById("tree-container");
+        const containerWidth = 851;
+        const containerHeight = 851;
+
+        // Set up tree options if desired
+        const options = {
+            width: containerWidth,
+            height: containerHeight,
+            label: d => d.name, // Display the name property
+            fill: "#66c2a5",
+            stroke: "#1b9e77"
+        };
+    
+        // Create the tree visualization
+        const svg = chart(data2, options);
+
+        const svg2 = document.createElement("img");
+        svg2.src = "1.png"; // Replace with your image path
+        svg2.style.width = "100%"
+        svg2.style.height = "100%"
+
+        const svg3 = document.createElement("img");
+        svg3.src = "treemap.png"; // Replace with your image path
+        svg3.style.width = "100%"
+        svg3.style.height = "100%"
+    
+        // Append the SVG to the div container
+        document.getElementById("tree-container").appendChild(svg);
+
+        function updateVisual()
+        {
+            if (page_num == 6)
+            {
+                document.getElementById("tree-container").removeChild(svg);
+                document.getElementById("tree-container").appendChild(svg2);
+            
+            }
+            if (page_num == 11)
+            {
+                document.getElementById("tree-container").removeChild(svg2);
+                document.getElementById("tree-container").appendChild(svg3);
+            }
+        }
 
         //Function for iterationg through pages
         function changePage(ans=-1)
@@ -204,75 +302,5 @@
             }
             return correct_ans;
         }
-
-        // Define the data for the tree
-
-        const data = {
-                "name": "disjoint",
-                "children": [
-                    {
-                    "name": "Music Drama", "value": 800,
-                    "children": [
-                    {
-                        "name": "Opera", "value": 200
-                    },
-                    {
-                        "name": "Opereta", "value": 300
-                    },
-                    {
-                        "name": "Musical", "value": 400
-                    }
-                    ]
-                    }
-                ]
-            };
-
-            const data2 = {
-                "name": "United States",
-                "children": [
-                    {
-                        "name": "California",
-                        "children": [
-                            {"name": "San Bernardino"},
-                            {"name": "Los Angeles"}
-                        ]
-                    },
-                    {
-                        "name": "Texas",
-                        "children": [
-                            {"name": "Dallas"}
-                        ]
-                    }
-	            ]
-            }
-
-            const container = document.getElementById("tree-container");
-            const containerWidth = 851;
-            const containerHeight = 851;
-    
-            // Set up tree options if desired
-            const options = {
-                width: containerWidth,
-                height: containerHeight,
-                label: d => d.name, // Display the name property
-                fill: "#66c2a5",
-                stroke: "#1b9e77"
-            };
-        
-            // Create the tree visualization
-            const svg = Tree(data2, options);
-            const svg2 = chart(data, options);
-        
-            // Append the SVG to the div container
-            document.getElementById("tree-container").appendChild(svg);
-
-            function updateVisual()
-            {
-                if(page_num == 6)
-                {
-                    document.getElementById("tree-container").removeChild(svg);
-                    document.getElementById("tree-container").appendChild(svg2);
-                }
-            }
     </script>
 </body>
