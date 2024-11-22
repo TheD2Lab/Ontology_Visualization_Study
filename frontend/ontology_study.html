@@ -6,7 +6,7 @@
     <script src="assets\js\aoi-selection.js"></script>
     <script src="assets\js\circle-packing.js"></script>
     <script src="assets\js\eyetracking.js"></script>
-    <script src="asserts\js\webgazer.js"></script>
+    <script src="assets\js\webgazer.js"></script>
     <script src="assets\js\calibration.js"></script>
     <script src="assets\js\circle-packing.js"></script>
     <script src="assets\js\link-tree.js"></script>
@@ -117,6 +117,12 @@
         <!--<button onclick="enableAOISelection()" style="position: relative; z-index: 11;">Start AOI Selection</button>
         <button onclick="saveAOIs()" style="position: relative; z-index: 11; margin-top: 10px;">Save AOIs</button>-->
                 
+        <div class="h_calibration">
+            <div class="calibration-container">
+
+            </div>
+        </div>
+
 
     </div>
 
@@ -129,7 +135,11 @@
             else if (event.ctrlKey && event.key === 'x') { // Check if Ctrl and 'S' are pressed
                 event.preventDefault(); // Prevent the default browser action (e.g., save dialog)
                 saveAOIs(); // Call your custom function
-        }
+            }
+            else if (event.ctrlKey && event.key === 'c') {
+                event.preventDefault();
+                console.log("calibration");
+            }
         });
     </script>
 
@@ -147,7 +157,7 @@
         //Variable t hat will keep track of the amount of time a user spends on each page
         let page_time = []
         //Page number variable, used to track the current page state
-        let page_num = 0;
+        let page_value = 0;
 
         //Establish constant variables for the intro, question and outro pages
         const menuIntro = document.getElementById("introPage");
@@ -216,32 +226,17 @@
         const svg = chart(data2, options);
 
         const svg2 = document.createElement("img");
-        svg2.src = "1.png"; // Replace with your image path
+        svg2.src = "../1.png";
         svg2.style.width = "100%"
         svg2.style.height = "100%"
 
         const svg3 = document.createElement("img");
-        svg3.src = "treemap.png"; // Replace with your image path
+        svg3.src = "../treemap.png"; 
         svg3.style.width = "100%"
         svg3.style.height = "100%"
     
         // Append the SVG to the div container
         document.getElementById("tree-container").appendChild(svg);
-
-        function updateVisual()
-        {
-            if (page_num == 6)
-            {
-                document.getElementById("tree-container").removeChild(svg);
-                document.getElementById("tree-container").appendChild(svg2);
-            
-            }
-            if (page_num == 11)
-            {
-                document.getElementById("tree-container").removeChild(svg2);
-                document.getElementById("tree-container").appendChild(svg3);
-            }
-        }
 
         //Function for iterationg through pages
         function changePage(ans=-1)
@@ -253,30 +248,12 @@
             }
 
             //Iterate the page number with a limit of 13
-            page_num = page_num < questionNum ? page_num + 1: (questionNum + 1);
+            page_value = page_value + 1;
 
-            console.log("page_num: " + page_num);
-            //If the page number is over 12, remove the question page and and instead display the outro page
-            if (page_num > questionNum)
+            //If the page number is over 12, calculate the final score of the user 
+            if (page_value > questionNum)
             {
                 final_score = checkAnswers(answers);
-
-                menuQuestion.style.display = "none";
-                menuOutro.style.display = "flex";
-                continueButton.style.display="none";
-
-                document.getElementById("outroText").textContent = ("Thank you for participating!\n\nFinal score: " + final_score + "/" + questionNum)
-                console.log(page_time)
-            }
-            //If the page number is between 1 and 12, display the appropriate questions page
-            else if (page_num > 0)
-            {
-                menuIntro.style.display = "none";
-                menuQuestion.style.display = "flex";
-
-                //Update the text for questions and answers
-                document.getElementById("questionText").innerText = pageQuestions[page_num];
-                document.getElementById("answersText").innerText = pageAnswers[page_num];
             }
 
             //Regardless of what happens, update the time variable to keep track of user duration
@@ -286,8 +263,59 @@
             page_time.push(timeSpent);
             startTime = endTime;
 
-            updateVisual();
+            //Update the displayed visual on the page, based on the new value of page_value
+            updateFrontEnd();
+        }
+
+        //Function for updating visuals based on the new value of page_value
+        //Iterates through different if-statements to check whether the condition for displaying certain pages is met 
+        function updateFrontEnd(is_calib = false)
+        {
+            //Perform the calibration sequence, which should not affect the page value
+            if(is_calib == true)
+            {
+                console.log("calibration sequence");
+                return;
+            }
+
+            //If the current page is a question & visual page (page_value is between 1 and 15)
+            if(page_value > 0 && page_value <= 15)
+            {
+                //Remove the visualization
+                menuIntro.style.display = "none";
+                menuQuestion.style.display = "flex";
+
+                document.getElementById("questionText").innerText = pageQuestions[page_value];
+                document.getElementById("answersText").innerText = pageAnswers[page_value];
+
+                //If the current page is ready to move onto the second visualization (question 6)
+                if (page_value == 6)
+                {
+                    document.getElementById("tree-container").removeChild(svg);
+                    document.getElementById("tree-container").appendChild(svg2);
             
+                }
+                //If the current page is ready to move onto the third visualization (question 11)
+                else if (page_value == 11)
+                {
+                    document.getElementById("tree-container").removeChild(svg2);
+                    document.getElementById("tree-container").appendChild(svg3);
+                }
+            }
+            //If the current page has exceeded the number of questions, meaning it will now end the study simulation
+            else
+            {
+                //Navigate to the final end-page of the simulation
+                menuQuestion.style.display = "none";
+                menuOutro.style.display = "flex";
+                continueButton.style.display="none";
+
+                //Display the final score of the participant (OPTIONAL)
+                document.getElementById("outroText").textContent = ("Thank you for participating!\n\nFinal score: " + final_score + "/" + questionNum)
+
+                console.log(answers);
+                console.log(page_time)
+            }
         }
 
         function checkAnswers(ans_list)
