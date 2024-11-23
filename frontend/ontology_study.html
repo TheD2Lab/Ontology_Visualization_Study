@@ -116,32 +116,14 @@
         <canvas id="aoiCanvas" width="1920" height="1080" style="position: absolute; top: 0; left: 0; z-index: 10; pointer-events: none;"></canvas>
         <!--<button onclick="enableAOISelection()" style="position: relative; z-index: 11;">Start AOI Selection</button>
         <button onclick="saveAOIs()" style="position: relative; z-index: 11; margin-top: 10px;">Save AOIs</button>-->
-                
-        <div class="h_calibration">
-            <div class="calibration-container">
-
-            </div>
-        </div>
-
-
     </div>
 
-    <script>
-        document.addEventListener('keydown', function (event) {
-            if (event.ctrlKey && event.key === 'z') { // Check if Ctrl and 'S' are pressed
-                event.preventDefault(); // Prevent the default browser action (e.g., save dialog)
-                enableAOISelection(); // Call your custom function
-            }
-            else if (event.ctrlKey && event.key === 'x') { // Check if Ctrl and 'S' are pressed
-                event.preventDefault(); // Prevent the default browser action (e.g., save dialog)
-                saveAOIs(); // Call your custom function
-            }
-            else if (event.ctrlKey && event.key === 'c') {
-                event.preventDefault();
-                console.log("calibration");
-            }
-        });
-    </script>
+    <!--Display for eye-tracking calibration-->
+    <div id="h_calibration" class="h_calibration" style="Display:None">
+        <div id="calibration-container" class="calibration_parent">
+            
+        </div>
+    </div>
 
     <!--Display for the final thank you and results page-->
     <div id="outroPage" class="h_sub" style="Display:none">
@@ -149,6 +131,32 @@
             Final
         </div>
     </div>
+
+    <!--Script for acting on keyboard shortcuts-->
+    <script>
+        //Event listener checking for keybard input 
+        document.addEventListener('keydown', function (event) {
+            //Keyboard shortcut for enabling AOI selection (Ctrl+Z)
+            if (event.ctrlKey && event.key === 'z') {
+                //Prevent default browser activity, and instead run the function to enable AOI selction
+                event.preventDefault();
+                enableAOISelection();
+            }
+            //Keyboard shortcut for downloaded selected AOI selections (Ctrl+X)
+            else if (event.ctrlKey && event.key === 'x') {
+                //Prevent default browser activity, and instead run the function to save AOI selections as a JSON file 
+                event.preventDefault();
+                saveAOIs();
+            }
+            //Keyboard shortcut for calling the calibration sequence (Ctrl+C)
+            else if (event.ctrlKey && event.key === 'c') {
+                //Prevent default browser activity, and instead run the function to begin the calibration sequence 
+                event.preventDefault();
+                updateFrontEnd(is_calib=true);
+                console.log("calibration");
+            }
+        });
+    </script>
 
     <!--Script containing the logic for tracking, iterating and updating page information-->
     <script>
@@ -164,12 +172,12 @@
         const menuQuestion = document.getElementById("questionPage")
         const menuOutro = document.getElementById("outroPage");
         const continueButton = document.getElementById("pageButton");
+        const menuCalibration = document.getElementById("h_calibration");
 
         //Establish a starting variable for keeping track of time when navigating the page. This should begin as soon as the web page is accessed
         let startTime = new Date().getTime();
 
         // Define the data for the tree
-
         const data = {
             "name": "United States",
             "children": [
@@ -238,6 +246,13 @@
         // Append the SVG to the div container
         document.getElementById("tree-container").appendChild(svg);
 
+        function disableCalibration()
+        {
+            menuCalibration.style.display="none"
+            menuIntro.style.display="flex";
+        }
+        window.disableCalibration = disableCalibration;
+
         //Function for iterationg through pages
         function changePage(ans=-1)
         {
@@ -272,9 +287,12 @@
         function updateFrontEnd(is_calib = false)
         {
             //Perform the calibration sequence, which should not affect the page value
-            if(is_calib == true)
+            if(is_calib == true && page_value == 0)
             {
                 console.log("calibration sequence");
+                menuIntro.style.display = "none";
+                menuCalibration.style.display = "flex";
+                window.startCalibration();
                 return;
             }
 

@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Calibration settings
     const calibrationSettings = {
         numberOfPoints: 9, // Number of calibration points (e.g., a 3x3 grid)
-        pointSize: 20,     // Size of calibration points in pixels
+        pointSize: 100,     // Size of calibration points in pixels
     };
 
     // Start calibration
@@ -50,7 +50,8 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log("Calibration complete.");
             isCalibrating = false;
             container.innerHTML = "<h3>Calibration Complete!</h3>";
-            transitionToAOISelection();
+            window.disableCalibration();
+            //transitionToAOISelection();
             return;
         }
 
@@ -61,6 +62,10 @@ document.addEventListener("DOMContentLoaded", function () {
         pointElement.style.top = `${point.y}%`;
         pointElement.style.width = `${calibrationSettings.pointSize}px`;
         pointElement.style.height = `${calibrationSettings.pointSize}px`;
+        pointElement.style.backgroundColor = "black";
+        pointElement.style.borderRadius = "50%";
+        pointElement.style.position = "absolute";
+        pointElement.style.display = "flex";
 
         container.appendChild(pointElement);
 
