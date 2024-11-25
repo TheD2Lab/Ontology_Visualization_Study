@@ -1,3 +1,4 @@
+
 :root {
     --white-color: rgb(240, 240, 240);
 }
@@ -12,8 +13,8 @@ html {
     display: flex;
     flex-direction: column;
 
-    width:1920px;
-    height:1080px;
+    width:100vw;
+    height:100vh;
     justify-content:center;
     align-items:center;
 
@@ -26,7 +27,7 @@ html {
     justify-content:space-evenly;
     align-items:center;
     width:1824px;
-    height:1026px;
+    height:900px;
 }
 
 .h_outro {
@@ -43,7 +44,7 @@ html {
     align-items: center;
     justify-content: space-between;
 
-    height:1026px;
+    height:900px;
     width: 700px;
 }
 
@@ -53,7 +54,7 @@ html {
     align-items: center;
     justify-content: space-between;
 
-    height:1026px;
+    height:900px;
     width: 700px;
 }
 
@@ -77,7 +78,7 @@ html {
     align-content:center;
     justify-content:space-between;
 
-    height:1026px;
+    height:900px;
     width:700px;
 }
 
@@ -86,7 +87,7 @@ html {
     flex-direction: column;
     justify-content: space-between;
 
-    height:800px;
+    height:675px;
     width:700px;
     background-color:var(--white-color);
 
@@ -95,8 +96,8 @@ html {
 }
 
 .h_visual {
-    height:1026px;
-    width:1026px;
+    height:900px;
+    width:900px;
 
     display:flex;
     align-items:center;
