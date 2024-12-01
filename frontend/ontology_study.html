@@ -15,21 +15,74 @@
 <!--Main body of the webpage-->
 <body class="h_main">
     <!--Display for the introductory screen-->
-    <div id="introPage" class="h_sub" style="display:flex">
+    <div id="introPage" style="display:flex;flex-direction:column;justify-content:space-between;height:100px;">
+        <div class="h_intro_text">Data Visualization With Ontologies</div>
+        <button class="h_begin_button" onclick="changePage()">Continue</button>
+    </div>
+    <div id="backgroundPage" class="h_sub" style="display:none">
         <!--Display for information regarding the study, and how participants should approach it-->
         <div class="h_intro_info">
-            <div style="min-height:100%;width:100%;background-color:rgb(240,240,240);">
-                <div style="font-size:50px;padding:20px;color:rgb(25,25,25);">How to Participate</div>
-                <div style="font-size:40px;padding:20px;color:rgb(25,25,25);">For this study, you will partake in 15 multiple-choice questions that will test your ontology knowledge. Please take your time and read each question carefully!</div>
+            <div style="display:flex;min-height:100%;width:100%;background-color:rgb(240,240,240);flex-direction:column;justify-content:space-between;">
+                <div style="font-size:50px;padding:20px;color:rgb(25,25,25);">Background Information</div>
+
+                <div>
+                    <div class="h_background_bullet_title">WHAT IS AN ONTOLOGY?</div>
+                    <div class="h_background_bullet_text">An ontology is a structured way to organize and define relationships between concepts in a particular domain, like a map for understanding how ideas connect</div>
+                </div>
+                <div>
+                    <div class="h_background_bullet_title">WHAT IS A "CLASS" IN ONTOLOGY?</div>
+                    <div class="h_background_bullet_text">A class in an ontology is a category or group that defines a set of similar things, like a label for a collection of related items</div>
+                </div>
+                <div>
+                    <div class="h_background_bullet_title">WHAT ARE PARENT AND SUBCLASSES?</div>
+                    <div class="h_background_bullet_text">In ontology, some classes will "belong" to others like branches off of a tree. The tree is a parent class while each branch is a subclass or child class. For example: the class "Parent" will have a "Son" subclass and a "Daughter" subclass</div>
+                </div>
+                <div>
+                    <div class="h_background_bullet_title">WHAT IS A RELATIONSHIP IN ONTOLOGY?</div>
+                    <div class="h_background_bullet_text">A relationship is a link between two or more entities/classes in ontology. There are many different kinds of relationships, many of which you will see during our study</div>
+                </div>
+                <div>
+                    <div class="h_background_bullet_title">WHAT SUBJECTS ARE GOING TO BE COVERED?</div>
+                    <div class="h_background_bullet_text">The ontology models in this study will cover a variety of subjects. Here are a few key points to help understand the models better:
+                        <br>- Despite how similar the names may sound, "Opera", "Operetta" and "Musical" are all different types of musical performances
+                        <br>- Many names for sports are shared across the world. However, "Football" is referred to in the United States as "Soccer" despite being identical sports
+                        <br>- Restaurants will often have sections for different types of menu options that usually do not overlap. This can include a section for vegetarian dishes, with all other dishes falling under the "standard" options
+                    </div>
+                </div>
             </div>
         </div>
         <!--Dispaly for information regarding the ontology models used, and information that could make answering them easier and more intuitive-->
         <div class="h_intro_background">
-            <div style="height:950px;width:100%;background-color:rgb(240,240,240);">
-                <div style="font-size:50px;padding:20px;color:rgb(25,25,25);">Background Information</div>
-                <div style="font-size:40px;padding:20px;color:rgb(25,25,25);">This will be background information regarding the ontology models that are in the study</div>
+            <div style="display:flex;height:90%;width:100%;background-color:rgb(240,240,240);flex-direction:column;justify-content:space-between;">
+                <div style="font-size:50px;padding:20px;color:rgb(25,25,25);">Relationships Used</div>
+
+                <div>
+                    <div class="h_background_bullet_title">DisjointWith</div>
+                    <div class="h_background_bullet_text">The classes do not and cannot share any subclasses or values. For example:<br>Class A is disjointWith Class B. Class A = [1, 2, 3], Class B = [4, 5, 6]</div>
+                </div>
+                <div>
+                    <div class="h_background_bullet_title">SubclassOf</div>
+                    <div class="h_background_bullet_text">This class is a subclass of a parent class and cannot exist without it. For example:<br>The class "Child" is a subclass of "Parent" and cannot exist without it</div>
+                </div>
+                <div>
+                    <div class="h_background_bullet_title">IntersectionOf</div>
+                    <div class="h_background_bullet_text">This class will be an intersection of all classes inside of it. This means it will only contain elements shared by all subclasses. For example:<br>Class A is an intersection of classes B and C. B = [1, 2, 3], C = [3, 4, 5], so A = [3]</div>
+                </div>
+                <div>
+                    <div class="h_background_bullet_title">SameAs</div>
+                    <div class="h_background_bullet_text">This class is identical to the other, and is only different by name/label. For example:<br>The "Human" class is sameAs the "Person" class</div>
+                </div>
+                <div>
+                    <div class="h_background_bullet_title">UnionOf</div>
+                    <div class="h_background_bullet_text">This class will be a union of all classes inside of it. This means it will contain all elements from all subclasses together with no duplicates. For example<br>Class A is an intersection of classes B and C. B = [1, 2, 3], C = [3, 4, 5], so A = [1, 2, 3, 4, 5]</div>
+                </div>
+                <div>
+                    <div class="h_background_bullet_title">ComplementOf</div>
+                    <div class="h_background_bullet_text">If something is not a member of this class, it MUST be a member of the other and vice-versa, but never both. This can only be applied between two classes. For example:<br>The classes "Mammal" and "Non-Mammal" are complement of since any element must be one or the other, and never both</div>
+                </div>
+
             </div>
-            <button class="h_begin_button" onclick="changePage()">Continue</button>
+            <button class="h_begin_button" onclick="changePage()">Begin Test</button>
         </div>
     </div>
 
@@ -43,10 +96,10 @@
         <div class="h_question">
             <!--Div for question and answer-option text-->
             <div class = "h_sub_question">
-                <div id="questionText">
+                <div id="questionText" style="padding:20px;width:100% - 40px;">
                     Question1
                 </div>
-                <div id="answersText" style="white-space: pre-line">
+                <div id="answersText" style="white-space: pre-line;padding:20px;width:100% - 40px;">
                     Answers1
                 </div>
             </div>
@@ -165,10 +218,11 @@
         //Variable t hat will keep track of the amount of time a user spends on each page
         let page_time = []
         //Page number variable, used to track the current page state
-        let page_value = 0;
+        let page_value = -1;
 
         //Establish constant variables for the intro, question and outro pages
         const menuIntro = document.getElementById("introPage");
+        const menuBackground = document.getElementById("backgroundPage")
         const menuQuestion = document.getElementById("questionPage")
         const menuOutro = document.getElementById("outroPage");
         const continueButton = document.getElementById("pageButton");
@@ -249,7 +303,7 @@
         function disableCalibration()
         {
             menuCalibration.style.display="none"
-            menuIntro.style.display="flex";
+            menuBackground.style.display="flex";
         }
         window.disableCalibration = disableCalibration;
 
@@ -286,21 +340,27 @@
         //Iterates through different if-statements to check whether the condition for displaying certain pages is met 
         function updateFrontEnd(is_calib = false)
         {
+            
             //Perform the calibration sequence, which should not affect the page value
             if(is_calib == true && page_value == 0)
             {
                 console.log("calibration sequence");
-                menuIntro.style.display = "none";
+                menuBackground.style.display = "none";
                 menuCalibration.style.display = "flex";
                 window.startCalibration();
                 return;
             }
 
             //If the current page is a question & visual page (page_value is between 1 and 15)
-            if(page_value > 0 && page_value <= 15)
+            if(page_value == 0)
+            {
+                menuIntro.style.display = "none";
+                menuBackground.style.display = "flex";
+            }
+            else if(page_value > 0 && page_value <= 15)
             {
                 //Remove the visualization
-                menuIntro.style.display = "none";
+                menuBackground.style.display = "none";
                 menuQuestion.style.display = "flex";
 
                 document.getElementById("questionText").innerText = pageQuestions[page_value];
@@ -321,7 +381,7 @@
                 }
             }
             //If the current page has exceeded the number of questions, meaning it will now end the study simulation
-            else
+            else if(page_value > 15)
             {
                 //Navigate to the final end-page of the simulation
                 menuQuestion.style.display = "none";
@@ -329,7 +389,7 @@
                 continueButton.style.display="none";
 
                 //Display the final score of the participant (OPTIONAL)
-                document.getElementById("outroText").textContent = ("Thank you for participating!\n\nFinal score: " + final_score + "/" + questionNum)
+                document.getElementById("outroText").textContent = ("Thank you for participating!");
 
                 console.log(answers);
                 console.log(page_time)

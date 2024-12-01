@@ -19,6 +19,8 @@ html {
     align-items:center;
 
     background-color: rgb(225, 225, 225);
+
+    overflow: hidden;
 }
 
 .h_sub {
@@ -34,6 +36,13 @@ html {
     font-size: 50px;
     color: black;
     padding: 20px;
+
+    background-color:var(--white-color);
+}
+
+.h_intro_text {
+    text-align:center;
+    font-size:40px;
 
     background-color:var(--white-color);
 }
@@ -58,6 +67,26 @@ html {
     width: 700px;
 }
 
+.h_background_bullet_title {
+    display:flex;
+
+    width:100% - 40px;
+    padding:20px;
+    padding-bottom:0px;
+
+    font-size:25px;
+}
+
+.h_background_bullet_text {
+    display:flex;
+
+    width:100% - 40px;
+    padding:20px;
+    padding-top:5px;
+
+    font-size:15px;
+}
+
 .h_begin_button {
     border:none;
     background-color:var(--white-color);
@@ -79,7 +108,7 @@ html {
     justify-content:space-between;
 
     height:900px;
-    width:700px;
+    width:900px;
 }
 
 .h_sub_question {
@@ -88,7 +117,7 @@ html {
     justify-content: space-between;
 
     height:675px;
-    width:700px;
+    width:100%px;
     background-color:var(--white-color);
 
     color: rgb(25,25,25);
@@ -110,7 +139,7 @@ html {
     justify-content:space-between;
 
     height:200px;
-    width:700px;
+    width:900px;
 }
 
 .ans_button {
@@ -118,7 +147,7 @@ html {
     background-color:var(--white-color);
     padding:5px;
 
-    width:700px;
+    width:900px;
     font-size:20px;
 }
 
