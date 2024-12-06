@@ -73,8 +73,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Transition to AOI selection
     function transitionToAOISelection() {
-        document.getElementById("calibration-container").style.display = "none";
-        document.getElementById("aoi-selection-container").style.display = "block";
+        const calibrationContainer = document.getElementById("calibration-container");
+        const aoiContainer = document.getElementById("aoi-selection-container");
+        if (!aoiContainer) {
+            console.warn("AOI selection container not found!");
+            return;
+        }
+        calibrationContainer.style.display = "none";
+        aoiContainer.style.display = "block";
         console.log("Switched to AOI selection.");
     }
 });

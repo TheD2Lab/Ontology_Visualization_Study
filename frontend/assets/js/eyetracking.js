@@ -1,8 +1,14 @@
 document.addEventListener("DOMContentLoaded", function () {
     let isTracking = false;
 
-    // Initialize WebGazer
+    // Function to initialize WebGazer with a retry mechanism
     function initializeWebGazer() {
+        if (typeof WebGazer === "undefined") {
+            console.warn("WebGazer is not defined yet. Retrying...");
+            setTimeout(initializeWebGazer, 100); // Retry every 100ms
+            return;
+        }
+
         console.log("Initializing WebGazer...");
         WebGazer.setRegression("ridge")
             .setTracker("clmtrackr")
@@ -81,6 +87,6 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("Gaze data saved to file.");
     };
 
-    // Initialize WebGazer
+    // Attempt to initialize WebGazer
     initializeWebGazer();
 });
