@@ -208,6 +208,11 @@
                 updateFrontEnd(is_calib=true);
                 console.log("calibration");
             }
+            else if (event.ctrlKey && event.key === 'd') {
+                event.preventDefault(); // Prevent default browser action
+                downloadGazeDataCSV(); // Trigger CSV download
+                console.log("Gaze data CSV downloaded!");
+            }
         });
     </script>
 
@@ -307,35 +312,77 @@
         }
         window.disableCalibration = disableCalibration;
 
-        //Function for iterationg through pages
-        function changePage(ans=-1)
-        {
-            //Push the selected answer to the final list of answers
-            if (ans != -1)
-            {
-                answers.push(ans);
-            }
-
-            //Iterate the page number with a limit of 13
-            page_value = page_value + 1;
-
-            //If the page number is over 12, calculate the final score of the user 
-            if (page_value > questionNum)
-            {
-                final_score = checkAnswers(answers);
-            }
-
-            //Regardless of what happens, update the time variable to keep track of user duration
-            const endTime = new Date().getTime();
-            const timeSpent = (endTime - startTime) / 1000.0
-            //Push the time spent on the page to the final duration tracker, and reset the current time tracker
-            page_time.push(timeSpent);
-            startTime = endTime;
-
-            //Update the displayed visual on the page, based on the new value of page_value
-            updateFrontEnd();
+        function startTrackingGaze() {
+            console.log("Gaze tracking started!");
+            WebGazer.setGazeListener((data, timestamp) => {
+                if (data) {
+                    gazeData.push({
+                        x: data.x, // Gaze X coordinate
+                        y: data.y, // Gaze Y coordinate
+                        timestamp: timestamp // Time of the gaze point
+                    });
+                }
+            }).begin();
         }
 
+        function downloadGazeDataCSV() {
+            let csvContent = "data:text/csv;charset=utf-8,";
+            csvContent += "X,Y,Timestamp\n"; // Add CSV header
+        
+            if (gazeData.length > 0) {
+                gazeData.forEach(row => {
+                    csvContent += `${row.x},${row.y},${row.timestamp}\n`;
+                });
+            } else {
+                console.warn("No gaze data to download. Creating an empty file.");
+            }
+        
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "raw_gaze_data.csv");
+            document.body.appendChild(link); // Append link to body
+            link.click(); // Trigger download
+            document.body.removeChild(link); // Remove link after download
+        }
+        
+
+        let gazeData = [];
+        let gazeTrackingEnabled = false;
+
+        function changePage(ans = -1) {
+            if (ans !== -1) answers.push(ans);
+            page_value = page_value + 1;
+
+            // Start tracking gaze data when the question-and-answer section begins
+            if (page_value === 1 && !gazeTrackingEnabled) {
+                startTrackingGaze(); // Start gaze tracking
+                gazeTrackingEnabled = true; // Ensure tracking starts only once
+            }
+
+            if (page_value > questionNum) {
+                final_score = checkAnswers(answers);
+                menuQuestion.style.display = "none";
+                menuOutro.style.display = "flex";
+                continueButton.style.display = "none";
+
+                document.getElementById("outroText").textContent = "Thank you for participating!";
+                console.log("Answers:", answers);
+                console.log("Page Times:", page_time);
+                console.log("Gaze Data:", gazeData); // Log gaze data for debugging
+            } else if (page_value > 0) {
+                menuIntro.style.display = "none";
+                menuQuestion.style.display = "flex";
+                document.getElementById("questionText").innerText = pageQuestions[page_value];
+                document.getElementById("answersText").innerText = pageAnswers[page_value];
+            }
+
+            const endTime = new Date().getTime();
+            page_time.push((endTime - startTime) / 1000.0);
+            startTime = endTime;
+
+            updateFrontEnd();
+        }
         //Function for updating visuals based on the new value of page_value
         //Iterates through different if-statements to check whether the condition for displaying certain pages is met 
         function updateFrontEnd(is_calib = false)
