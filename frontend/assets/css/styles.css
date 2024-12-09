@@ -9,6 +9,14 @@ html {
     align-items: center;
 }
 
+#webgazerVideoContainer {
+    width: 200px !important; /* Set desired width */
+    height: 150px !important; /* Set desired height */
+    top: 10px !important; /* Set desired top position */
+    left: 10px !important; /* Set desired left position */
+    position: absolute !important; /* Ensure proper positioning */
+}
+
 .h_main {
     display: flex;
     flex-direction: column;
