@@ -113,50 +113,91 @@
 
             <!--Script containing the questions and answers for the question page-->
             <script>
-                const questionNum = 15;
+                const questionNum = 10;
 
                 //List of all questions
                 const pageQuestions = 
+                [{
+                    1: "Question 1:\n\n Question 1-1",
+                    2: "Question 2:\n\n Question 1-2",
+                    3: "Question 3:\n\n Question 1-3",
+                    4: "Question 4:\n\n Question 1-4",
+                    5: "Question 5:\n\n Question 1-5",
+                    6: "Question 6:\n\n Question 1-6",
+                    7: "Question 7:\n\n Question 1-7",
+                    8: "Question 8:\n\n Question 1-8",
+                    9: "Question 9:\n\n Question 1-9",
+                    10: "Question 10:\n\n Question 1-10",
+                },
                 {
-                    1: "Question 1:\n\nGiven the current model, can an entity be both an #Opera and an #Operetta?",
-                    2: "Question 2:\n\nGiven the current model, can an entity be both an #Operetta and a #MusicDrama?",
-                    3: "Question 3:\n\nHow many objects will be left in the #Opera intersection?",
-                    4: "Question 4:\n\nHow many subclasses does the class #MusicDrama contain?",
-                    5: "Question 5:\n\nHow many total connections do you see in this model?",
-                    6: "Question 6:\n\nIs there a relationship between #USSoccerTeam and #TennisTeam?",
-                    7: "Question 7:\n\nWhich class in the model is #FootballTeam mapped to? ",
-                    8: "Question 8:\n\nHow many total connections do you see in this model?",
-                    9: "Question 9:\n\nWould it be logical to put a sameAs relationship between #FootballTeam and a class #SwimmingTeam?",
-                    10: "Question 10:\n\nHow many mappings are there from the #Sports class?",
-                    11: "Question 11:\n\nYou have an entity “Sandwich” that is not a vegetarian option. Which class would it then be mapped to?",
-                    12: "Question 12:\n\nWould the model still function if a third class #VeganOptions was added?",
-                    13: "Question 13:\n\nHow many total connections do you see in this model?",
-                    14: "Question 14:\n\nAre all members of #VegetarianOptions and #StandardOptions members of the #RestaurantItems class?",
-                    15: "Question 15:\n\nHow many connections does the #VegetarianOptions class have?",
-                };
+                    1: "Question 1:\n\n Question 2-1",
+                    2: "Question 2:\n\n Question 2-2",
+                    3: "Question 3:\n\n Question 2-3",
+                    4: "Question 4:\n\n Question 2-4",
+                    5: "Question 5:\n\n Question 2-5",
+                    6: "Question 6:\n\n Question 2-6",
+                    7: "Question 7:\n\n Question 2-7",
+                    8: "Question 8:\n\n Question 2-8",
+                    9: "Question 9:\n\n Question 2-9",
+                    10: "Question 10:\n\n Question 2-10",
+                },
+                {
+                    1: "Question 1:\n\n Question 3-1",
+                    2: "Question 2:\n\n Question 3-2",
+                    3: "Question 3:\n\n Question 3-3",
+                    4: "Question 4:\n\n Question 3-4",
+                    5: "Question 5:\n\n Question 3-5",
+                    6: "Question 6:\n\n Question 3-6",
+                    7: "Question 7:\n\n Question 3-7",
+                    8: "Question 8:\n\n Question 3-8",
+                    9: "Question 9:\n\n Question 3-9",
+                    10: "Question 10:\n\n Question 3-10",
+                }];
 
                 //List of all answers
                 const pageAnswers = 
+                [{
+                    1: "A) Answer 1-1-1\nB) Answer 1-1-2\nC) Answer 1-1-3\nD) Answer 1-1-4",
+                    2: "A) Answer 1-2-1\nB) Answer 1-2-2\nC) Answer 1-2-3\nD) Answer 1-2-4",
+                    3: "A) Answer 1-3-1\nB) Answer 1-3-2\nC) Answer 1-3-3\nD) Answer 1-3-4",
+                    4: "A) Answer 1-4-1\nB) Answer 1-4-2\nC) Answer 1-4-3\nD) Answer 1-4-4",
+                    5: "A) Answer 1-5-1\nB) Answer 1-5-2\nC) Answer 1-5-3\nD) Answer 1-5-4",
+                    6: "A) Answer 1-6-1\nB) Answer 1-6-2\nC) Answer 1-6-3\nD) Answer 1-6-4",
+                    7: "A) Answer 1-7-1\nB) Answer 1-7-2\nC) Answer 1-7-3\nD) Answer 1-7-4",
+                    8: "A) Answer 1-8-1\nB) Answer 1-8-2\nC) Answer 1-8-3\nD) Answer 1-8-4",
+                    9: "A) Answer 1-9-1\nB) Answer 1-9-2\nC) Answer 1-9-3\nD) Answer 1-9-4",
+                    10: "A) Answer 1-10-1\nB) Answer 1-10-2\nC) Answer 1-10-3\nD) Answer 1-10-4",
+                },
                 {
-                    1: "A) Yes, they will always be both\nB) No, they can never be both\nC) Yes, but only if specified\nD) No, an entity cannot be either",
-                    2: "A) Yes, they will always be both\nB) No, they can never be both\nC) Yes, but only if specified\nD) No, an entity cannot be either",
-                    3: "A) 1\nB) 2\nC) 3\nD) 4",
-                    4: "A) 2\nB) 3\nC) 4\nD) 5",
-                    5: "A) 1\nB) 3\nC) 5\nD) 7",
-                    6: "A) Yes, they are disjoint\nB) No, they are completely separate\nC) Yes, they are contained in the same class\nD) Yes, they are equivalent classes",
-                    7: "A) #TennisTeam\nB) #USSoccerTeam\nC) #BowlingTeam\nD) No classes",
-                    8: "A) 1\nB) 2\nC) 3\nD) 4",
-                    9: "A) Yes, they are both #Sports\nB) Yes, they are both US teams\nC) No, two classes cannot be SameAs\nD) No, they are differnt sports",
-                    10: "A) 1\nB) 2\nC) 3\nD) 4",
-                    11: "A) #VegetarianOptions\nB) #StandardOptions\nC) #VeganOptions\nD) No classes",
-                    12: "A) Yes, there can be infinite complementary classes\nB) Yes, 3 classes are required for complementOf\nC) No, complementOf only works with 2 classes\nD) No, Vegan and Vegetarian are the same",
-                    13: "A) 1\nB) 2\nC) 3\nD) 4",
-                    14: "A) Yes, they are required to be\nB) Yes, but only if specified\nC) No, they are members of #MenuItems\nD) No, they are not members of any class",
-                    15: "A) 3\nB) 2\nC) 1\nD) 0"
-                };
+                    1: "A) Answer 2-1-1\nB) Answer 2-1-2\nC) Answer 2-1-3\nD) Answer 2-1-4",
+                    2: "A) Answer 2-2-1\nB) Answer 2-2-2\nC) Answer 2-2-3\nD) Answer 2-2-4",
+                    3: "A) Answer 2-3-1\nB) Answer 2-3-2\nC) Answer 2-3-3\nD) Answer 2-3-4",
+                    4: "A) Answer 2-4-1\nB) Answer 2-4-2\nC) Answer 2-4-3\nD) Answer 2-4-4",
+                    5: "A) Answer 2-5-1\nB) Answer 2-5-2\nC) Answer 2-5-3\nD) Answer 2-5-4",
+                    6: "A) Answer 2-6-1\nB) Answer 2-6-2\nC) Answer 2-6-3\nD) Answer 2-6-4",
+                    7: "A) Answer 2-7-1\nB) Answer 2-7-2\nC) Answer 2-7-3\nD) Answer 2-7-4",
+                    8: "A) Answer 2-8-1\nB) Answer 2-8-2\nC) Answer 2-8-3\nD) Answer 2-8-4",
+                    9: "A) Answer 2-9-1\nB) Answer 2-9-2\nC) Answer 2-9-3\nD) Answer 2-9-4",
+                    10: "A) Answer 2-10-1\nB) Answer 2-10-2\nC) Answer 2-10-3\nD) Answer 2-10-4",
+                },
+                {
+                    1: "A) Answer 3-1-1\nB) Answer 3-1-2\nC) Answer 3-1-3\nD) Answer 3-1-4",
+                    2: "A) Answer 3-2-1\nB) Answer 3-2-2\nC) Answer 3-2-3\nD) Answer 3-2-4",
+                    3: "A) Answer 3-3-1\nB) Answer 3-3-2\nC) Answer 3-3-3\nD) Answer 3-3-4",
+                    4: "A) Answer 3-4-1\nB) Answer 3-4-2\nC) Answer 3-4-3\nD) Answer 3-4-4",
+                    5: "A) Answer 3-5-1\nB) Answer 3-5-2\nC) Answer 3-5-3\nD) Answer 3-5-4",
+                    6: "A) Answer 3-6-1\nB) Answer 3-6-2\nC) Answer 3-6-3\nD) Answer 3-6-4",
+                    7: "A) Answer 3-7-1\nB) Answer 3-7-2\nC) Answer 3-7-3\nD) Answer 3-7-4",
+                    8: "A) Answer 3-8-1\nB) Answer 3-8-2\nC) Answer 3-8-3\nD) Answer 3-8-4",
+                    9: "A) Answer 3-9-1\nB) Answer 3-9-2\nC) Answer 3-9-3\nD) Answer 3-9-4",
+                    10: "A) Answer 3-10-1\nB) Answer 3-10-2\nC) Answer 3-10-3\nD) Answer 3-10-4",
+                }
+                ];
 
                 //List of all correct answers (by index)
-                const pageSolutions = [1, 0, 3, 2, 1, 2, 1, 0, 3, 2, 1, 2, 1, 0, 2];
+                const pageSolutions =   [[1, 0, 3, 2, 1, 2, 1, 0, 3, 2], 
+                                        [1, 0, 3, 2, 1, 2, 1, 0, 3, 2], 
+                                        [1, 0, 3, 2, 1, 2, 1, 0, 3, 2]];
             </script>
         </div>
         
@@ -184,34 +225,14 @@
         </div>
     </div>
 
-    <!--Script for acting on keyboard shortcuts-->
     <script>
-        //Event listener checking for keybard input 
-        document.addEventListener('keydown', function (event) {
-            //Keyboard shortcut for enabling AOI selection (Ctrl+Z)
-            if (event.ctrlKey && event.key === 'z') {
-                //Prevent default browser activity, and instead run the function to enable AOI selction
-                event.preventDefault();
-                enableAOISelection();
-            }
-            //Keyboard shortcut for downloaded selected AOI selections (Ctrl+X)
-            else if (event.ctrlKey && event.key === 'x') {
-                //Prevent default browser activity, and instead run the function to save AOI selections as a JSON file 
-                event.preventDefault();
-                saveAOIs();
-            }
-            //Keyboard shortcut for calling the calibration sequence (Ctrl+C)
-            else if (event.ctrlKey && event.key === 'c') {
-                //Prevent default browser activity, and instead run the function to begin the calibration sequence 
-                event.preventDefault();
-                updateFrontEnd(is_calib=true);
-                console.log("calibration");
-            }
-        });
-    </script>
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        // IMPORTING AND INTITIALIZING WEBGAZER EYE-TRACKING OPERATIONS
+        //
+        //
+        //// In this area, the webgazer eyetracker is intitialized by gaining permission to utilize the device's webcam
+        //// A preview image of the webcam footage is shown in the corner of the screen, and all webgazer activity is shut down when the page is closed 
 
-    <!-- WebGazer Initialization Script -->
-    <script>
         let gazeData = []; // Array to store raw gaze data
         let gazeTrackingEnabled = false;
 
@@ -291,98 +312,49 @@
                 webgazer.end();
             }
         };
-
+        ////
+        ////
+        ///////////////////////////////////////////////////////////////////////////////////////////
     </script>
 
-    <!--Script containing the logic for tracking, iterating and updating page information-->
     <script>
-        //Variable that will keep track of user answers to questions
-        let answers = []
-        //Variable t hat will keep track of the amount of time a user spends on each page
-        let page_time = []
-        //Page number variable, used to track the current page state
-        let page_value = -1;
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        // UPDATING VISUALS, QUESTIONS AND VISUALIZATIONS BASED ON PAGE NUMBER
+        //
+        //
+        //// In this area, the researchers will be able to update the order and combination of questions, answers and visualiations 
+        /// There will be three sets of questions along with 3 sets of corresponding answers, and two different types of visualizations
 
-        //Establish constant variables for the intro, question and outro pages
-        const menuIntro = document.getElementById("introPage");
-        const menuBackground = document.getElementById("backgroundPage")
-        const menuQuestion = document.getElementById("questionPage")
-        const menuOutro = document.getElementById("outroPage");
-        const continueButton = document.getElementById("pageButton");
-        const menuCalibration = document.getElementById("h_calibration");
+        let page_value = -1;        //Page number variable, used to track the current page state
+        var question_var = 1;       //The index for which questions/answer options will be used: either 0, 1, or 2
+        var visualization_var = 0;  //The binary index for which type of visualization will be used: either 0 or 1
+        let answers = [];           //Variable to keep track of user answers
+        let page_time = [];         //Variable to keep track of the time spent on each page by the user
 
-        //Establish a starting variable for keeping track of time when navigating the page. This should begin as soon as the web page is accessed
-        let startTime = new Date().getTime();
+        let startTime = new Date().getTime();   //Variable to keep track of the time spent on the current page. This begins as soon as the page is loaded, meaning the first value can most-likely be disgarded 
 
-        // Define the data for the tree
-        const data = {
-            "name": "United States",
-            "children": [
-                {
-                    "name": "California",
-                    "children": [
-                        {"name": "San Bernardino"},
-                        {"name": "Los Angeles"}
-                    ]
-                },
-                {
-                    "name": "Texas",
-                    "children": [
-                        {"name": "Dallas"}
-                    ]
-                }
-            ]
-        }
+        const menuIntro = document.getElementById("introPage");             //Variable tied to the intro HTML page
+        const menuBackground = document.getElementById("backgroundPage")    //Variable tied to the background information HTML page
+        const menuQuestion = document.getElementById("questionPage")        //Variable tied to the main question HTML page
+        const menuOutro = document.getElementById("outroPage");             //Variable tied to the final outro HTML page
+        const continueButton = document.getElementById("pageButton");       //Variable tied to the page button HTML component
+        const menuCalibration = document.getElementById("h_calibration");   //Variable tied to the eye-tracking calibration HTML page
 
-        const data2 = {
-            "name": "disjoint",
-            "children": [
-                {
-                "name": "Music Drama", "value": 800,
-                "children": [
-                {
-                    "name": "Opera", "value": 200
-                },
-                {
-                    "name": "Opereta", "value": 300
-                },
-                {
-                    "name": "Musical", "value": 400
-                }
-                ]
-                }
-            ]
-        }
+        const v1 = document.createElement("img");   //Variable for temporary image until we have a final first visualization
+        //Establish source file and size of first temporary visualization
+        v1.src = "../p1.png";
+        v1.style.width = "100%"
+        v1.style.height = "100%"
 
-        const container = document.getElementById("tree-container");
-        const containerWidth = 851;
-        const containerHeight = 851;
+        const v2 = document.createElement("img");   //Variable for temporary image until we have a final second visualization
+        //Establish source file and size of second temporary visualization
+        v2.src = "../p2.png"; 
+        v2.style.width = "100%"
+        v2.style.height = "100%"
 
-        // Set up tree options if desired
-        const options = {
-            width: containerWidth,
-            height: containerHeight,
-            label: d => d.name, // Display the name property
-            fill: "#66c2a5",
-            stroke: "#1b9e77"
-        };
-    
-        // Create the tree visualization
-        const svg = chart(data2, options);
+        const visuals = [v1, v2]    //Variable to store both temporary visualizations
 
-        const svg2 = document.createElement("img");
-        svg2.src = "../1.png";
-        svg2.style.width = "100%"
-        svg2.style.height = "100%"
-
-        const svg3 = document.createElement("img");
-        svg3.src = "../treemap.png"; 
-        svg3.style.width = "100%"
-        svg3.style.height = "100%"
-    
-        // Append the SVG to the div container
-        document.getElementById("tree-container").appendChild(svg);
-
+        //Function for disabling calibration once it is completed 
         function disableCalibration()
         {
             menuCalibration.style.display="none"
@@ -437,34 +409,22 @@
             //If the current page is a question & visual page (page_value is between 1 and 15)
             if(page_value == 0)
             {
+                document.getElementById("tree-container").appendChild(visuals[visualization_var]);
                 menuIntro.style.display = "none";
                 menuBackground.style.display = "flex";
             }
-            else if(page_value > 0 && page_value <= 15)
+            else if(page_value > 0 && page_value <= 10)
             {
                 //Remove the visualization
                 menuBackground.style.display = "none";
                 menuQuestion.style.display = "flex";
 
-                document.getElementById("questionText").innerText = pageQuestions[page_value];
-                document.getElementById("answersText").innerText = pageAnswers[page_value];
-
-                //If the current page is ready to move onto the second visualization (question 6)
-                if (page_value == 6)
-                {
-                    document.getElementById("tree-container").removeChild(svg);
-                    document.getElementById("tree-container").appendChild(svg2);
-            
-                }
-                //If the current page is ready to move onto the third visualization (question 11)
-                else if (page_value == 11)
-                {
-                    document.getElementById("tree-container").removeChild(svg2);
-                    document.getElementById("tree-container").appendChild(svg3);
-                }
+                document.getElementById("questionText").innerText = pageQuestions[question_var][page_value];
+                document.getElementById("answersText").innerText = pageAnswers[question_var][page_value];
             }
+
             //If the current page has exceeded the number of questions, meaning it will now end the study simulation
-            else if(page_value > 15)
+            else if(page_value > 10)
             {
                 //Navigate to the final end-page of the simulation
                 menuQuestion.style.display = "none";
@@ -484,12 +444,77 @@
             let correct_ans = 0
             for (i = 0; i < questionNum; i++)
             {
-                if (ans_list[i] === pageSolutions[i])
+                if (ans_list[i] === pageSolutions[question_var][i])
                 {
                     correct_ans++;
                 }
             }
             return correct_ans;
         }
+        ////
+        ////
+        ///////////////////////////////////////////////////////////////////////////////////////////
+    </script>
+
+    <script>
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        // TRACKING AND ACTING-UPON USER KEYBAORD INPUTS
+        //
+        //
+        //// In this area, keyboard-inputs are tracked and the necessary functions are acted upon, all preventing default browser actions
+        //// The majority of these keyboard shortcuts will be ctrl + a corresponding letter key 
+
+        //Event listener checking for keybard input 
+        document.addEventListener('keydown', function (event) {
+            //If the ctrl key is pressed, now perform a hotkey action based on the subsequent key pressed
+            if (event.ctrlKey)
+            {
+                event.preventDefault();
+                switch(event.key)
+                {
+                    //Keyboard shortcut for enabling AOI selection
+                    case 'z':
+                        enableAOISelection();
+                        break;
+                    //Keyboard shortcut for downloading the selected AOI selections
+                    case 'x':
+                        //Prevent default browser activity, and instead run the function to save AOI selections as a JSON file 
+                        saveAOIs();
+                        break;
+                    //Keyboard shortcut for calling the calibration sequence
+                    case 'c':
+                        //Prevent default browser activity, and instead run the function to begin the calibration sequence 
+                        updateFrontEnd(is_calib=true);
+                        console.log("calibration");
+                        break;
+                    //Keyboard shortcut for updating the question/answer value to the first set of questions
+                    case '1':
+                        //Prevent default browser activity, and instead run the function to begin the calibration sequence 
+                        question_var = 0;
+                        break;
+                    //Keyboard shortcut for updating the question/answer value to the second set of questions
+                    case '2':
+                        //Prevent default browser activity, and instead run the function to begin the calibration sequence 
+                        question_var = 1;
+                        break;
+                    //Keyboard shortcut for updating the question/answer value to the third set of questions
+                    case '3':
+                        //Prevent default browser activity, and instead run the function to begin the calibration sequence 
+                        question_var = 2;
+                        break;
+                    case '4':
+                        //Prevent default browser activity, and instead run the function to begin the calibration sequence 
+                        visualization_var = 0;
+                        break;
+                    case '5':
+                        //Prevent default browser activity, and instead run the function to begin the calibration sequence
+                        visualization_var = 1;
+                        break;
+                }   
+            }
+        });
+        ////
+        ////
+        ///////////////////////////////////////////////////////////////////////////////////////////
     </script>
 </body>
