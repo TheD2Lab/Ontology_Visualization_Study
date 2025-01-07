@@ -52,7 +52,39 @@ html {
     text-align:center;
     font-size:40px;
 
+    width:500px;
+
     background-color:var(--white-color);
+}
+
+.h_intro_consent {
+    text-align:center;
+    font-size:30px;
+
+    width: 1000px;
+    height:750px;
+
+    background-color:var(--white-color);
+}
+
+.h_consent_bullet_title {
+    display:flex;
+
+    width:100% - 40px;
+    padding:20px;
+    padding-bottom:0px;
+
+    font-size:20px;
+}
+
+.h_consent_bullet_text {
+    display:flex;
+
+    width:100% - 40px;
+    padding:20px;
+    padding-top:5px;
+
+    font-size:15px;
 }
 
 .h_intro_info {
@@ -82,7 +114,7 @@ html {
     padding:20px;
     padding-bottom:0px;
 
-    font-size:25px;
+    font-size:30px;
 }
 
 .h_background_bullet_text {
@@ -92,7 +124,7 @@ html {
     padding:20px;
     padding-top:5px;
 
-    font-size:15px;
+    font-size:25px;
 }
 
 .h_begin_button {

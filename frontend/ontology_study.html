@@ -14,76 +14,183 @@
 <!--Main body of the webpage-->
 <body class="h_main">
     <!--Display for the introductory screen-->
-    <div id="introPage" style="display:flex;flex-direction:column;justify-content:space-between;height:100px;">
+    <div id="introPage" style="display:flex;flex-direction:column;justify-content:space-between;align-items:center;height:1080px;width:100%">
         <div class="h_intro_text">Data Visualization With Ontologies</div>
-        <button class="h_begin_button" onclick="changePage()">Continue</button>
-    </div>
-    <div id="backgroundPage" class="h_sub" style="display:none">
-        <!--Display for information regarding the study, and how participants should approach it-->
-        <div class="h_intro_info">
-            <div style="display:flex;min-height:100%;width:100%;background-color:rgb(240,240,240);flex-direction:column;justify-content:space-between;">
-                <div style="font-size:50px;padding:20px;color:rgb(25,25,25);">Background Information</div>
+        <div class="h_intro_consent">
 
-                <div>
-                    <div class="h_background_bullet_title">WHAT IS AN ONTOLOGY?</div>
-                    <div class="h_background_bullet_text">An ontology is a structured way to organize and define relationships between concepts in a particular domain, like a map for understanding how ideas connect</div>
+            <!--Consent Form-->
+            <div style="height:100%;overflow-y:scroll;margin-bottom:10px;">
+                <div class="h_consent_bullet_title">Introduction</div>
+                <div class="h_consent_bullet_text">This study is conducted by the Principal Investigator Dr. Bo Fu as part of a research project that 
+                    aims to determine optimal visualizations for understanding ontology relationships in a test-based environment. This study focuses on 
+                    the evaluation of two commonly used visualization techniques in their support to human users in the comprehension of mapping relationships 
+                    between pairwise ontologies. This research is funded by the California State University’s Program for Education and Research in Biotechnology (CSUPERB) program.
                 </div>
-                <div>
-                    <div class="h_background_bullet_title">WHAT IS A "CLASS" IN ONTOLOGY?</div>
-                    <div class="h_background_bullet_text">A class in an ontology is a category or group that defines a set of similar things, like a label for a collection of related items</div>
+
+                <div class="h_consent_bullet_title">Purpose and Objectives</div>
+                <div class="h_consent_bullet_text">The goal of this study is to assess visualization techniques and the extent to which they can support human users during 
+                    interactions with ontology mappings. The findings from this research will inform the future design and development of visualization techniques for ontology mappings. 
                 </div>
-                <div>
-                    <div class="h_background_bullet_title">WHAT ARE PARENT AND SUBCLASSES?</div>
-                    <div class="h_background_bullet_text">In ontology, some classes will "belong" to others like branches off of a tree. The tree is a parent class while each branch is a subclass or child class. For example: the class "Parent" will have a "Son" subclass and a "Daughter" subclass</div>
+
+                <div class="h_consent_bullet_title">Purpose and Objectives</div>
+                <div class="h_consent_bullet_text">The goal of this study is to assess visualization techniques and the extent to which they can support human users during 
+                    interactions with ontology mappings. The findings from this research will inform the future design and development of visualization techniques for ontology mappings. 
                 </div>
-                <div>
-                    <div class="h_background_bullet_title">WHAT IS A RELATIONSHIP IN ONTOLOGY?</div>
-                    <div class="h_background_bullet_text">A relationship is a link between two or more entities/classes in ontology. There are many different kinds of relationships, many of which you will see during our study</div>
+
+                <div class="h_consent_bullet_title">Participation Selection</div>
+                <div class="h_consent_bullet_text">No prior knowledge of ontology or ontology mappings is required. Individuals who are eighteen years old or older are invited to participate.</div>
+
+                <div class="h_consent_bullet_title">What is Involved?</div>
+                <div class="h_consent_bullet_text">If you consent to voluntarily participate in this research, you will be asked to complete brief tutorials on ontologies, ontology mappings, 
+                    as well as visualizations for ontologies and ontology mappings. You will also be asked to perform two multiple-choice tests based on ontology mappings with accompanying 
+                    visualizations. You will be asked to take part in interviews and fill out questionnaires to express your satisfaction of the given visualizations. An eye tracker will be 
+                    used to observe your interaction with the given mapping visualizations and collect your gaze data. This study will take place in Room 128A in the Vivian Engineering Center (VEC), 
+                    California State University of Long Beach.
                 </div>
-                <div>
-                    <div class="h_background_bullet_title">WHAT SUBJECTS ARE GOING TO BE COVERED?</div>
-                    <div class="h_background_bullet_text">The ontology models in this study will cover a variety of subjects. Here are a few key points to help understand the models better:
-                        <br>- Despite how similar the names may sound, "Opera", "Operetta" and "Musical" are all different types of musical performances
-                        <br>- Many names for sports are shared across the world. However, "Football" is referred to in the United States as "Soccer" despite being identical sports
-                        <br>- Restaurants will often have sections for different types of menu options that usually do not overlap. This can include a section for vegetarian dishes, with all other dishes falling under the "standard" options
-                    </div>
+
+                <div class="h_consent_bullet_title">Inconvenience</div>
+                <div class="h_consent_bullet_text">The study is estimated to take approximately [TO BE DETERMINED] hour of your time. It is advised that if you consent to participate in this study 
+                    that you set aside at approximately [TO BE DETERMINED] hours to accommodate any eventual delays.</div>
+
+                <div class="h_consent_bullet_title">Risks</div>
+                <div class="h_consent_bullet_text">There are no known, or anticipated risks to you by participating in this research.</div>
+
+                <div class="h_consent_bullet_title">Benefits</div>
+                <div class="h_consent_bullet_text">The potential benefits of you participating in this research include contributing to the understanding of visualizations in ontology mapping and 
+                    the field as a whole. This could lead to future advancements in the visualization design for ontology mappings.
+                </div>
+
+                <div class="h_consent_bullet_title">Voluntary Participation</div>
+                <div class="h_consent_bullet_text">Your participation in this research is entirely voluntary. You may withdraw at any moment without consequences nor explanation. 
+                    If you do so, your data will be destroyed permanently.
+                </div>
+
+                <div class="h_consent_bullet_title">Compensation</div>
+                <div class="h_consent_bullet_text">The compensation for taking part in this study is [INSERT COMPENSATION AMOUNT]</div>
+
+                <div class="h_consent_bullet_title">Anonymity</div>
+                <div class="h_consent_bullet_text">All participants and the data generated in this study will be anonymized.</div>
+
+                <div class="h_consent_bullet_title">Confidentiality</div>
+                <div class="h_consent_bullet_text">This study enforces anonymity procedures to protect your confidentiality and the confidentiality of the data collected. 
+                    This data can only be accessed by the principal investigator and storage of this data is completely protected.
+                </div>
+
+                <div class="h_consent_bullet_title">Dissemination of Results</div>
+                <div class="h_consent_bullet_text">It is anticipated that the results of this study will be shared with others in the following ways: scientific websites, articles, and 
+                    presentations. Where used in academic publications, all data will be aggregated, and no personally identifiable information will be published. 
+                </div>
+
+                <div class="h_consent_bullet_title">Disposal of Data</div>
+                <div class="h_consent_bullet_text">Data collected from this study will be safely kept during the duration of the study. Once completed the data will be disposed of permanently.</div>
+
+                <div class="h_consent_bullet_title">Contact Information</div>
+                <div class="h_consent_bullet_text">If you have any questions about this research, please contact the Principal Investigator Dr. Bo Fu (Bo.Fu@csulb.edu). If you have any questions about the conduct of this study 
+                    protocol, particularly about providing informed consent and unexpected contingencies, please contact the IRB Office (IRB@csulb.edu)
+                </div>
+
+                <div class="h_consent_bullet_title">On the Day of Scheduled Studies</div>
+                <div class="h_consent_bullet_text">Participants will be contacted before arrival for a scheduled study appointment and will be asked COVID-19 pre-screening questions. If there is an indication of COVID-19 symptoms, 
+                    the appointment will be canceled and rescheduled if possible after the participant’s symptoms clear. Researchers will also perform a COVID-19 self-assessment and will not come to campus or meet in a community setting 
+                    if symptoms are indicated. Researchers will only resume work after symptoms clear. If all is well, a study will proceed as scheduled following the COVID-19 Health and Safety Requirements as outlined above. Surfaces and 
+                    equipment that may be in contact with participants will be wiped down using sanitizing wipes, or hand sanitizer will be available for the researcher and participants.                     
                 </div>
             </div>
+
+            <div style="display:flex;flex-direction:row;justify-content:center;align-items:center;">
+                <div style="font-size:15px;margin-right:10px;">I consent to all information stated above and agree to take part in the research study</div>
+                <input type="checkbox" id="consentCheck">
+            </div>
         </div>
+        <button id="consentButton" class="h_begin_button" onclick="changePage()" disabled>Continue</button>
+    </div>
+
+    <script>
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        // CHECKING FOR USER INPUT ON THE CONSENT FORM PAGE
+        //
+        //
+        //// In this area, the eventlistener will watch for changes in the website (on this page, just the checkbox) and will update it based on whether the box has been checked or not 
+        const checkbox = document.getElementById('consentCheck');
+        const button = document.getElementById('consentButton');
+
+        // Add an event listener to the checkbox
+        checkbox.addEventListener('change', function () {
+        // Enable or disable the button based on the checkbox state
+        button.disabled = !checkbox.checked;
+        });
+        ////
+        ////
+        ///////////////////////////////////////////////////////////////////////////////////////////
+    </script>
+
+    <div id="backgroundPage" class="h_sub" style="display:none">
         <!--Dispaly for information regarding the ontology models used, and information that could make answering them easier and more intuitive-->
         <div class="h_intro_background">
-            <div style="display:flex;height:90%;width:100%;background-color:rgb(240,240,240);flex-direction:column;justify-content:space-between;">
-                <div style="font-size:50px;padding:20px;color:rgb(25,25,25);">Relationships Used</div>
+            <div style="display:flex;height:90%;width:100%;background-color:rgb(240,240,240);flex-direction:column;">
+                <div style="font-size:50px;padding:20px;color:rgb(25,25,25);">Tutorial</div>
 
                 <div>
-                    <div class="h_background_bullet_title">DisjointWith</div>
-                    <div class="h_background_bullet_text">The classes do not and cannot share any subclasses or values. For example:<br>Class A is disjointWith Class B. Class A = [1, 2, 3], Class B = [4, 5, 6]</div>
+                    <div id="tutorial_title" class="h_background_bullet_title">DisjointWith</div>
+                    <div id="tutorial_text" class="h_background_bullet_text">The classes do not and cannot share any subclasses or values. For example:<br>Class A is disjointWith Class B. Class A = [1, 2, 3], Class B = [4, 5, 6]</div>
                 </div>
-                <div>
-                    <div class="h_background_bullet_title">SubclassOf</div>
-                    <div class="h_background_bullet_text">This class is a subclass of a parent class and cannot exist without it. For example:<br>The class "Child" is a subclass of "Parent" and cannot exist without it</div>
-                </div>
-                <div>
-                    <div class="h_background_bullet_title">IntersectionOf</div>
-                    <div class="h_background_bullet_text">This class will be an intersection of all classes inside of it. This means it will only contain elements shared by all subclasses. For example:<br>Class A is an intersection of classes B and C. B = [1, 2, 3], C = [3, 4, 5], so A = [3]</div>
-                </div>
-                <div>
-                    <div class="h_background_bullet_title">SameAs</div>
-                    <div class="h_background_bullet_text">This class is identical to the other, and is only different by name/label. For example:<br>The "Human" class is sameAs the "Person" class</div>
-                </div>
-                <div>
-                    <div class="h_background_bullet_title">UnionOf</div>
-                    <div class="h_background_bullet_text">This class will be a union of all classes inside of it. This means it will contain all elements from all subclasses together with no duplicates. For example<br>Class A is an intersection of classes B and C. B = [1, 2, 3], C = [3, 4, 5], so A = [1, 2, 3, 4, 5]</div>
-                </div>
-                <div>
-                    <div class="h_background_bullet_title">ComplementOf</div>
-                    <div class="h_background_bullet_text">If something is not a member of this class, it MUST be a member of the other and vice-versa, but never both. This can only be applied between two classes. For example:<br>The classes "Mammal" and "Non-Mammal" are complement of since any element must be one or the other, and never both</div>
-                </div>
-
             </div>
-            <button class="h_begin_button" onclick="changePage()">Begin Test</button>
+            <button id="tutorial_button" class="h_begin_button" onclick="iterateTutorial()">Next</button>
+        </div>
+        <div class="h_visual">
+            <div id="tree-container-tutorial" style="width:100%;height:100%;background-color:rgb(240,240,240);"></div>
         </div>
     </div>
+
+    <script>
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        // ITERATE THROUGH THE DIFFERENT PAGES OF THE TUTORIAL
+        //
+        //
+        //// In this area, the tutorial pages for each ontology relationship are displayed. Once all have been shown, it will move onto the actual test
+        let tutorial_value = 0;
+        const tutorialTitle = document.getElementById("tutorial_title");
+        const tutorialText = document.getElementById("tutorial_text");
+        const tutorialButton = document.getElementById("tutorial_button");
+
+        let titles = ["DisjointWith", "SameAs", "IntersectionOf", "UnionOf"]
+        let tutorials = ["Tutorial for disjoint relationships",
+            "Tutorial for sameas relationships",
+            "Tutorial for intersection relationships",
+            "Tutorial for union relationships"]
+
+        tutorialTitle.innerText = titles[0];
+        tutorialText.innerText = tutorials[0];
+
+        function iterateTutorial()
+        {
+            tutorial_value = tutorial_value + 1;
+            tutorialTitle.innerText = titles[tutorial_value];
+            tutorialText.innerText = tutorials[tutorial_value];
+
+            if (tutorial_value == 3)
+            {
+                tutorialButton.innerText = "Begin Study"
+            }
+            if (tutorial_value == 4)
+            {
+                changePage();
+            }
+        }
+
+        const vt = document.createElement("img");   //Variable for temporary image until we have a final second visualization
+        //Establish source file and size of second temporary visualization
+        vt.src = "../p2.png"; 
+        vt.style.width = "100%"
+        vt.style.height = "100%"
+
+        const visuals_tutorial = [vt]    //Variable to store both temporary visualizations
+
+        document.getElementById("tree-container-tutorial").appendChild(visuals_tutorial[0])
+        ////
+        ////
+        ///////////////////////////////////////////////////////////////////////////////////////////
+    </script>
 
     <!--Display for questions and answers, used for questionaire participation-->
     <div id="questionPage" class="h_sub" style="display:none">
@@ -353,6 +460,8 @@
         v2.style.height = "100%"
 
         const visuals = [v1, v2]    //Variable to store both temporary visualizations
+
+        document.getElementById("tree-container-tutorial").appendChild(visuals[0])
 
         //Function for disabling calibration once it is completed 
         function disableCalibration()
