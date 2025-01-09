@@ -321,7 +321,7 @@
     <!--Display for eye-tracking calibration-->
     <div id="h_calibration" class="h_calibration" style="Display:None">
         <div id="calibration-container" class="calibration_parent">
-            
+            <button onclick="exitCalibration()" style="margin-top: 20px;">Finish Calibration</button>
         </div>
     </div>
 
@@ -350,7 +350,8 @@
                 console.error('WebGazer is not loaded.');
                 return;
             }
-    
+        
+            // Start WebGazer tracking
             webgazer
                 .setGazeListener((data, timestamp) => {
                     if (data) {
@@ -362,12 +363,81 @@
                     }
                 })
                 .begin()
-                .showVideoPreview(true)
-                .showPredictionPoints(true);
-    
+                .showVideoPreview(false);
+        
+            // Explicitly hide prediction points
+            webgazer.showPredictionPoints(false);
+            console.log('Prediction points disabled after starting WebGazer.');
+        
+            const gazeDot = document.getElementById('webgazerGazeDot');
+            if (gazeDot) {
+                // Initially hide the gaze dot
+                gazeDot.style.display = 'none';
+
+                // Create a MutationObserver to monitor changes to the `style` attribute
+                const observer = new MutationObserver((mutationsList) => {
+                    mutationsList.forEach((mutation) => {
+                        console.log('Mutation detected:', mutation);
+                        if (gazeDot.style.display !== 'none') {
+                            console.log('Overriding gaze dot display to none.');
+                            gazeDot.style.display = 'none';
+                        }
+                    });
+                });
+
+                // Observe changes to the gaze dot element's style attribute
+                observer.observe(gazeDot, {
+                    attributes: true,
+                    attributeFilter: ['style']
+                });
+            } else {
+                console.warn('Gaze dot element not found.');
+            }
+
+        
             console.log('WebGazer initialized and tracking started.');
         }
-    
+        
+        
+        
+        // Function to show the prediction dots
+        function showPredictionDots() {
+            const gazeDot = document.getElementById('webgazerGazeDot');
+            if (gazeDot) {
+                gazeDot.style.display = 'block'; // Show dots
+                console.log('Prediction dots enabled.');
+            } else {
+                console.warn('Gaze dot element not found.');
+            }
+        }
+        
+        function hidePredictionDots() {
+            const gazeDot = document.getElementById('webgazerGazeDot');
+            if (gazeDot) {
+                gazeDot.style.display = 'none'; // Hide dots
+                console.log('Prediction dots disabled.');
+            } else {
+                console.warn('Gaze dot element not found.');
+            }
+        }
+        
+
+        // Function to enable prediction points during calibration
+        function enablePredictionPoints() {
+            if (typeof webgazer !== 'undefined') {
+                webgazer.showPredictionPoints(true); // Enable prediction points
+                console.log('Prediction points enabled for calibration.');
+            }
+        }
+
+        // Function to disable prediction points after calibration
+        function disablePredictionPoints() {
+            if (typeof webgazer !== 'undefined') {
+                webgazer.showPredictionPoints(false); // Disable prediction points
+                console.log('Prediction points disabled after calibration.');
+            }
+        }
+
 
         // Function to download gaze data as CSV
         function downloadGazeDataCSV() {
@@ -470,6 +540,24 @@
             menuBackground.style.display="flex";
         }
         window.disableCalibration = disableCalibration;
+
+        // Function to handle calibration sequence
+        function startCalibration() {
+            console.log('Starting calibration mode...');
+            document.getElementById('h_calibration').style.display = 'flex'; // Show calibration UI
+            document.getElementById('backgroundPage').style.display = 'none'; // Hide other pages
+
+            showPredictionDots(); // Enable prediction points for calibration
+        }
+
+        // Function to exit calibration sequence
+        function exitCalibration() {
+            console.log('Exiting calibration mode...');
+            document.getElementById('h_calibration').style.display = 'none'; // Hide calibration UI
+            document.getElementById('backgroundPage').style.display = 'flex'; // Show main content
+
+            hidePredictionDots(); // Disable prediction points after calibration
+        }
 
         //Function for iterationg through pages
         function changePage(ans=-1)

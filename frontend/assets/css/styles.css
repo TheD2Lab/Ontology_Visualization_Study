@@ -17,6 +17,23 @@ html {
     position: absolute !important; /* Ensure proper positioning */
 }
 
+#webgazerVideoFeed {
+    display: none !important;
+}
+
+#webgazerFaceOverlay {
+    display: none !important;
+}
+
+#webgazerFaceFeedbackBox {
+    display: none !important;
+}
+
+#webgazerGazeDot {
+    display: none !important;
+}
+
+
 .h_main {
     display: flex;
     flex-direction: column;
