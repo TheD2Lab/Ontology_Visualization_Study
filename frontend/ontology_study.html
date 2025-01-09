@@ -2,6 +2,7 @@
 <head>
     <link rel="stylesheet" href="assets/css/styles.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://webgazer.cs.brown.edu/webgazer.js"></script>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="assets/js/webgazer.js"></script>
     <script src="assets/js/aoi-selection.js"></script>
@@ -559,13 +560,35 @@
             hidePredictionDots(); // Disable prediction points after calibration
         }
 
-        //Function for iterationg through pages
-        function changePage(ans=-1)
-        {
-            //Push the selected answer to the final list of answers
-            if (ans != -1)
-            {
-                answers.push(ans);
+        function downloadGazeDataCSV() {
+            let csvContent = "data:text/csv;charset=utf-8,";
+            csvContent += "X,Y,Timestamp\n"; // Add CSV header
+        
+            if (gazeData.length > 0) {
+                gazeData.forEach(row => {
+                    csvContent += `${row.x},${row.y},${row.timestamp}\n`;
+                });
+            } else {
+                console.warn("No gaze data to download. Creating an empty file.");
+            }
+        
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "raw_gaze_data.csv");
+            document.body.appendChild(link); // Append link to body
+            link.click(); // Trigger download
+            document.body.removeChild(link); // Remove link after download
+        }
+
+        function changePage(ans = -1) {
+            if (ans !== -1) answers.push(ans);
+            page_value = page_value + 1;
+
+            // Start tracking gaze data when the question-and-answer section begins
+            if (page_value === 1 && !gazeTrackingEnabled) {
+                startTrackingGaze(); // Start gaze tracking
+                gazeTrackingEnabled = true; // Ensure tracking starts only once
             }
 
             //Iterate the page number with a limit of 13
