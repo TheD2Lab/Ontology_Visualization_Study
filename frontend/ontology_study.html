@@ -319,10 +319,23 @@
         <button onclick="saveAOIs()" style="position: relative; z-index: 11; margin-top: 10px;">Save AOIs</button>-->
     </div>
 
-    <!--Display for eye-tracking calibration-->
-    <div id="h_calibration" class="h_calibration" style="Display:None">
+    <!-- The parent container for calibration -->
+    <div id="h_calibration" class="h_calibration" style="display:none">
         <div id="calibration-container" class="calibration_parent">
-            <button onclick="exitCalibration()" style="margin-top: 20px;">Finish Calibration</button>
+    
+        <!-- The 9 clickable dots will be appended here by generateCalibrationDots() -->
+        <div id="calibration-dots">
+            <!-- dots get created dynamically in calibration.js -->
+        </div>
+    
+        <!-- The popup that appears once you complete calibration -->
+        <div id="calibration-score-popup" style="display:none;">
+            <p id="calibration-score-text">
+            Your calibration score: <span id="calibration-score-percentage"></span>%
+            </p>
+            <button id="retry-button">Retry</button>
+            <button id="proceed-button">Proceed</button>
+        </div>
         </div>
     </div>
 
@@ -583,81 +596,57 @@
 
         function changePage(ans = -1) {
             if (ans !== -1) answers.push(ans);
-            page_value = page_value + 1;
-
-            // Start tracking gaze data when the question-and-answer section begins
+            page_value += 1; // Increment only once
+        
             if (page_value === 1 && !gazeTrackingEnabled) {
                 startTrackingGaze(); // Start gaze tracking
                 gazeTrackingEnabled = true; // Ensure tracking starts only once
             }
-
-            //Iterate the page number with a limit of 13
-            page_value = page_value + 1;
-
-            //If the page number is over 12, calculate the final score of the user 
-            if (page_value > questionNum)
-            {
+        
+            if (page_value > questionNum) {
                 final_score = checkAnswers(answers);
             }
-
-            //Regardless of what happens, update the time variable to keep track of user duration
+        
             const endTime = new Date().getTime();
-            const timeSpent = (endTime - startTime) / 1000.0
-            //Push the time spent on the page to the final duration tracker, and reset the current time tracker
+            const timeSpent = (endTime - startTime) / 1000.0;
             page_time.push(timeSpent);
             startTime = endTime;
-
-            //Update the displayed visual on the page, based on the new value of page_value
+        
             updateFrontEnd();
         }
+        
 
         //Function for updating visuals based on the new value of page_value
         //Iterates through different if-statements to check whether the condition for displaying certain pages is met 
-        function updateFrontEnd(is_calib = false)
-        {
-            
-            //Perform the calibration sequence, which should not affect the page value
-            if(is_calib == true && page_value == 0)
-            {
-                console.log("calibration sequence");
+        function updateFrontEnd(is_calib = false) {
+            if (is_calib && page_value === 0) {
+                console.log("Calibration sequence started.");
                 menuBackground.style.display = "none";
                 menuCalibration.style.display = "flex";
                 window.startCalibration();
                 return;
             }
-
-            //If the current page is a question & visual page (page_value is between 1 and 15)
-            if(page_value == 0)
-            {
+        
+            if (page_value === 0) {
                 document.getElementById("tree-container").appendChild(visuals[visualization_var]);
                 menuIntro.style.display = "none";
                 menuBackground.style.display = "flex";
-            }
-            else if(page_value > 0 && page_value <= 10)
-            {
-                //Remove the visualization
+            } else if (page_value > 0 && page_value <= 10) {
                 menuBackground.style.display = "none";
                 menuQuestion.style.display = "flex";
-
+        
                 document.getElementById("questionText").innerText = pageQuestions[question_var][page_value];
                 document.getElementById("answersText").innerText = pageAnswers[question_var][page_value];
-            }
-
-            //If the current page has exceeded the number of questions, meaning it will now end the study simulation
-            else if(page_value > 10)
-            {
-                //Navigate to the final end-page of the simulation
+            } else if (page_value > 10) {
                 menuQuestion.style.display = "none";
                 menuOutro.style.display = "flex";
-                continueButton.style.display="none";
-
-                //Display the final score of the participant (OPTIONAL)
-                document.getElementById("outroText").textContent = ("Thank you for participating!");
-
+                continueButton.style.display = "none";
+                document.getElementById("outroText").textContent = "Thank you for participating!";
                 console.log(answers);
-                console.log(page_time)
+                console.log(page_time);
             }
         }
+        
 
         function checkAnswers(ans_list)
         {
@@ -703,10 +692,20 @@
                         break;
                     //Keyboard shortcut for calling the calibration sequence
                     case 'c':
-                        //Prevent default browser activity, and instead run the function to begin the calibration sequence 
-                        updateFrontEnd(is_calib=true);
-                        console.log("calibration");
+                        // Hide other pages if desired
+                        menuIntro.style.display = "none";
+                        menuBackground.style.display = "none";
+                        menuQuestion.style.display = "none";
+                    
+                        // Show the calibration overlay
+                        document.getElementById("h_calibration").style.display = "block";
+                    
+                        // Actually run the calibration code
+                        window.startCalibration();
+                    
+                        console.log("calibration started");
                         break;
+                  
                     //Keyboard shortcut for updating the question/answer value to the first set of questions
                     case '1':
                         //Prevent default browser activity, and instead run the function to begin the calibration sequence 
