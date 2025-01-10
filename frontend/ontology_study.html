@@ -4,12 +4,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://webgazer.cs.brown.edu/webgazer.js"></script>
     <script src="https://d3js.org/d3.v7.min.js"></script>
-    <script src="assets/js/webgazer.js"></script>
+    <!-- <script src="assets/js/webgazer.js"></script> -->
     <script src="assets/js/aoi-selection.js"></script>
     <script src="assets/js/circle-packing.js"></script>
     <script src="assets/js/eyetracking.js"></script>
     <script src="assets/js/calibration.js"></script>
     <script src="assets/js/link-tree.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 
 <!--Main body of the webpage-->
@@ -322,7 +323,8 @@
     <!-- The parent container for calibration -->
     <div id="h_calibration" class="h_calibration" style="display:none">
         <div id="calibration-container" class="calibration_parent">
-    
+        <!-- Initializing the hidden canvas webgazer needs for calibration. This canvas is not visible -->
+        <canvas id="plotting_canvas" style="display: none;"></canvas>
         <!-- The 9 clickable dots will be appended here by generateCalibrationDots() -->
         <div id="calibration-dots">
             <!-- dots get created dynamically in calibration.js -->
@@ -354,6 +356,7 @@
         //// In this area, the webgazer eyetracker is intitialized by gaining permission to utilize the device's webcam
         //// A preview image of the webcam footage is shown in the corner of the screen, and all webgazer activity is shut down when the page is closed 
 
+
         let gazeData = []; // Array to store raw gaze data
         let gazeTrackingEnabled = false;
 
@@ -377,7 +380,6 @@
                     }
                 })
                 .begin()
-                .showVideoPreview(false);
         
             // Explicitly hide prediction points
             webgazer.showPredictionPoints(false);

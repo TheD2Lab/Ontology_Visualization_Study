@@ -102,7 +102,29 @@ document.addEventListener("DOMContentLoaded", function () {
       if (completedDots === TOTAL_DOTS) {
         isCalibrating = false;
         console.log("All dots complete! (All are yellow)");
-        showCalibrationScore();
+      
+        // 1) Prompt the user: "Look at the center for 5 seconds..."
+        alert("Please stare at the center dot for 5 seconds for accuracy measurement...");
+      
+        // 2) Start storing gaze data
+        store_points_variable();
+      
+        setTimeout(() => {
+          // 3) Stop storing & compute accuracy
+          stop_storing_points_variable();
+          let past50 = webgazer.getStoredPoints(); 
+          let accuracy = calculatePrecision(past50);
+          console.log("Accuracy is: ", accuracy, "%");
+          
+          // 4) Show user in your popup or console
+          // (If you want to piggyback on the existing “calibration-score-popup”, do so below)
+          const popup = document.getElementById('calibration-score-popup');
+          if (popup) {
+            popup.style.display = 'block';
+          }
+          document.getElementById("calibration-score-percentage").textContent = accuracy.toString();
+      
+        }, 5000);
       }
     }
   }
@@ -186,4 +208,46 @@ document.addEventListener("DOMContentLoaded", function () {
       // Possibly navigate away or call another function
     });
   }
+
+  // Section of script to handle accuracy calculation!
+
+  function store_points_variable(){
+    webgazer.params.storingPoints = true;
+  }
+  function stop_storing_points_variable(){
+    webgazer.params.storingPoints = false;
+  }
+
+  function calculatePrecision(past50) {
+    let windowHeight = window.innerHeight;
+    let windowWidth  = window.innerWidth;
+  
+    let xArr = past50[0];
+    let yArr = past50[1];
+  
+    let centerX = windowWidth / 2;
+    let centerY = windowHeight / 2;
+  
+    let precisionValues = [];
+    for(let i=0; i< xArr.length; i++){
+      let dx = centerX - xArr[i];
+      let dy = centerY - yArr[i];
+      let dist = Math.sqrt(dx*dx + dy*dy);
+  
+      let halfH = windowHeight/2;
+      let p = 0;
+      if(dist <= halfH){
+        // linearly scale to 100%
+        p = 100 - (dist/halfH)*100;
+      }
+      precisionValues.push(p);
+    }
+  
+    // average
+    let sum = precisionValues.reduce((a,b)=>a+b,0);
+    let avg = sum / precisionValues.length || 0;
+    return Math.round(avg);
+  }
+  
+
 });
