@@ -170,7 +170,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   /**
    * Displays the calibration score popup
-   */
   function showCalibrationScore() {
     // Remove "centerDotMessage" if it's still around
     const msg = document.getElementById("centerDotMessage");
@@ -188,6 +187,7 @@ document.addEventListener("DOMContentLoaded", function () {
       overlay.style.display = 'block';
     }
   }
+  */
 
   // If you have "Retry" & "Proceed" buttons in your popup
   const retryBtn   = document.getElementById("retry-button");
@@ -205,6 +205,7 @@ document.addEventListener("DOMContentLoaded", function () {
     proceedBtn.addEventListener("click", () => {
       document.getElementById("calibration-score-popup").style.display = "none";
       console.log("Proceeding after calibration...");
+      document.getElementById("centerDotMessage").remove();
       // Possibly navigate away or call another function
     });
   }

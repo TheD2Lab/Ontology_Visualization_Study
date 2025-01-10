@@ -336,7 +336,7 @@
             Your calibration score: <span id="calibration-score-percentage"></span>%
             </p>
             <button id="retry-button">Retry</button>
-            <button id="proceed-button">Proceed</button>
+            <button id="proceed-button" onclick="disableCalibration()">Proceed</button>
         </div>
         </div>
     </div>
@@ -523,6 +523,7 @@
         var visualization_var = 0;  //The binary index for which type of visualization will be used: either 0 or 1
         let answers = [];           //Variable to keep track of user answers
         let page_time = [];         //Variable to keep track of the time spent on each page by the user
+        let calibrated = false;
 
         let startTime = new Date().getTime();   //Variable to keep track of the time spent on the current page. This begins as soon as the page is loaded, meaning the first value can most-likely be disgarded 
 
@@ -547,7 +548,7 @@
 
         const visuals = [v1, v2]    //Variable to store both temporary visualizations
 
-        document.getElementById("tree-container-tutorial").appendChild(visuals[0])
+        document.getElementById("tree-container").appendChild(visuals[visualization_var])
 
         //Function for disabling calibration once it is completed 
         function disableCalibration()
@@ -596,7 +597,7 @@
             document.body.removeChild(link); // Remove link after download
         }
 
-        function changePage(ans = -1) {
+        function changePage(ans = -1, iterate_page=true) {
             if (ans !== -1) answers.push(ans);
             page_value += 1; // Increment only once
         
@@ -620,19 +621,28 @@
 
         //Function for updating visuals based on the new value of page_value
         //Iterates through different if-statements to check whether the condition for displaying certain pages is met 
-        function updateFrontEnd(is_calib = false) {
-            if (is_calib && page_value === 0) {
-                console.log("Calibration sequence started.");
-                menuBackground.style.display = "none";
-                menuCalibration.style.display = "flex";
-                window.startCalibration();
-                return;
-            }
-        
+        function updateFrontEnd() 
+        {
             if (page_value === 0) {
-                document.getElementById("tree-container").appendChild(visuals[visualization_var]);
-                menuIntro.style.display = "none";
-                menuBackground.style.display = "flex";
+                if (!calibrated)
+                {
+                    menuIntro.style.display = "none";
+                    menuBackground.style.display = "none";
+                    menuQuestion.style.display = "none";
+                    
+                    // Show the calibration overlay
+                    document.getElementById("h_calibration").style.display = "block";
+                    
+                    // Actually run the calibration code
+                    window.startCalibration();
+                    
+                    console.log("calibration started");
+                }
+                else
+                {
+                    console.log("STOPPING CALIBRATION");
+                    disableCalibration();
+                }
             } else if (page_value > 0 && page_value <= 10) {
                 menuBackground.style.display = "none";
                 menuQuestion.style.display = "flex";
@@ -691,23 +701,7 @@
                     case 'x':
                         //Prevent default browser activity, and instead run the function to save AOI selections as a JSON file 
                         saveAOIs();
-                        break;
-                    //Keyboard shortcut for calling the calibration sequence
-                    case 'c':
-                        // Hide other pages if desired
-                        menuIntro.style.display = "none";
-                        menuBackground.style.display = "none";
-                        menuQuestion.style.display = "none";
-                    
-                        // Show the calibration overlay
-                        document.getElementById("h_calibration").style.display = "block";
-                    
-                        // Actually run the calibration code
-                        window.startCalibration();
-                    
-                        console.log("calibration started");
-                        break;
-                  
+                        break;  
                     //Keyboard shortcut for updating the question/answer value to the first set of questions
                     case '1':
                         //Prevent default browser activity, and instead run the function to begin the calibration sequence 
@@ -725,11 +719,15 @@
                         break;
                     case '4':
                         //Prevent default browser activity, and instead run the function to begin the calibration sequence 
+                        console.log("Visual set: 1");
                         visualization_var = 0;
+                        document.getElementById("tree-container").replaceChild(visuals[visualization_var], document.getElementById("tree-container").firstChild);
                         break;
                     case '5':
                         //Prevent default browser activity, and instead run the function to begin the calibration sequence
+                        console.log("Visual set: 2");
                         visualization_var = 1;
+                        document.getElementById("tree-container").replaceChild(visuals[visualization_var], document.getElementById("tree-container").firstChild);
                         break;
                 }   
             }
