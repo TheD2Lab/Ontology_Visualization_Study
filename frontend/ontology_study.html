@@ -10,6 +10,8 @@
     <script src="assets/js/eyetracking.js"></script>
     <script src="assets/js/calibration.js"></script>
     <script src="assets/js/link-tree.js"></script>
+    <script src="assets/js/node-link.js"></script>
+    <script src="assets/js/pizza-baseline.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 
@@ -534,17 +536,21 @@
         const continueButton = document.getElementById("pageButton");       //Variable tied to the page button HTML component
         const menuCalibration = document.getElementById("h_calibration");   //Variable tied to the eye-tracking calibration HTML page
 
+        /**
         const v1 = document.createElement("img");   //Variable for temporary image until we have a final first visualization
         //Establish source file and size of first temporary visualization
         v1.src = "../p1.png";
         v1.style.width = "100%"
         v1.style.height = "100%"
-
+        */
         const v2 = document.createElement("img");   //Variable for temporary image until we have a final second visualization
         //Establish source file and size of second temporary visualization
         v2.src = "../p2.png"; 
         v2.style.width = "100%"
         v2.style.height = "100%"
+        
+
+        const v1 = nodeLink(jsonData);
 
         const visuals = [v1, v2]    //Variable to store both temporary visualizations
 
@@ -728,6 +734,9 @@
                         console.log("Visual set: 2");
                         visualization_var = 1;
                         document.getElementById("tree-container").replaceChild(visuals[visualization_var], document.getElementById("tree-container").firstChild);
+                        break;
+                    case 'p':
+                        disableCalibration();
                         break;
                 }   
             }
