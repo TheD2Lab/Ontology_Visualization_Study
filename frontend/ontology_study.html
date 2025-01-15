@@ -388,24 +388,7 @@
             const gazeDot = document.getElementById('webgazerGazeDot');
             if (gazeDot) {
                 // Initially hide the gaze dot
-                gazeDot.style.display = 'none';
-
-                // Create a MutationObserver to monitor changes to the `style` attribute
-                const observer = new MutationObserver((mutationsList) => {
-                    mutationsList.forEach((mutation) => {
-                        console.log('Mutation detected:', mutation);
-                        if (gazeDot.style.display !== 'none') {
-                            console.log('Overriding gaze dot display to none.');
-                            gazeDot.style.display = 'none';
-                        }
-                    });
-                });
-
-                // Observe changes to the gaze dot element's style attribute
-                observer.observe(gazeDot, {
-                    attributes: true,
-                    attributeFilter: ['style']
-                });
+                gazeDot.style.display = 'block';                
             } else {
                 console.warn('Gaze dot element not found.');
             }
@@ -430,7 +413,7 @@
         function hidePredictionDots() {
             const gazeDot = document.getElementById('webgazerGazeDot');
             if (gazeDot) {
-                gazeDot.style.display = 'none'; // Hide dots
+                gazeDot.style.display = 'block'; // Hide dots
                 console.log('Prediction dots disabled.');
             } else {
                 console.warn('Gaze dot element not found.');
@@ -458,7 +441,7 @@
         // Function to download gaze data as CSV
         function downloadGazeDataCSV() {
             let csvContent = "data:text/csv;charset=utf-8,";
-            csvContent += "X,Y,Timestamp\n"; // Add CSV header
+            csvContent += "x,y,timestamp\n"; // Add CSV header
 
             if (gazeData.length > 0) {
                 gazeData.forEach(row => {
@@ -557,6 +540,45 @@
         }
         window.disableCalibration = disableCalibration;
 
+        function showWebcamElements() {
+            // The IDs that WebGazer auto-creates:
+            //   #webgazerVideoFeed, #webgazerVideoContainer, #webgazerFaceOverlay, #webgazerFaceFeedbackBox, #webgazerGazeDot
+            const videoFeed = document.getElementById("webgazerVideoFeed");
+            const faceOverlay = document.getElementById("webgazerFaceOverlay");
+            const faceFeedbackBox = document.getElementById("webgazerFaceFeedbackBox");
+        
+            if (videoFeed) {
+                videoFeed.style.removeProperty("display"); 
+                // or videoFeed.style.display = "block";
+            }
+            if (faceOverlay) {
+                faceOverlay.style.removeProperty("display"); 
+            }
+            if (faceFeedbackBox) {
+                faceFeedbackBox.style.removeProperty("display"); 
+            }
+            
+            // If you want to show the dot here too, you can:
+            const gazeDot = document.getElementById("webgazerGazeDot");
+            if (gazeDot) {
+                gazeDot.style.removeProperty("display");
+            }
+        }
+
+        function hideWebcamElements() {
+            const videoFeed = document.getElementById("webgazerVideoFeed");
+            const faceOverlay = document.getElementById("webgazerFaceOverlay");
+            const faceFeedbackBox = document.getElementById("webgazerFaceFeedbackBox");
+            const gazeDot = document.getElementById("webgazerGazeDot");
+        
+            if (videoFeed) videoFeed.style.display = "none";
+            if (faceOverlay) faceOverlay.style.display = "none";
+            if (faceFeedbackBox) faceFeedbackBox.style.display = "none";
+            if (gazeDot) gazeDot.style.display = "block";
+        }
+        
+        
+
         // Function to handle calibration sequence
         function startCalibration() {
             console.log('Starting calibration mode...');
@@ -564,6 +586,8 @@
             document.getElementById('backgroundPage').style.display = 'none'; // Hide other pages
 
             showPredictionDots(); // Enable prediction points for calibration
+            showWebcamElements(); 
+
         }
 
         // Function to exit calibration sequence
@@ -573,11 +597,13 @@
             document.getElementById('backgroundPage').style.display = 'flex'; // Show main content
 
             hidePredictionDots(); // Disable prediction points after calibration
+            hideWebcamElements(); // you define a similar function that sets display="none"
+
         }
 
         function downloadGazeDataCSV() {
             let csvContent = "data:text/csv;charset=utf-8,";
-            csvContent += "X,Y,Timestamp\n"; // Add CSV header
+            csvContent += "x,y,timestamp\n"; // Add CSV header
         
             if (gazeData.length > 0) {
                 gazeData.forEach(row => {
