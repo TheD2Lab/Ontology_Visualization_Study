@@ -1,1 +1,5 @@
 venv/
+backend/raw_gaze_data.csv
+backend/fixations.csv
+backend/all_gaze_data.csv
+backend/aoi_config.json
