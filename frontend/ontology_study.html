@@ -11,8 +11,12 @@
     <script src="assets/js/calibration.js"></script>
     <script src="assets/js/link-tree.js"></script>
     <script src="assets/js/node-link.js"></script>
-    <script src="assets/js/pizza-baseline.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+    <script src="assets/json/pizza-baseline.js"></script>
+    <script src="assets/json/music_base.js"></script>
+    <script src="assets/json/restaurant_base.js"></script>
+    <script src="assets/json/disjoint.js"></script>
 </head>
 
 <!--Main body of the webpage-->
@@ -157,11 +161,31 @@
         const tutorialText = document.getElementById("tutorial_text");
         const tutorialButton = document.getElementById("tutorial_button");
 
-        let titles = ["DisjointWith", "SameAs", "IntersectionOf", "UnionOf"]
-        let tutorials = ["Tutorial for disjoint relationships",
-            "Tutorial for sameas relationships",
-            "Tutorial for intersection relationships",
-            "Tutorial for union relationships"]
+        let titles = ["What is an Ontology?", 
+            "DisjointWith", 
+            "UnionOf",
+            "IntersectionOf",
+            "ComplementOf"]
+
+        let tutorials = ["An ontology is like a detailed map of knowledge about a specific topic or domain. It organizes information by defining concepts, their properties, and how they relate to each other, much like a family tree or a blueprint."
+            + "Think of it as a way to make sure everyone understands the same ideas and relationships in the same way when discussing or working with complex information."
+            + "\n\nEntity = a single instance of a class"
+            + "\n\nClass = a category or group of entities that all share similar characteristics"
+            + "\n\nRelationship = a way in which two or more entities/classes in an ontology are connected or related"
+            + "\n\nNext you will see a few different types of relationships you can expect to see during this study.",
+
+            "An ontology relationship between classes where an instance cannot be part of two classes at the same time."
+            + "\n\nAn example of this would be different types of musical dramas. The classes Opera, Operetta and Musical are all disjoint, meaning no class can be more than one of these at once.",
+
+            "An ontology relationship that creates a single class/list out of the contents of others. Taken from logic operations, a union is all items put together from two lists, disregarding any duplicates. In our case: a class that contains all instances that belong to any number of classes, removing duplicates."
+            + "\n\nAn example of this would be between two lists of famous operas. A union of these two lists would contain all operas that appear in the lists, with duplicates being removed.",
+
+            "An ontology relationship that creates a single class/list out of the contents of others. Taken from logic operations, an intersection is all items that two lists share in common put into one. In our case: a class that contains all instances shared between two other classes."
+            + "\n\nAn example of this would be between two lists of famous operas. An intersection of these two lists would contain only the operas appearing in both lists, and disregard all others.",
+
+            "An ontology relationship between two classes where an instance can either belong to one class or the other. If it does not belong to one, it MUST belong to the other."
+            + "\n\nAn example of this would be two meal options at a restaurant: standard options and vegetarian options. If an item is not standard, then it is vegetarian, and vice versa.",
+            ]
 
         tutorialTitle.innerText = titles[0];
         tutorialText.innerText = tutorials[0];
@@ -172,23 +196,28 @@
             tutorialTitle.innerText = titles[tutorial_value];
             tutorialText.innerText = tutorials[tutorial_value];
 
-            if (tutorial_value == 3)
+            document.getElementById("tree-container-tutorial").replaceChild(visuals_tutorial[tutorial_value], document.getElementById("tree-container-tutorial").firstChild);
+
+            if (tutorial_value == 4)
             {
                 tutorialButton.innerText = "Begin Study"
             }
-            if (tutorial_value == 4)
+            if (tutorial_value == 5)
             {
                 changePage();
             }
         }
 
-        const vt = document.createElement("img");   //Variable for temporary image until we have a final second visualization
+        const vt1 = document.createElement("img");   //Variable for temporary image until we have a final second visualization
         //Establish source file and size of second temporary visualization
-        vt.src = "../p2.png"; 
-        vt.style.width = "100%"
-        vt.style.height = "100%"
+        vt1.src = "../ontologyExample.png"; 
+        vt1.style.width = "100%"
+        vt1.style.height = "100%"
 
-        const visuals_tutorial = [vt]    //Variable to store both temporary visualizations
+        const vt2 = nodeLink(MusicBaselineData);
+        const vt3 = nodeLink(RestaurantBaselineData);
+
+        const visuals_tutorial = [vt1, vt2, vt2, vt2, vt3]    //Variable to store both temporary visualizations
 
         document.getElementById("tree-container-tutorial").appendChild(visuals_tutorial[0])
         ////
@@ -550,7 +579,7 @@
         v2.style.height = "100%"
         
 
-        const v1 = nodeLink(jsonData);
+        const v1 = nodeLink(PizzaBaselineData);
 
         const visuals = [v1, v2]    //Variable to store both temporary visualizations
 
