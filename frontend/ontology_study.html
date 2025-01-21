@@ -6,21 +6,30 @@
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <!-- <script src="assets/js/webgazer.js"></script> -->
     <script src="assets/js/aoi-selection.js"></script>
-    <script src="assets/js/circle-packing.js"></script>
     <script src="assets/js/eyetracking.js"></script>
     <script src="assets/js/calibration.js"></script>
-    <script src="assets/js/link-tree.js"></script>
+
+    <!--Imports for ontology visualizations in Javascript format-->
+    <script src="assets/js/circle-packing.js"></script>
     <script src="assets/js/node-link.js"></script>
+    <script src="assets/js/tree-map.js"></script>
+
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
+    <!--Imports for data files, originally JSON but translated to Javascript for functionality-->
     <script src="assets/json/pizza-baseline.js"></script>
+    <script src="assets/json/pizza-treeMap.js"></script>
+    <script src="assets/json/pizza-circlePack.js"></script>
     <script src="assets/json/music_base.js"></script>
     <script src="assets/json/restaurant_base.js"></script>
-    <script src="assets/json/disjoint.js"></script>
 </head>
 
 <!--Main body of the webpage-->
 <body class="h_main">
+    <div id="versionText" style="position:fixed;top:10px;left:10px;display: block !important; color:rgb(138, 138, 138);">
+        defaultText
+    </div>
+
     <!--Display for the introductory screen-->
     <div id="introPage" style="display:flex;flex-direction:column;justify-content:space-between;align-items:center;height:1080px;width:100%">
         <div class="h_intro_text">Data Visualization With Ontologies</div>
@@ -348,7 +357,7 @@
         
         <!--Div for visualization, implementing D3 later on-->
         <div class="h_visual">
-            <div id="tree-container" style="width:100%;height:100%;background-color:rgb(240,240,240);"></div>
+            <div id="tree-container" style="width:100%;height:100%;background-color:rgb(240,240,240);justify-content:center;align-items:center;"></div>
         </div>
 
         <canvas id="aoiCanvas" width="1920" height="1080" style="position: absolute; top: 0; left: 0; z-index: 10; pointer-events: none;"></canvas>
@@ -382,6 +391,13 @@
         <div id="outroText" class="h_outro">
             Final
         </div>
+    </div>
+
+    <div id="intermissionPage" class="h_sub" style="Display:none">
+        <div id="outroText" class="h_outro">
+            Visual 1 complete
+        </div>
+        <button id="pageButton" class="ans_button" onclick="changePage()">Continue</button>
     </div>
 
     <script>
@@ -555,6 +571,7 @@
         /// There will be three sets of questions along with 3 sets of corresponding answers, and two different types of visualizations
 
         let page_value = -1;        //Page number variable, used to track the current page state
+        let question_value = -1;    //Question number variable, reset between visualization/question sets
         var question_var = 1;       //The index for which questions/answer options will be used: either 0, 1, or 2
         var visualization_var = 0;  //The binary index for which type of visualization will be used: either 0 or 1
         let answers = [];           //Variable to keep track of user answers
@@ -563,12 +580,13 @@
 
         let startTime = new Date().getTime();   //Variable to keep track of the time spent on the current page. This begins as soon as the page is loaded, meaning the first value can most-likely be disgarded 
 
-        const menuIntro = document.getElementById("introPage");             //Variable tied to the intro HTML page
-        const menuBackground = document.getElementById("backgroundPage")    //Variable tied to the background information HTML page
-        const menuQuestion = document.getElementById("questionPage")        //Variable tied to the main question HTML page
-        const menuOutro = document.getElementById("outroPage");             //Variable tied to the final outro HTML page
-        const continueButton = document.getElementById("pageButton");       //Variable tied to the page button HTML component
-        const menuCalibration = document.getElementById("h_calibration");   //Variable tied to the eye-tracking calibration HTML page
+        const menuIntro = document.getElementById("introPage");                 //Variable tied to the intro HTML page
+        const menuBackground = document.getElementById("backgroundPage")        //Variable tied to the background information HTML page
+        const menuQuestion = document.getElementById("questionPage")            //Variable tied to the main question HTML page
+        const menuIntermission = document.getElementById("intermissionPage");   //Variable tied to the intermission page between visualizations
+        const menuOutro = document.getElementById("outroPage");                 //Variable tied to the final outro HTML page
+        const continueButton = document.getElementById("pageButton");           //Variable tied to the page button HTML component
+        const menuCalibration = document.getElementById("h_calibration");       //Variable tied to the eye-tracking calibration HTML page
 
         /**
         const v1 = document.createElement("img");   //Variable for temporary image until we have a final first visualization
@@ -577,14 +595,18 @@
         v1.style.width = "100%"
         v1.style.height = "100%"
         */
+        /*
         const v2 = document.createElement("img");   //Variable for temporary image until we have a final second visualization
         //Establish source file and size of second temporary visualization
         v2.src = "../p2.png"; 
         v2.style.width = "100%"
         v2.style.height = "100%"
+        */
         
 
         const v1 = nodeLink(PizzaBaselineData);
+        //const v2 = treeMap(PizzaTreeMapData);
+        const v2 = packing(pizzaCirclePackData)
 
         const visuals = [v1, v2]    //Variable to store both temporary visualizations
 
@@ -640,6 +662,7 @@
         function changePage(ans = -1) {
             if (ans !== -1) answers.push(ans);
             page_value += 1; // Increment only once
+            question_value += 1;
         
             if (page_value === 1 && !gazeTrackingEnabled) {
                 startTrackingGaze(); // Start gaze tracking
@@ -664,6 +687,7 @@
         //Iterates through different if-statements to check whether the condition for displaying certain pages is met 
         function updateFrontEnd() 
         {
+            //If the page value is equal to 0, begin the calibration sequence
             if (page_value === 0) {
                 if (!calibrated)
                 {
@@ -684,13 +708,25 @@
                     console.log("STOPPING CALIBRATION");
                     disableCalibration();
                 }
-            } else if (page_value > 0 && page_value <= 10) {
+            } 
+            //If the page value is between 0 and 22, and not equal to 11, then perform the regular assessment frontend update
+            else if (page_value > 0 && page_value <= 21 && page_value != 11) {
                 menuBackground.style.display = "none";
+                menuIntermission.style.display = "none";
                 menuQuestion.style.display = "flex";
         
-                document.getElementById("questionText").innerText = pageQuestions[question_var][page_value];
-                document.getElementById("answersText").innerText = pageAnswers[question_var][page_value];
-            } else if (page_value > 10) {
+                document.getElementById("questionText").innerText = pageQuestions[question_var][question_value];
+                document.getElementById("answersText").innerText = pageAnswers[question_var][question_value];
+            } 
+            //If the page value is equal to 11, cut in an intermission to change question/visualization styles
+            else if (page_value == 11)
+            {
+                menuQuestion.style.display = "none";
+                menuIntermission.style.display = "flex";
+                question_value = 0;
+            }
+            //If the page value is above 21, then end the study, concluding that all questions have been answered 
+            else if (page_value > 21) {
                 menuQuestion.style.display = "none";
                 menuOutro.style.display = "flex";
                 continueButton.style.display = "none";
@@ -713,6 +749,12 @@
             }
             return correct_ans;
         }
+
+        function updateVersionText()
+        {
+            document.getElementById("versionText").innerText = ("QuestionSet: " + (question_var + 1) + ", Visual Set: " + (visualization_var + 1));
+        }
+        updateVersionText();
         ////
         ////
         ///////////////////////////////////////////////////////////////////////////////////////////
@@ -747,28 +789,33 @@
                     case '1':
                         //Prevent default browser activity, and instead run the function to begin the calibration sequence 
                         question_var = 0;
+                        updateVersionText();
                         break;
                     //Keyboard shortcut for updating the question/answer value to the second set of questions
                     case '2':
                         //Prevent default browser activity, and instead run the function to begin the calibration sequence 
                         question_var = 1;
+                        updateVersionText();
                         break;
                     //Keyboard shortcut for updating the question/answer value to the third set of questions
                     case '3':
                         //Prevent default browser activity, and instead run the function to begin the calibration sequence 
                         question_var = 2;
+                        updateVersionText();
                         break;
                     case '4':
                         //Prevent default browser activity, and instead run the function to begin the calibration sequence 
                         console.log("Visual set: 1");
                         visualization_var = 0;
                         document.getElementById("tree-container").replaceChild(visuals[visualization_var], document.getElementById("tree-container").firstChild);
+                        updateVersionText();
                         break;
                     case '5':
                         //Prevent default browser activity, and instead run the function to begin the calibration sequence
                         console.log("Visual set: 2");
                         visualization_var = 1;
                         document.getElementById("tree-container").replaceChild(visuals[visualization_var], document.getElementById("tree-container").firstChild);
+                        updateVersionText();
                         break;
                     case 'p':
                         disableCalibration();
