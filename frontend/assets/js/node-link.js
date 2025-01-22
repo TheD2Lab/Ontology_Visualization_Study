@@ -1,7 +1,7 @@
 function nodeLink(data) {
     // Specify the dimensions of the chart.
     // const margin = { top: 20, right: 20, bottom: 20, left: 20 };
-    const width = 1028;
+    const width = 900;
     const height = width;
   
       const color = d3.scaleLinear()

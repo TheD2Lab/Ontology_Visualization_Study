@@ -96,6 +96,7 @@ html {
 
 .h_consent_bullet_text {
     display:flex;
+    text-align:left;
 
     width:100% - 40px;
     padding:20px;
