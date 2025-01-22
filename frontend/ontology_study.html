@@ -98,7 +98,8 @@
 
             <div style="display:flex;flex-direction:row;justify-content:center;align-items:center;">
                 <div style="font-size:15px;margin-right:10px;">I consent to all information stated above and agree to take part in the research study</div>
-                <input type="checkbox" id="consentCheck">
+                <input type="text" id="nameInput" style = "width: 200px; margin-right:10px;" placeholder="First + Last Name">
+                <input type="text" id="IDInput" style = "width: 100px" placeholder="Student ID #">
             </div>
         </div>
         <button id="consentButton" class="h_begin_button" onclick="changePage()" disabled>Continue</button>
@@ -110,13 +111,27 @@
         //
         //
         //// In this area, the eventlistener will watch for changes in the website (on this page, just the checkbox) and will update it based on whether the box has been checked or not 
-        const checkbox = document.getElementById('consentCheck');
+        const nameField = document.getElementById('nameInput');
+        const IDField = document.getElementById('IDInput');
         const button = document.getElementById('consentButton');
 
-        // Add an event listener to the checkbox
-        checkbox.addEventListener('change', function () {
-        // Enable or disable the button based on the checkbox state
-        button.disabled = !checkbox.checked;
+        function checkInput()
+        {
+            console.log("Check");
+            if (nameField.value.trim() !== '' && IDField.value.trim() !== '') {
+                button.disabled = false;
+            } else {
+                button.disabled = true;
+            }
+        }
+
+        // Attach the input event listener to the input field
+        nameField.addEventListener('input', function() {
+            console.log("YES")
+            checkInput();
+        });
+        IDField.addEventListener('input', function() {
+            checkInput();
         });
         ////
         ////
@@ -192,11 +207,6 @@
             if (tutorial_value < 5)
             {
                 document.getElementById("tree-container-tutorial").replaceChild(visuals_tutorial[tutorial_value], document.getElementById("tree-container-tutorial").firstChild);
-            }
-
-            if (tutorial_value == 4)
-            {
-                tutorialButton.innerText = "Begin Study"
             }
             else if (tutorial_value == 5)
             {
