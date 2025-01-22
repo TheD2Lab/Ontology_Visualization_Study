@@ -255,36 +255,42 @@ html {
   }
   
   /* The .dot is the base style: smaller and spaced out more like WebGazer */
-  .dot {
+/* Base style for all dots */
+.dot {
     position: absolute;
     width: 20px;
     height: 20px;
     border-radius: 50%;
     cursor: pointer;
-    transform: translate(-50%, -50%); /* so (left%, top%) is the center */
-    transition: background-color 0.2s linear; /* quick fade to the next shade */
+    transform: translate(-50%, -50%); /* Centers the dot based on its position */
+    transition: background-color 0.1s linear; /* Reduced from 0.2s to 0.1s */
     pointer-events: auto !important;
-    z-index: 99999; /* Make sure the dots are on top */
+    z-index: 99999; /* Ensures dots are on top */
   }
+  
   
   /* Shades of red from lightest to darkest (clicks 1..4) */
-  .dot-red1 {
-    background-color: #ffcccc; /* pale pinkish red */
-  }
-  .dot-red2 {
-    background-color: #ff9999;
-  }
-  .dot-red3 {
-    background-color: #ff6666;
-  }
-  .dot-red4 {
-    background-color: #ff3333;
+/* Color variations based on click counts */
+.dot-red1 {
+    background-color: #ffe6e6; /* Very light red */
   }
   
-  /* 5th click => yellow to show "done" */
-  .dot-yellow {
-    background-color: #ffff00;
+  .dot-red2 {
+    background-color: #ff9999; /* Light red */
   }
+  
+  .dot-red3 {
+    background-color: #ff4d4d; /* Medium red */
+  }
+  
+  .dot-red4 {
+    background-color: #e60000; /* Dark red */
+  }
+  
+  .dot-yellow {
+    background-color: #ffff00; /* Yellow indicating completion */
+  }
+  
 
   #calibration-score-popup {
     /* Position it absolutely or fixed, whichever you prefer */

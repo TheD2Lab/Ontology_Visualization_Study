@@ -1,38 +1,38 @@
 document.addEventListener("DOMContentLoaded", function () {
   console.log("Calibration JS loaded.");
 
-  // Positions for the 8 initial dots (corners/edges)
+  // Define the positions for the calibration dots
   const dotPositions = [
-    { x: 10, y: 10 },
-    { x: 50, y: 10 },
-    { x: 90, y: 10 },
-    { x: 10, y: 50 },
-    { x: 90, y: 50 },
-    { x: 10, y: 90 },
-    { x: 50, y: 90 },
-    { x: 90, y: 90 },
+    { x: 10, y: 10 }, // (1, 1)
+    { x: 50, y: 10 }, // (1, 2)
+    { x: 90, y: 10 }, // (1, 3)
+    { x: 90, y: 50 }, // (2, 3)
+    { x: 90, y: 90 }, // (3, 3)
+    { x: 50, y: 90 }, // (3, 2)
+    { x: 10, y: 90 }, // (3, 1)
+    { x: 10, y: 50 }, // (2, 1)
+    { x: 50, y: 50 }, // (2, 2) - Center
   ];
 
-  // Position for the center dot (spawned after the first 8 are done)
-  const middleDot = { x: 50, y: 50 };
-
-  // Number of initial dots & total
-  const NUMBER_OF_INITIAL_DOTS = 8;
-  const TOTAL_DOTS = 9; // 8 corners + 1 center
+  // Total number of dots (8 corners/edges + 1 center)
+  const TOTAL_DOTS = dotPositions.length;
 
   // Colors for each click count (1..5)
   const colorClasses = ["dot-red1", "dot-red2", "dot-red3", "dot-red4", "dot-yellow"];
 
   // State variables
-  let clickCounts   = [];
-  let completedDots = 0;
+  let clickCounts = [];
+  let currentDotIndex = 0;
   let isCalibrating = false;
-  let isMiddleSpawned = false; // Whether we've created the center dot yet
 
-  // The container <div> where dots go
+  // The container <div> where dots appear
   const dotsContainer = document.getElementById("calibration-dots");
 
-  // Expose a global so you can call startCalibration() from your main page
+  /**
+   * Starts the calibration process.
+   * Initializes click counts, resets the current dot index, clears existing dots,
+   * and creates the first calibration dot.
+   */
   window.startCalibration = function () {
     if (isCalibrating) {
       console.warn("Already in calibration mode!");
@@ -41,156 +41,101 @@ document.addEventListener("DOMContentLoaded", function () {
     isCalibrating = true;
     console.log("Starting calibration...");
 
-    // Clear any old dots
+    // Initialize click counts for all dots
+    clickCounts = new Array(TOTAL_DOTS).fill(0);
+    currentDotIndex = 0;
+
+    // Clear any existing dots
     dotsContainer.innerHTML = "";
 
-    // Reset trackers
-    clickCounts   = new Array(TOTAL_DOTS).fill(0);
-    completedDots = 0;
-    isMiddleSpawned = false;
-
-    // Create the 8 initial dots
-    for (let i = 0; i < NUMBER_OF_INITIAL_DOTS; i++) {
-      createDot(i, dotPositions[i]);
-    }
+    // Start with the first dot
+    createDot(currentDotIndex);
   };
 
   /**
-   * Creates a dot element at the given position object { x, y }
-   * dotIndex -> index for click tracking (0..7 for corners, 8 for center)
+   * Creates a calibration dot at the specified index.
+   * @param {number} dotIndex - The index of the dot in the dotPositions array.
    */
-  function createDot(dotIndex, position) {
+  function createDot(dotIndex) {
+    if (dotIndex >= TOTAL_DOTS) {
+      console.warn("All calibration dots have been processed.");
+      return;
+    }
+
+    const position = dotPositions[dotIndex];
     const dotEl = document.createElement("div");
     dotEl.classList.add("dot", "dot-red1"); // Start with the lightest red
 
-    // Position based on percentages
+    // Position the dot based on percentage values
     dotEl.style.left = position.x + "%";
-    dotEl.style.top  = position.y + "%";
+    dotEl.style.top = position.y + "%";
 
-    // Handle clicks
+    // Attach click event listener
     dotEl.addEventListener("click", () => onDotClicked(dotIndex, dotEl));
     dotsContainer.appendChild(dotEl);
   }
 
   /**
-   * Handles clicks on a given dot
+   * Handles the click event on a calibration dot.
+   * @param {number} dotIndex - The index of the clicked dot.
+   * @param {HTMLElement} dotEl - The dot element that was clicked.
    */
   function onDotClicked(dotIndex, dotEl) {
-    // Already final color (yellow)? Ignore further clicks
-    if (clickCounts[dotIndex] >= 5) return;
-
-    // Increment click count
+    // Increment the click count for this dot
     clickCounts[dotIndex]++;
+    const newColorClass = colorClasses[clickCounts[dotIndex] - 1];
 
-    // Pick the new color (based on 1..5)
-    const newColorClass = colorClasses[ clickCounts[dotIndex] - 1 ];
-
-    // Remove old color classes, add the new one
+    // Update the dot's color based on the number of clicks
     dotEl.classList.remove(...colorClasses);
     dotEl.classList.add(newColorClass);
 
-    // If we just reached 5 clicks => turned yellow
+    // If the dot has been clicked five times, proceed accordingly
     if (clickCounts[dotIndex] === 5) {
-      completedDots++;
+      if (dotIndex < TOTAL_DOTS - 1) {
+        // For the first 8 dots, remove the dot and create the next one
+        dotEl.remove(); // Remove the completed dot
+        currentDotIndex++; // Move to the next dot
 
-      // If the 8 corners are done, spawn center dot (if not already spawned)
-      if (completedDots === NUMBER_OF_INITIAL_DOTS && !isMiddleSpawned) {
-        spawnMiddleDot();
-      }
+        if (currentDotIndex < TOTAL_DOTS) {
+          createDot(currentDotIndex); // Create the next dot
+        }
+      } else {
+        // For the last dot (center), do not remove it
+        console.log("Center dot clicked five times. Starting 5-second stare period.");
 
-      // If all 9 are done, show the popup
-      if (completedDots === TOTAL_DOTS) {
-        isCalibrating = false;
-        console.log("All dots complete! (All are yellow)");
-      
-        // 1) Prompt the user: "Look at the center for 5 seconds..."
-        alert("Please stare at the center dot for 5 seconds for accuracy measurement...");
-      
-        // 2) Start storing gaze data
-        store_points_variable();
-      
-        setTimeout(() => {
-          // 3) Stop storing & compute accuracy
-          stop_storing_points_variable();
-          let past50 = webgazer.getStoredPoints(); 
-          let accuracy = calculatePrecision(past50);
-          console.log("Accuracy is: ", accuracy, "%");
-          
-          // 4) Show user in your popup or console
-          // (If you want to piggyback on the existing “calibration-score-popup”, do so below)
-          const popup = document.getElementById('calibration-score-popup');
-          if (popup) {
-            popup.style.display = 'block';
-          }
-          document.getElementById("calibration-score-percentage").textContent = accuracy.toString();
-      
-        }, 5000);
+        // Start the 5-second stare period silently
+        initiateStarePeriod();
       }
     }
   }
 
   /**
-   * Spawns the center (9th) dot at (50%, 50%), also requires 5 clicks.
+   * Initiates a 5-second stare period for the center dot.
+   * During this period, gaze data is collected to assess calibration accuracy.
    */
-  function spawnMiddleDot() {
-    isMiddleSpawned = true;
-    // We'll treat it as index 8
-    createDot(8, middleDot);
+  function initiateStarePeriod() {
+    // Start storing gaze points
+    store_points_variable();
 
-    // (Optional) Show a message: "Now click the center dot 5 times."
-    showLookCenterMessage();
+    // Start the 5-second timer without displaying any messages or alerts
+    setTimeout(() => {
+      // Stop storing gaze points and calculate accuracy
+      stop_storing_points_variable();
+      let pastPoints = webgazer.getStoredPoints();
+      let accuracy = calculatePrecision(pastPoints);
+      console.log("Calibration accuracy:", accuracy, "%");
+
+      // Display the calibration accuracy in the popup
+      const popup = document.getElementById("calibration-score-popup");
+      if (popup) {
+        popup.style.display = "block";
+      }
+      document.getElementById("calibration-score-percentage").textContent = accuracy.toString();
+    }, 5000); // 5000 milliseconds = 5 seconds
   }
 
-  /**
-   * Show a message instructing the user to click the center dot.
-   * This is optional—remove if you don't want it.
-   */
-  function showLookCenterMessage() {
-    const msg = document.createElement("div");
-    msg.id = "centerDotMessage";
-    msg.textContent = "Please click the center dot 5 times to finish calibrating.";
-
-    // Style & position
-    msg.style.position = "fixed";
-    msg.style.top = "40%";
-    msg.style.left = "50%";
-    msg.style.transform = "translate(-50%, -50%)";
-    msg.style.backgroundColor = "#eee";
-    msg.style.padding = "20px";
-    msg.style.zIndex = "9999";
-    
-    document.body.appendChild(msg);
-
-    // Remove the message once user finishes the center dot
-    // We'll remove it inside onDotClicked() once the dot is completed.
-    // Or optionally, remove it after 1 second or 2 seconds, etc.
-    // But if you want to remove it automatically after the center dot is done:
-    // we can do that check in onDotClicked() for the center dot (index === 8).
-  }
-
-  /**
-   * Displays the calibration score popup
-  function showCalibrationScore() {
-    // Remove "centerDotMessage" if it's still around
-    const msg = document.getElementById("centerDotMessage");
-    if (msg) {
-      msg.remove();
-    }
-
-    const popup = document.getElementById('calibration-score-popup');
-    if (popup) {
-      popup.style.display = 'block';
-    }
-    // If you have a semi-transparent overlay
-    const overlay = document.getElementById('calibration-modal-overlay');
-    if (overlay) {
-      overlay.style.display = 'block';
-    }
-  }
-  */
-
-  // If you have "Retry" & "Proceed" buttons in your popup
-  const retryBtn   = document.getElementById("retry-button");
+  // Attach event listeners to Retry and Proceed buttons in the calibration popup
+  const retryBtn = document.getElementById("retry-button");
   const proceedBtn = document.getElementById("proceed-button");
 
   if (retryBtn) {
@@ -205,50 +150,73 @@ document.addEventListener("DOMContentLoaded", function () {
     proceedBtn.addEventListener("click", () => {
       document.getElementById("calibration-score-popup").style.display = "none";
       console.log("Proceeding after calibration...");
-      document.getElementById("centerDotMessage").remove();
-      // Possibly navigate away or call another function
+      // Add any additional navigation or function calls here
     });
   }
 
-  // Section of script to handle accuracy calculation!
-
+  /**
+   * Enables storing of gaze points.
+   */
   function store_points_variable(){
-    webgazer.params.storingPoints = true;
-  }
-  function stop_storing_points_variable(){
-    webgazer.params.storingPoints = false;
+    if (webgazer && webgazer.params) {
+      webgazer.params.storingPoints = true;
+      console.log("Gaze points storage enabled.");
+    } else {
+      console.warn("WebGazer is not initialized properly.");
+    }
   }
 
-  function calculatePrecision(past50) {
+  /**
+   * Disables storing of gaze points.
+   */
+  function stop_storing_points_variable(){
+    if (webgazer && webgazer.params) {
+      webgazer.params.storingPoints = false;
+      console.log("Gaze points storage disabled.");
+    } else {
+      console.warn("WebGazer is not initialized properly.");
+    }
+  }
+
+  /**
+   * Calculates the precision of the calibration based on gaze points.
+   * @param {Array} pastPoints - The stored gaze points.
+   * @returns {number} - The average precision percentage.
+   */
+  function calculatePrecision(pastPoints) {
+    if (!pastPoints || pastPoints.length === 0) {
+      console.warn("No gaze points available for precision calculation.");
+      return 0;
+    }
+
     let windowHeight = window.innerHeight;
     let windowWidth  = window.innerWidth;
-  
-    let xArr = past50[0];
-    let yArr = past50[1];
-  
+
+    let xArr = pastPoints[0];
+    let yArr = pastPoints[1];
+
     let centerX = windowWidth / 2;
     let centerY = windowHeight / 2;
-  
+
     let precisionValues = [];
-    for(let i=0; i< xArr.length; i++){
+    for(let i = 0; i < xArr.length; i++){
       let dx = centerX - xArr[i];
       let dy = centerY - yArr[i];
       let dist = Math.sqrt(dx*dx + dy*dy);
-  
-      let halfH = windowHeight/2;
+
+      let halfH = windowHeight / 2;
       let p = 0;
       if(dist <= halfH){
-        // linearly scale to 100%
-        p = 100 - (dist/halfH)*100;
+        // Linearly scale to 100%
+        p = 100 - (dist / halfH) * 100;
       }
       precisionValues.push(p);
     }
-  
-    // average
-    let sum = precisionValues.reduce((a,b)=>a+b,0);
+
+    // Calculate the average precision
+    let sum = precisionValues.reduce((a, b) => a + b, 0);
     let avg = sum / precisionValues.length || 0;
     return Math.round(avg);
   }
-  
 
 });
