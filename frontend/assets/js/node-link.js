@@ -1,8 +1,8 @@
 function nodeLink(data) {
     // Specify the dimensions of the chart.
     // const margin = { top: 20, right: 20, bottom: 20, left: 20 };
-    const width = 900;
-    const height = width;
+    const width = 1920;
+    const height = 700;
   
       const color = d3.scaleLinear()
         .domain([0, 5])
@@ -27,7 +27,6 @@ function nodeLink(data) {
         .attr("height", height-10)
         .attr("viewBox", [0, 0, width, height])
         .attr("style", "max-width: 100%; height: auto;")
-        .style("border", "1px solid black")
         .style("overflow", "hidden");
   
         // Define the zoom behavior

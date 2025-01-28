@@ -40,7 +40,6 @@ html {
 
     width:100vw;
     height:100vh;
-    justify-content:center;
     align-items:center;
 
     background-color: rgb(225, 225, 225);
@@ -50,8 +49,7 @@ html {
 
 .h_sub {
     display:flex;
-    flex-direction:row;
-    justify-content:space-evenly;
+    flex-direction:column;
     align-items:center;
     width:1824px;
     height:900px;
@@ -136,28 +134,28 @@ html {
     align-items: center;
     justify-content: space-between;
 
-    height:900px;
-    width: 700px;
+    height:400px;
+    width: 1000px;
 }
 
 .h_background_bullet_title {
     display:flex;
 
-    width:100% - 40px;
+    width:1400px;
     padding:20px;
     padding-bottom:0px;
 
-    font-size:30px;
+    font-size:25px;
 }
 
 .h_background_bullet_text {
     display:flex;
 
-    width:100% - 40px;
+    width:1400px;
     padding:20px;
     padding-top:5px;
 
-    font-size:25px;
+    font-size:20px;
 }
 
 .h_begin_button {

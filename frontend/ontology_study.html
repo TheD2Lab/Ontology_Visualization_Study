@@ -187,8 +187,8 @@
         ///////////////////////////////////////////////////////////////////////////////////////////
     </script>
 
+    <!--
     <div id="backgroundPage" class="h_sub" style="display:none">
-        <!--Dispaly for information regarding the ontology models used, and information that could make answering them easier and more intuitive-->
         <div class="h_intro_background">
             <div style="display:flex;height:90%;width:100%;background-color:rgb(240,240,240);flex-direction:column;">
                 <div style="font-size:50px;padding:20px;color:rgb(25,25,25);">Tutorial</div>
@@ -203,6 +203,16 @@
         <div class="h_visual">
             <div id="tree-container-tutorial" style="width:100%;height:100%;background-color:rgb(240,240,240);"></div>
         </div>
+    </div>
+    -->
+    <div id="backgroundPage" style="display:none;flex-direction:column;width:1920px;height:1080px;align-items:center;">
+        <div style="font-size:40px;">Tutorial</div>
+        <div style="background-color:rgb(240, 240, 240);margin-bottom:20px;">
+            <div id="tutorial_title" class="h_background_bullet_title">DisjointWith</div>
+            <div id="tutorial_text" class="h_background_bullet_text">The classes do not and cannot share any subclasses or values. For example:<br>Class A is disjointWith Class B. Class A = [1, 2, 3], Class B = [4, 5, 6]</div>
+        </div>
+        <div id="tree-container-tutorial" style="background-color:rgb(240, 240, 240);width:auto;height:auto;max-height:700px;margin-bottom:20px;"></div>
+        <button id="tutorial_button" class="h_begin_button" onclick="iterateTutorial()">Next</button>
     </div>
 
     <script>
@@ -224,22 +234,23 @@
 
         let tutorials = ["An ontology is like a detailed map of knowledge about a specific topic or domain. It organizes information by defining concepts, their properties, and how they relate to each other, much like a family tree or a blueprint."
             + "Think of it as a way to make sure everyone understands the same ideas and relationships in the same way when discussing or working with complex information."
-            + "\n\nEntity = a single instance of a class"
-            + "\n\nClass = a category or group of entities that all share similar characteristics"
-            + "\n\nRelationship = a way in which two or more entities/classes in an ontology are connected or related"
-            + "\n\nNext you will see a few different types of relationships you can expect to see during this study.",
+            + "\n\nClasses = represent concepts or sets of instsances in the domain"
+            + "\n\nInstances = specific objects b elonging to respective Classes"
+            + "\n\nRelations = used to associate Classes, Instances, or any other entity within the ontology"
+            + "\n\nFor example, a Wine class represents all wines that exist. The Wine class can be defined with subclasses such as Red Wine, White Wine, and Rose Wine. In other words, these subclasses have one shared superclass."
+            + "\n\nThe figure shows the relations between classes and instances in the wine domain. PinotNoir class has one instance: MoutadamPinotNoir. The Winery class has two instances: Mountadam and Elyse. The FineFlavor class has three instances: Delicate, Moderate and Strong. MountadamPinotNoir is associated with two other instances ussing relations MadeFrom and HasFlavor.",
 
-            "An ontology relationship between classes where an instance cannot be part of two classes at the same time."
-            + "\n\nAn example of this would be different types of musical dramas. The classes Opera, Operetta and Musical are all disjoint, meaning no class can be more than one of these at once.",
+            "DisjointWith guarantees that an instance of one class cannot simultaneously be an instance of another specified class. "
+            + "\n\nFor example, given two classes: Pasta and Fruit, that are stated to be disjoint with each other, we can deduce that if A is an instance of Pasta, then A is not an instance of Fruit.",
 
-            "An ontology relationship that creates a single class/list out of the contents of others. Taken from logic operations, a union is all items put together from two lists, disregarding any duplicates. In our case: a class that contains all instances that belong to any number of classes, removing duplicates."
-            + "\n\nAn example of this would be between two lists of famous operas. A union of these two lists would contain all operas that appear in the lists, with duplicates being removed.",
+            "unionOf states a combination of two or more classes, where the resulting class contains all instances present in either of the original class. "
+            + "\n\nFor example, given two classes: SweetFruit and NonSweetFruit, we can state that a third class: Fruit is the union of SweetFruit and NonSweetFruit.",
 
-            "An ontology relationship that creates a single class/list out of the contents of others. Taken from logic operations, an intersection is all items that two lists share in common put into one. In our case: a class that contains all instances shared between two other classes."
-            + "\n\nAn example of this would be between two lists of famous operas. An intersection of these two lists would contain only the operas appearing in both lists, and disregard all others.",
+            "complementOf selects all instances from the domain of discourse that do not belong to a certain class. "
+            + "\n\nFor example, given two classes: Children and SeniorCitizens, to express Children are not SeniorCitizens, we would essentially state that Children is a subclass of the complement of SeniorCitizens.",
 
-            "An ontology relationship between two classes where an instance can either belong to one class or the other. If it does not belong to one, it MUST belong to the other."
-            + "\n\nAn example of this would be two meal options at a restaurant: standard options and vegetarian options. If an item is not standard, then it is vegetarian, and vice versa.",
+            "intersectionOf a class A and class B is the set of instances that are in both. "
+            + "\n\nFor example, a class WhiteWine can be defined as the intersection of the class Wine and the set of things that are white in color. In other words, if something is white and a wine, then it is an instance of WhiteWine.",
             ]
 
         tutorialTitle.innerText = titles[0];
@@ -284,10 +295,6 @@
 
     <!--Display for questions and answers, used for questionaire participation-->
     <div id="questionPage" class="h_sub" style="display:none">
-        <script>
-            let pageState = 0;
-        </script>
-
         <!--Div for questions and answers-->
         <div class="h_question">
             <!--Div for question and answer-option text-->
