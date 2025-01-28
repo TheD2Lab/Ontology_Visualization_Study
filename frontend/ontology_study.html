@@ -293,11 +293,113 @@
         ///////////////////////////////////////////////////////////////////////////////////////////
     </script>
 
-    <!--Display for questions and answers, used for questionaire participation-->
+    <div id="questionPage" style="display:none;flex-direction:column;width:1920px;height:1080px;align-items:center;">
+        <div style="background-color:rgb(240, 240, 240);margin-bottom:20px;width:1920px;">
+            <div id="questionTitle" class="h_background_bullet_title">DisjointWith</div>
+            <div id="questionText" class="h_background_bullet_text" style="font-size:30px;">The classes do not and cannot share any subclasses or values. For example:<br>Class A is disjointWith Class B. Class A = [1, 2, 3], Class B = [4, 5, 6]</div>
+        </div>
+        <div style="display:flex;flex-direction:row;margin-bottom:20px;justify-content:space-evenly;width:1920px">
+            <button id="pageButton1" class="ans_button" onclick="changePage(0)">Answer A</button>
+            <button id="pageButton2" class="ans_button" onclick="changePage(1)">Answer B</button>
+            <button id="pageButton3" class="ans_button" onclick="changePage(2)">Answer C</button>
+            <button id="pageButton4" class="ans_button" onclick="changePage(3)">Answer D</button>
+        </div>
+        <div id="tree-container" style="background-color:rgb(240, 240, 240);width:auto;height:auto;max-height:700px;margin-bottom:20px;"></div>
+    </div>
+
+    <script>
+        const questionNum = 10;
+
+        //List of all questions
+        const pageQuestions = 
+        [{
+            1: "Which class does the class #VegetarianPizza have a complementOf relationship with?",
+            2: "Question 1-2",
+            3: "Question 1-3",
+            4: "Question 1-4",
+            5: "Question 1-5",
+            6: "Question 1-6",
+            7: "Question 1-7",
+            8: "Question 1-8",
+            9: "Question 1-9",
+            10: "Question 1-10",
+        },
+        {
+            1: "Question 2-1",
+            2: "Question 2-2",
+            3: "Question 2-3",
+            4: "Question 2-4",
+            5: "Question 2-5",
+            6: "Question 2-6",
+            7: "Question 2-7",
+            8: "Question 2-8",
+            9: "Question 2-9",
+            10: "Question 2-10",
+        },
+        {
+            1: "Question 3-1",
+            2: "Question 3-2",
+            3: "Question 3-3",
+            4: "Question 3-4",
+            5: "Question 3-5",
+            6: "Question 3-6",
+            7: "Question 3-7",
+            8: "Question 3-8",
+            9: "Question 3-9",
+            10: "Question 3-10",
+        }];
+
+        //List of all answers
+        const pageAnswers = 
+        [{
+            1: ["A","B","C","D"],
+            2: ["A","B","C","D"],
+            3: ["A","B","C","D"],
+            4: ["A","B","C","D"],
+            5: ["A","B","C","D"],
+            6: ["A","B","C","D"],
+            7: ["A","B","C","D"],
+            8: ["A","B","C","D"],
+            9: ["A","B","C","D"],
+            10: ["A","B","C","D"]
+        },
+        {
+            1: ["A","B","C","D"],
+            2: ["A","B","C","D"],
+            3: ["A","B","C","D"],
+            4: ["A","B","C","D"],
+            5: ["A","B","C","D"],
+            6: ["A","B","C","D"],
+            7: ["A","B","C","D"],
+            8: ["A","B","C","D"],
+            9: ["A","B","C","D"],
+            10: ["A","B","C","D"]
+        },
+        {
+            1: ["A","B","C","D"],
+            2: ["A","B","C","D"],
+            3: ["A","B","C","D"],
+            4: ["A","B","C","D"],
+            5: ["A","B","C","D"],
+            6: ["A","B","C","D"],
+            7: ["A","B","C","D"],
+            8: ["A","B","C","D"],
+            9: ["A","B","C","D"],
+            10: ["A","B","C","D"]
+        }
+        ];
+
+        //List of all correct answers (by index)
+        const pageSolutions =   [[1, 0, 3, 2, 1, 2, 1, 0, 3, 2], 
+                                [1, 0, 3, 2, 1, 2, 1, 0, 3, 2], 
+                                [1, 0, 3, 2, 1, 2, 1, 0, 3, 2]];
+    </script>
+
+    <!--
     <div id="questionPage" class="h_sub" style="display:none">
-        <!--Div for questions and answers-->
+        
         <div class="h_question">
-            <!--Div for question and answer-option text-->
+           
             <div class = "h_sub_question">
                 <div id="questionText" style="padding:20px;width:100% - 40px;">
                     Question1
@@ -307,113 +409,22 @@
                 </div>
             </div>
 
-            <!--Container for the answer buttons-->
+           
             <div class="h_answer_box">
                 <button id="pageButton" class="ans_button" onclick="changePage(0)">Answer A</button>
                 <button id="pageButton" class="ans_button" onclick="changePage(1)">Answer B</button>
                 <button id="pageButton" class="ans_button" onclick="changePage(2)">Answer C</button>
                 <button id="pageButton" class="ans_button" onclick="changePage(3)">Answer D</button>
             </div>
-
-            <!--Script containing the questions and answers for the question page-->
-            <script>
-                const questionNum = 10;
-
-                //List of all questions
-                const pageQuestions = 
-                [{
-                    1: "Question 1:\n\n Which class does the class #VegetarianPizza have a complementOf relationship with?",
-                    2: "Question 2:\n\n Question 1-2",
-                    3: "Question 3:\n\n Question 1-3",
-                    4: "Question 4:\n\n Question 1-4",
-                    5: "Question 5:\n\n Question 1-5",
-                    6: "Question 6:\n\n Question 1-6",
-                    7: "Question 7:\n\n Question 1-7",
-                    8: "Question 8:\n\n Question 1-8",
-                    9: "Question 9:\n\n Question 1-9",
-                    10: "Question 10:\n\n Question 1-10",
-                },
-                {
-                    1: "Question 1:\n\n Question 2-1",
-                    2: "Question 2:\n\n Question 2-2",
-                    3: "Question 3:\n\n Question 2-3",
-                    4: "Question 4:\n\n Question 2-4",
-                    5: "Question 5:\n\n Question 2-5",
-                    6: "Question 6:\n\n Question 2-6",
-                    7: "Question 7:\n\n Question 2-7",
-                    8: "Question 8:\n\n Question 2-8",
-                    9: "Question 9:\n\n Question 2-9",
-                    10: "Question 10:\n\n Question 2-10",
-                },
-                {
-                    1: "Question 1:\n\n Question 3-1",
-                    2: "Question 2:\n\n Question 3-2",
-                    3: "Question 3:\n\n Question 3-3",
-                    4: "Question 4:\n\n Question 3-4",
-                    5: "Question 5:\n\n Question 3-5",
-                    6: "Question 6:\n\n Question 3-6",
-                    7: "Question 7:\n\n Question 3-7",
-                    8: "Question 8:\n\n Question 3-8",
-                    9: "Question 9:\n\n Question 3-9",
-                    10: "Question 10:\n\n Question 3-10",
-                }];
-
-                //List of all answers
-                const pageAnswers = 
-                [{
-                    1: "A) MeatPizza\nB) SeafoodPizza\nC) NonVegetarianPizza\nD) None",
-                    2: "A) Answer 1-2-1\nB) Answer 1-2-2\nC) Answer 1-2-3\nD) Answer 1-2-4",
-                    3: "A) Answer 1-3-1\nB) Answer 1-3-2\nC) Answer 1-3-3\nD) Answer 1-3-4",
-                    4: "A) Answer 1-4-1\nB) Answer 1-4-2\nC) Answer 1-4-3\nD) Answer 1-4-4",
-                    5: "A) Answer 1-5-1\nB) Answer 1-5-2\nC) Answer 1-5-3\nD) Answer 1-5-4",
-                    6: "A) Answer 1-6-1\nB) Answer 1-6-2\nC) Answer 1-6-3\nD) Answer 1-6-4",
-                    7: "A) Answer 1-7-1\nB) Answer 1-7-2\nC) Answer 1-7-3\nD) Answer 1-7-4",
-                    8: "A) Answer 1-8-1\nB) Answer 1-8-2\nC) Answer 1-8-3\nD) Answer 1-8-4",
-                    9: "A) Answer 1-9-1\nB) Answer 1-9-2\nC) Answer 1-9-3\nD) Answer 1-9-4",
-                    10: "A) Answer 1-10-1\nB) Answer 1-10-2\nC) Answer 1-10-3\nD) Answer 1-10-4",
-                },
-                {
-                    1: "A) Answer 2-1-1\nB) Answer 2-1-2\nC) Answer 2-1-3\nD) Answer 2-1-4",
-                    2: "A) Answer 2-2-1\nB) Answer 2-2-2\nC) Answer 2-2-3\nD) Answer 2-2-4",
-                    3: "A) Answer 2-3-1\nB) Answer 2-3-2\nC) Answer 2-3-3\nD) Answer 2-3-4",
-                    4: "A) Answer 2-4-1\nB) Answer 2-4-2\nC) Answer 2-4-3\nD) Answer 2-4-4",
-                    5: "A) Answer 2-5-1\nB) Answer 2-5-2\nC) Answer 2-5-3\nD) Answer 2-5-4",
-                    6: "A) Answer 2-6-1\nB) Answer 2-6-2\nC) Answer 2-6-3\nD) Answer 2-6-4",
-                    7: "A) Answer 2-7-1\nB) Answer 2-7-2\nC) Answer 2-7-3\nD) Answer 2-7-4",
-                    8: "A) Answer 2-8-1\nB) Answer 2-8-2\nC) Answer 2-8-3\nD) Answer 2-8-4",
-                    9: "A) Answer 2-9-1\nB) Answer 2-9-2\nC) Answer 2-9-3\nD) Answer 2-9-4",
-                    10: "A) Answer 2-10-1\nB) Answer 2-10-2\nC) Answer 2-10-3\nD) Answer 2-10-4",
-                },
-                {
-                    1: "A) Answer 3-1-1\nB) Answer 3-1-2\nC) Answer 3-1-3\nD) Answer 3-1-4",
-                    2: "A) Answer 3-2-1\nB) Answer 3-2-2\nC) Answer 3-2-3\nD) Answer 3-2-4",
-                    3: "A) Answer 3-3-1\nB) Answer 3-3-2\nC) Answer 3-3-3\nD) Answer 3-3-4",
-                    4: "A) Answer 3-4-1\nB) Answer 3-4-2\nC) Answer 3-4-3\nD) Answer 3-4-4",
-                    5: "A) Answer 3-5-1\nB) Answer 3-5-2\nC) Answer 3-5-3\nD) Answer 3-5-4",
-                    6: "A) Answer 3-6-1\nB) Answer 3-6-2\nC) Answer 3-6-3\nD) Answer 3-6-4",
-                    7: "A) Answer 3-7-1\nB) Answer 3-7-2\nC) Answer 3-7-3\nD) Answer 3-7-4",
-                    8: "A) Answer 3-8-1\nB) Answer 3-8-2\nC) Answer 3-8-3\nD) Answer 3-8-4",
-                    9: "A) Answer 3-9-1\nB) Answer 3-9-2\nC) Answer 3-9-3\nD) Answer 3-9-4",
-                    10: "A) Answer 3-10-1\nB) Answer 3-10-2\nC) Answer 3-10-3\nD) Answer 3-10-4",
-                }
-                ];
-
-                //List of all correct answers (by index)
-                const pageSolutions =   [[1, 0, 3, 2, 1, 2, 1, 0, 3, 2], 
-                                        [1, 0, 3, 2, 1, 2, 1, 0, 3, 2], 
-                                        [1, 0, 3, 2, 1, 2, 1, 0, 3, 2]];
-            </script>
         </div>
         
-        <!--Div for visualization, implementing D3 later on-->
         <div class="h_visual">
             <div id="tree-container" style="width:100%;height:100%;background-color:rgb(240,240,240);justify-content:center;align-items:center;"></div>
         </div>
 
         <canvas id="aoiCanvas" width="1920" height="1080" style="position: absolute; top: 0; left: 0; z-index: 10; pointer-events: none;"></canvas>
-        <!--<button onclick="enableAOISelection()" style="position: relative; z-index: 11;">Start AOI Selection</button>
-        <button onclick="saveAOIs()" style="position: relative; z-index: 11; margin-top: 10px;">Save AOIs</button>-->
     </div>
+-->
 
     <!-- The parent container for calibration -->
     <div id="h_calibration" class="h_calibration" style="display:none">
@@ -621,6 +632,13 @@
         const continueButton = document.getElementById("pageButton");           //Variable tied to the page button HTML component
         const menuCalibration = document.getElementById("h_calibration");       //Variable tied to the eye-tracking calibration HTML page
 
+        const questionButtons = [
+            document.getElementById("pageButton1"),
+            document.getElementById("pageButton2"),
+            document.getElementById("pageButton3"),
+            document.getElementById("pageButton4")
+        ]
+
         /**
         const v1 = document.createElement("img");   //Variable for temporary image until we have a final first visualization
         //Establish source file and size of first temporary visualization
@@ -650,8 +668,14 @@
         {
             menuCalibration.style.display="none"
             menuQuestion.style.display="flex";
+            
             document.getElementById("questionText").innerText = pageQuestions[question_var][question_value];
-            document.getElementById("answersText").innerText = pageAnswers[question_var][question_value];
+            //document.getElementById("answersText").innerText = pageAnswers[question_var][question_value];
+            document.getElementById("questionTitle").innerText = ("Question" + question_value);
+            for(let i = 0; i < 4; i++)
+            {
+                questionButtons[i].innerText = pageAnswers[question_var][question_value][i];
+            }
         }
         window.disableCalibration = disableCalibration;
 
@@ -798,7 +822,12 @@
                 menuQuestion.style.display = "flex";
         
                 document.getElementById("questionText").innerText = pageQuestions[question_var][question_value];
-                document.getElementById("answersText").innerText = pageAnswers[question_var][question_value];
+                document.getElementById("questionTitle").innerText = ("Question" + question_value);
+                for(let i = 0; i < 4; i++)
+                {
+                    questionButtons[i].innerText = pageAnswers[question_var][question_value][i];
+                }
+                //document.getElementById("answersText").innerText = pageAnswers[question_var][question_value];
             } 
             //If the page value is equal to 11, cut in an intermission to change question/visualization styles
             else if (page_value == 11)
