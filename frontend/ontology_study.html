@@ -6,13 +6,22 @@
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <!-- <script src="assets/js/webgazer.js"></script> -->
     <script src="assets/js/aoi-selection.js"></script>
-    <script src="assets/js/circle-packing.js"></script>
     <script src="assets/js/eyetracking.js"></script>
     <script src="assets/js/calibration.js"></script>
-    <script src="assets/js/link-tree.js"></script>
+
+    <!--Imports for ontology visualizations in Javascript format-->
+    <script src="assets/js/circle-packing.js"></script>
     <script src="assets/js/node-link.js"></script>
-    <script src="assets/js/pizza-baseline.js"></script>
+    <script src="assets/js/tree-map.js"></script>
+
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+    <!--Imports for data files, originally JSON but translated to Javascript for functionality-->
+    <script src="assets/json/pizza-baseline.js"></script>
+    <script src="assets/json/pizza-treeMap.js"></script>
+    <script src="assets/json/pizza-circlePack.js"></script>
+    <script src="assets/json/music_base.js"></script>
+    <script src="assets/json/restaurant_base.js"></script>
 </head>
 
 <!--Main body of the webpage-->
@@ -25,85 +34,72 @@
             <!--Consent Form-->
             <div style="height:100%;overflow-y:scroll;margin-bottom:10px;">
                 <div class="h_consent_bullet_title">Introduction</div>
-                <div class="h_consent_bullet_text">This study is conducted by the Principal Investigator Dr. Bo Fu as part of a research project that 
-                    aims to determine optimal visualizations for understanding ontology relationships in a test-based environment. This study focuses on 
-                    the evaluation of two commonly used visualization techniques in their support to human users in the comprehension of mapping relationships 
-                    between pairwise ontologies. This research is funded by the California State University’s Program for Education and Research in Biotechnology (CSUPERB) program.
+                <div class="h_consent_bullet_text">This study is conducted by a team of undergraduate and graduate student 
+                    researchers under the supervision of Dr. Bo Fu as part of a research project that aims to evaluate interactive 
+                    visualizations in their support for the human user when making sense of ontological relationships.
                 </div>
 
                 <div class="h_consent_bullet_title">Purpose and Objectives</div>
-                <div class="h_consent_bullet_text">The goal of this study is to assess visualization techniques and the extent to which they can support human users during 
-                    interactions with ontology mappings. The findings from this research will inform the future design and development of visualization techniques for ontology mappings. 
+                <div class="h_consent_bullet_text">The goal of this study is to assess visualization techniques and the extent to which they can support human users during interactions with ontological relations. The findings from this research will inform the future design and development of visualization techniques.  
                 </div>
 
-                <div class="h_consent_bullet_title">Purpose and Objectives</div>
-                <div class="h_consent_bullet_text">The goal of this study is to assess visualization techniques and the extent to which they can support human users during 
-                    interactions with ontology mappings. The findings from this research will inform the future design and development of visualization techniques for ontology mappings. 
+                <div class="h_consent_bullet_title">Importance Of Research</div>
+                <div class="h_consent_bullet_text">The research and data collected within this study will offer insights on the desirable visual attributes that can effectively illustrate relationships between ontological entities. The findings from this research will generate new knowledge contributing to the advancement of this field. 
                 </div>
 
                 <div class="h_consent_bullet_title">Participation Selection</div>
                 <div class="h_consent_bullet_text">No prior knowledge of ontology or ontology mappings is required. Individuals who are eighteen years old or older are invited to participate.</div>
 
                 <div class="h_consent_bullet_title">What is Involved?</div>
-                <div class="h_consent_bullet_text">If you consent to voluntarily participate in this research, you will be asked to complete brief tutorials on ontologies, ontology mappings, 
-                    as well as visualizations for ontologies and ontology mappings. You will also be asked to perform two multiple-choice tests based on ontology mappings with accompanying 
-                    visualizations. You will be asked to take part in interviews and fill out questionnaires to express your satisfaction of the given visualizations. An eye tracker will be 
-                    used to observe your interaction with the given mapping visualizations and collect your gaze data. This study will take place in Room 128A in the Vivian Engineering Center (VEC), 
-                    California State University of Long Beach.
+                <div class="h_consent_bullet_text">If you consent to voluntarily participate in this study, you will be asked to complete brief tutorials on ontologies and visualizations. You will be asked to take part in interviews and complete questionnaires to express your satisfaction with the given visualizations. An eye tracker will be used to observe your interaction with the given visualizations and your gaze data will be collected (such as how long your gaze was fixated on a particular visual cue). This study will take place in Room 128A in the Vivian Engineering Center (VEC), California State University of Long Beach.
                 </div>
 
-                <div class="h_consent_bullet_title">Inconvenience</div>
-                <div class="h_consent_bullet_text">The study is estimated to take approximately [TO BE DETERMINED] hour of your time. It is advised that if you consent to participate in this study 
-                    that you set aside at approximately [TO BE DETERMINED] hours to accommodate any eventual delays.</div>
+                <div class="h_consent_bullet_title">Duration</div>
+                <div class="h_consent_bullet_text">The study is estimated to take approximately one hour of your time. It is advised that you set aside approximately 1.5 hours to accommodate potential delay.</div>
 
                 <div class="h_consent_bullet_title">Risks</div>
-                <div class="h_consent_bullet_text">There are no known, or anticipated risks to you by participating in this research.</div>
+                <div class="h_consent_bullet_text">There are no known or anticipated risks to you by participating in this research.</div>
 
                 <div class="h_consent_bullet_title">Benefits</div>
-                <div class="h_consent_bullet_text">The potential benefits of you participating in this research include contributing to the understanding of visualizations in ontology mapping and 
-                    the field as a whole. This could lead to future advancements in the visualization design for ontology mappings.
+                <div class="h_consent_bullet_text">The potential benefits of you participating in this study include contributing to the understanding of visualizations for ontological relationships and the field as a whole. This could lead to future advancements in the visualizations designed for ontological relations.
                 </div>
 
                 <div class="h_consent_bullet_title">Voluntary Participation</div>
-                <div class="h_consent_bullet_text">Your participation in this research is entirely voluntary. You may withdraw at any moment without consequences nor explanation. 
-                    If you do so, your data will be destroyed permanently.
+                <div class="h_consent_bullet_text">Your participation in this research is entirely voluntary. You may withdraw at any moment without consequences nor explanation. If you do so, your data will be destroyed permanently. 
                 </div>
 
                 <div class="h_consent_bullet_title">Compensation</div>
-                <div class="h_consent_bullet_text">The compensation for taking part in this study is [INSERT COMPENSATION AMOUNT]</div>
+                <div class="h_consent_bullet_text">The compensation for taking part in this study is $25 BeachBucks, which will be deposited directly into the account associated with your student ID.</div>
 
                 <div class="h_consent_bullet_title">Anonymity</div>
                 <div class="h_consent_bullet_text">All participants and the data generated in this study will be anonymized.</div>
 
                 <div class="h_consent_bullet_title">Confidentiality</div>
-                <div class="h_consent_bullet_text">This study enforces anonymity procedures to protect your confidentiality and the confidentiality of the data collected. 
-                    This data can only be accessed by the principal investigator and storage of this data is completely protected.
+                <div class="h_consent_bullet_text">All participants' information and the data collected in this study are anonymized. Your confidentiality and the confidentiality of the data are protected in secured storage, accessible by the research team only.
                 </div>
 
                 <div class="h_consent_bullet_title">Dissemination of Results</div>
-                <div class="h_consent_bullet_text">It is anticipated that the results of this study will be shared with others in the following ways: scientific websites, articles, and 
-                    presentations. Where used in academic publications, all data will be aggregated, and no personally identifiable information will be published. 
+                <div class="h_consent_bullet_text">It is anticipated that the results of this study will be shared with others in the following ways: scientific websites, articles, and presentations. Where used in publications, all data will be aggregated, and no personally identifiable information will be published. 
                 </div>
 
                 <div class="h_consent_bullet_title">Disposal of Data</div>
-                <div class="h_consent_bullet_text">Data collected from this study will be safely kept during the duration of the study. Once completed the data will be disposed of permanently.</div>
+                <div class="h_consent_bullet_text">Data collected from this study will be safely kept during the duration of the study. Once completed the data will be disposed of permanently. </div>
 
                 <div class="h_consent_bullet_title">Contact Information</div>
-                <div class="h_consent_bullet_text">If you have any questions about this research, please contact the Principal Investigator Dr. Bo Fu (Bo.Fu@csulb.edu). If you have any questions about the conduct of this study 
-                    protocol, particularly about providing informed consent and unexpected contingencies, please contact the IRB Office (IRB@csulb.edu)
+                <div class="h_consent_bullet_text">If you have any questions about this research, please contact Dr. Bo Fu (Bo.Fu@csulb.edu). If you have any questions about the conduct of this study protocol, particularly about providing informed consent and unexpected contingencies, please contact the IRB Office (IRB@csulb.edu). 
                 </div>
 
-                <div class="h_consent_bullet_title">On the Day of Scheduled Studies</div>
-                <div class="h_consent_bullet_text">Participants will be contacted before arrival for a scheduled study appointment and will be asked COVID-19 pre-screening questions. If there is an indication of COVID-19 symptoms, 
-                    the appointment will be canceled and rescheduled if possible after the participant’s symptoms clear. Researchers will also perform a COVID-19 self-assessment and will not come to campus or meet in a community setting 
-                    if symptoms are indicated. Researchers will only resume work after symptoms clear. If all is well, a study will proceed as scheduled following the COVID-19 Health and Safety Requirements as outlined above. Surfaces and 
-                    equipment that may be in contact with participants will be wiped down using sanitizing wipes, or hand sanitizer will be available for the researcher and participants.                     
+                <!--
+                <div class="h_consent_bullet_title">Consent</div>
+                <div class="h_consent_bullet_text">By checking the box below, you indicate that you understand the above conditions of participation in this study, that you have had the opportunity to have your questions answered by the researcher, and that you consent to participate in this research.                     
                 </div>
+                -->
             </div>
 
             <div style="display:flex;flex-direction:row;justify-content:center;align-items:center;">
                 <div style="font-size:15px;margin-right:10px;">I consent to all information stated above and agree to take part in the research study</div>
-                <input type="checkbox" id="consentCheck">
+                <input type="text" id="nameInput" style = "width: 200px; margin-right:10px;" placeholder="First + Last Name">
+                <input type="text" id="IDInput" style = "width: 100px" placeholder="Student ID #">
             </div>
         </div>
         <button id="consentButton" class="h_begin_button" onclick="changePage()" disabled>Continue</button>
@@ -115,13 +111,27 @@
         //
         //
         //// In this area, the eventlistener will watch for changes in the website (on this page, just the checkbox) and will update it based on whether the box has been checked or not 
-        const checkbox = document.getElementById('consentCheck');
+        const nameField = document.getElementById('nameInput');
+        const IDField = document.getElementById('IDInput');
         const button = document.getElementById('consentButton');
 
-        // Add an event listener to the checkbox
-        checkbox.addEventListener('change', function () {
-        // Enable or disable the button based on the checkbox state
-        button.disabled = !checkbox.checked;
+        function checkInput()
+        {
+            console.log("Check");
+            if (nameField.value.trim() !== '' && IDField.value.trim() !== '') {
+                button.disabled = false;
+            } else {
+                button.disabled = true;
+            }
+        }
+
+        // Attach the input event listener to the input field
+        nameField.addEventListener('input', function() {
+            console.log("YES")
+            checkInput();
+        });
+        IDField.addEventListener('input', function() {
+            checkInput();
         });
         ////
         ////
@@ -157,11 +167,31 @@
         const tutorialText = document.getElementById("tutorial_text");
         const tutorialButton = document.getElementById("tutorial_button");
 
-        let titles = ["DisjointWith", "SameAs", "IntersectionOf", "UnionOf"]
-        let tutorials = ["Tutorial for disjoint relationships",
-            "Tutorial for sameas relationships",
-            "Tutorial for intersection relationships",
-            "Tutorial for union relationships"]
+        let titles = ["What is an Ontology?", 
+            "DisjointWith", 
+            "UnionOf",
+            "IntersectionOf",
+            "ComplementOf"]
+
+        let tutorials = ["An ontology is like a detailed map of knowledge about a specific topic or domain. It organizes information by defining concepts, their properties, and how they relate to each other, much like a family tree or a blueprint."
+            + "Think of it as a way to make sure everyone understands the same ideas and relationships in the same way when discussing or working with complex information."
+            + "\n\nEntity = a single instance of a class"
+            + "\n\nClass = a category or group of entities that all share similar characteristics"
+            + "\n\nRelationship = a way in which two or more entities/classes in an ontology are connected or related"
+            + "\n\nNext you will see a few different types of relationships you can expect to see during this study.",
+
+            "An ontology relationship between classes where an instance cannot be part of two classes at the same time."
+            + "\n\nAn example of this would be different types of musical dramas. The classes Opera, Operetta and Musical are all disjoint, meaning no class can be more than one of these at once.",
+
+            "An ontology relationship that creates a single class/list out of the contents of others. Taken from logic operations, a union is all items put together from two lists, disregarding any duplicates. In our case: a class that contains all instances that belong to any number of classes, removing duplicates."
+            + "\n\nAn example of this would be between two lists of famous operas. A union of these two lists would contain all operas that appear in the lists, with duplicates being removed.",
+
+            "An ontology relationship that creates a single class/list out of the contents of others. Taken from logic operations, an intersection is all items that two lists share in common put into one. In our case: a class that contains all instances shared between two other classes."
+            + "\n\nAn example of this would be between two lists of famous operas. An intersection of these two lists would contain only the operas appearing in both lists, and disregard all others.",
+
+            "An ontology relationship between two classes where an instance can either belong to one class or the other. If it does not belong to one, it MUST belong to the other."
+            + "\n\nAn example of this would be two meal options at a restaurant: standard options and vegetarian options. If an item is not standard, then it is vegetarian, and vice versa.",
+            ]
 
         tutorialTitle.innerText = titles[0];
         tutorialText.innerText = tutorials[0];
@@ -172,23 +202,28 @@
             tutorialTitle.innerText = titles[tutorial_value];
             tutorialText.innerText = tutorials[tutorial_value];
 
-            if (tutorial_value == 3)
+            console.log(tutorial_value);
+
+            if (tutorial_value < 5)
             {
-                tutorialButton.innerText = "Begin Study"
+                document.getElementById("tree-container-tutorial").replaceChild(visuals_tutorial[tutorial_value], document.getElementById("tree-container-tutorial").firstChild);
             }
-            if (tutorial_value == 4)
+            else if (tutorial_value == 5)
             {
                 changePage();
             }
         }
 
-        const vt = document.createElement("img");   //Variable for temporary image until we have a final second visualization
+        const vt1 = document.createElement("img");   //Variable for temporary image until we have a final second visualization
         //Establish source file and size of second temporary visualization
-        vt.src = "../p2.png"; 
-        vt.style.width = "100%"
-        vt.style.height = "100%"
+        vt1.src = "../ontologyExample.png"; 
+        vt1.style.width = "100%"
+        vt1.style.height = "100%"
 
-        const visuals_tutorial = [vt]    //Variable to store both temporary visualizations
+        const vt2 = nodeLink(MusicBaselineData);
+        const vt3 = nodeLink(RestaurantBaselineData);
+
+        const visuals_tutorial = [vt1, vt2, vt2, vt2, vt3]    //Variable to store both temporary visualizations
 
         document.getElementById("tree-container-tutorial").appendChild(visuals_tutorial[0])
         ////
@@ -229,7 +264,7 @@
                 //List of all questions
                 const pageQuestions = 
                 [{
-                    1: "Question 1:\n\n Question 1-1",
+                    1: "Question 1:\n\n Which class does the class #VegetarianPizza have a complementOf relationship with?",
                     2: "Question 2:\n\n Question 1-2",
                     3: "Question 3:\n\n Question 1-3",
                     4: "Question 4:\n\n Question 1-4",
@@ -268,7 +303,7 @@
                 //List of all answers
                 const pageAnswers = 
                 [{
-                    1: "A) Answer 1-1-1\nB) Answer 1-1-2\nC) Answer 1-1-3\nD) Answer 1-1-4",
+                    1: "A) MeatPizza\nB) SeafoodPizza\nC) NonVegetarianPizza\nD) None",
                     2: "A) Answer 1-2-1\nB) Answer 1-2-2\nC) Answer 1-2-3\nD) Answer 1-2-4",
                     3: "A) Answer 1-3-1\nB) Answer 1-3-2\nC) Answer 1-3-3\nD) Answer 1-3-4",
                     4: "A) Answer 1-4-1\nB) Answer 1-4-2\nC) Answer 1-4-3\nD) Answer 1-4-4",
@@ -314,7 +349,7 @@
         
         <!--Div for visualization, implementing D3 later on-->
         <div class="h_visual">
-            <div id="tree-container" style="width:100%;height:100%;background-color:rgb(240,240,240);"></div>
+            <div id="tree-container" style="width:100%;height:100%;background-color:rgb(240,240,240);justify-content:center;align-items:center;"></div>
         </div>
 
         <canvas id="aoiCanvas" width="1920" height="1080" style="position: absolute; top: 0; left: 0; z-index: 10; pointer-events: none;"></canvas>
@@ -348,6 +383,13 @@
         <div id="outroText" class="h_outro">
             Final
         </div>
+    </div>
+
+    <div id="intermissionPage" class="h_sub" style="Display:none">
+        <div id="outroText" class="h_outro">
+            Visual 1 complete
+        </div>
+        <button id="pageButton" class="ans_button" onclick="changePage()">Continue</button>
     </div>
 
     <script>
@@ -504,6 +546,7 @@
         /// There will be three sets of questions along with 3 sets of corresponding answers, and two different types of visualizations
 
         let page_value = -1;        //Page number variable, used to track the current page state
+        let question_value = -1;    //Question number variable, reset between visualization/question sets
         var question_var = 1;       //The index for which questions/answer options will be used: either 0, 1, or 2
         var visualization_var = 0;  //The binary index for which type of visualization will be used: either 0 or 1
         let answers = [];           //Variable to keep track of user answers
@@ -512,12 +555,13 @@
 
         let startTime = new Date().getTime();   //Variable to keep track of the time spent on the current page. This begins as soon as the page is loaded, meaning the first value can most-likely be disgarded 
 
-        const menuIntro = document.getElementById("introPage");             //Variable tied to the intro HTML page
-        const menuBackground = document.getElementById("backgroundPage")    //Variable tied to the background information HTML page
-        const menuQuestion = document.getElementById("questionPage")        //Variable tied to the main question HTML page
-        const menuOutro = document.getElementById("outroPage");             //Variable tied to the final outro HTML page
-        const continueButton = document.getElementById("pageButton");       //Variable tied to the page button HTML component
-        const menuCalibration = document.getElementById("h_calibration");   //Variable tied to the eye-tracking calibration HTML page
+        const menuIntro = document.getElementById("introPage");                 //Variable tied to the intro HTML page
+        const menuBackground = document.getElementById("backgroundPage")        //Variable tied to the background information HTML page
+        const menuQuestion = document.getElementById("questionPage")            //Variable tied to the main question HTML page
+        const menuIntermission = document.getElementById("intermissionPage");   //Variable tied to the intermission page between visualizations
+        const menuOutro = document.getElementById("outroPage");                 //Variable tied to the final outro HTML page
+        const continueButton = document.getElementById("pageButton");           //Variable tied to the page button HTML component
+        const menuCalibration = document.getElementById("h_calibration");       //Variable tied to the eye-tracking calibration HTML page
 
         /**
         const v1 = document.createElement("img");   //Variable for temporary image until we have a final first visualization
@@ -526,14 +570,18 @@
         v1.style.width = "100%"
         v1.style.height = "100%"
         */
+        /*
         const v2 = document.createElement("img");   //Variable for temporary image until we have a final second visualization
         //Establish source file and size of second temporary visualization
         v2.src = "../p2.png"; 
         v2.style.width = "100%"
         v2.style.height = "100%"
+        */
         
 
-        const v1 = nodeLink(jsonData);
+        const v1 = nodeLink(PizzaBaselineData);
+        //const v2 = treeMap(PizzaTreeMapData);
+        const v2 = packing(pizzaCirclePackData)
 
         const visuals = [v1, v2]    //Variable to store both temporary visualizations
 
@@ -543,7 +591,9 @@
         function disableCalibration()
         {
             menuCalibration.style.display="none"
-            menuBackground.style.display="flex";
+            menuQuestion.style.display="flex";
+            document.getElementById("questionText").innerText = pageQuestions[question_var][question_value];
+            document.getElementById("answersText").innerText = pageAnswers[question_var][question_value];
         }
         window.disableCalibration = disableCalibration;
 
@@ -629,9 +679,10 @@
             document.body.removeChild(link); // Remove link after download
         }
 
-        function changePage(ans = -1, iterate_page=true) {
+        function changePage(ans = -1) {
             if (ans !== -1) answers.push(ans);
             page_value += 1; // Increment only once
+            question_value += 1;
         
             if (page_value === 1 && !gazeTrackingEnabled) {
                 startTrackingGaze(); // Start gaze tracking
@@ -655,7 +706,13 @@
         //Iterates through different if-statements to check whether the condition for displaying certain pages is met 
         function updateFrontEnd() 
         {
-            if (page_value === 0) {
+            //If the page value is equal to 0, begin the calibration sequence
+            if (page_value == 0)
+            {
+                menuIntro.style.display = "none";
+                menuBackground.style.display = "flex";
+            }
+            else if (page_value === 1) {
                 if (!calibrated)
                 {
                     menuIntro.style.display = "none";
@@ -675,13 +732,25 @@
                     console.log("STOPPING CALIBRATION");
                     disableCalibration();
                 }
-            } else if (page_value > 0 && page_value <= 10) {
+            } 
+            //If the page value is between 0 and 22, and not equal to 11, then perform the regular assessment frontend update
+            else if (page_value > 0 && page_value <= 21 && page_value != 11) {
                 menuBackground.style.display = "none";
+                menuIntermission.style.display = "none";
                 menuQuestion.style.display = "flex";
         
-                document.getElementById("questionText").innerText = pageQuestions[question_var][page_value];
-                document.getElementById("answersText").innerText = pageAnswers[question_var][page_value];
-            } else if (page_value > 10) {
+                document.getElementById("questionText").innerText = pageQuestions[question_var][question_value];
+                document.getElementById("answersText").innerText = pageAnswers[question_var][question_value];
+            } 
+            //If the page value is equal to 11, cut in an intermission to change question/visualization styles
+            else if (page_value == 11)
+            {
+                menuQuestion.style.display = "none";
+                menuIntermission.style.display = "flex";
+                question_value = 0;
+            }
+            //If the page value is above 21, then end the study, concluding that all questions have been answered 
+            else if (page_value > 21) {
                 menuQuestion.style.display = "none";
                 menuOutro.style.display = "flex";
                 continueButton.style.display = "none";
@@ -738,28 +807,33 @@
                     case '1':
                         //Prevent default browser activity, and instead run the function to begin the calibration sequence 
                         question_var = 0;
+                        
                         break;
                     //Keyboard shortcut for updating the question/answer value to the second set of questions
                     case '2':
                         //Prevent default browser activity, and instead run the function to begin the calibration sequence 
                         question_var = 1;
+                        
                         break;
                     //Keyboard shortcut for updating the question/answer value to the third set of questions
                     case '3':
                         //Prevent default browser activity, and instead run the function to begin the calibration sequence 
                         question_var = 2;
+                        
                         break;
                     case '4':
                         //Prevent default browser activity, and instead run the function to begin the calibration sequence 
                         console.log("Visual set: 1");
                         visualization_var = 0;
                         document.getElementById("tree-container").replaceChild(visuals[visualization_var], document.getElementById("tree-container").firstChild);
+                        
                         break;
                     case '5':
                         //Prevent default browser activity, and instead run the function to begin the calibration sequence
                         console.log("Visual set: 2");
                         visualization_var = 1;
                         document.getElementById("tree-container").replaceChild(visuals[visualization_var], document.getElementById("tree-container").firstChild);
+                        
                         break;
                     case 'p':
                         disableCalibration();

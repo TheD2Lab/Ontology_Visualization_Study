@@ -1,4 +1,4 @@
-const jsonData = {
+const PizzaBaselineData = {
     "nodes": [
             {"id": "DomainThing", "group": 2},
                 {"id": "Country", "group": 3},
