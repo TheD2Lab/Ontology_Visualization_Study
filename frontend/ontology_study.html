@@ -26,8 +26,57 @@
 
 <!--Main body of the webpage-->
 <body class="h_main">
+    <div id="researcherPage" style="display:flex;flex-direction:column;justify-content:center;justify-content:space-evenly;align-items:center;width:100%;height:100%;">
+        <div style="text-align:center;font-size:40px;"> Researcher Page </div>
+        <div style="display:flex;flex-direction:row;justify-content:center;justify-content:space-evenly;align-items:center;width:100%;height:90%;">
+            <div style="display:flex;flex-direction:column;align-content:center;width:700px;height:400px;justify-content:space-between;">
+                <div style="text-align:center;font-size:20px;"> Set 1 </div>
+                <button class = "h_researcher_button" onclick="changeQuestions(0, 0)">Question Set 1</button>
+                <button class = "h_researcher_button" onclick="changeQuestions(0, 1)">Question Set 2</button>
+                <button class = "h_researcher_button" onclick="changeQuestions(0, 2)">Question Set 3</button>
+    
+                <button class = "h_researcher_button" onclick="changeVisuals(0, 0)">Visual 1</button>
+                <button class = "h_researcher_button" onclick="changeVisuals(0, 1)">Visual 2</button>
+                <button class = "h_researcher_button" onclick="changeVisuals(0, 2)">Visual 3</button>
+            </div>
+            <div style="display:flex;flex-direction:column;align-content:center;width:700px;height:400px;justify-content:space-between;">
+                <div style="text-align:center;font-size:20px;"`> Set 2 </div>
+                <button class = "h_researcher_button" onclick="changeQuestions(1, 0)">Question Set 1</button>
+                <button class = "h_researcher_button" onclick="changeQuestions(1, 1)">Question Set 2</button>
+                <button class = "h_researcher_button" onclick="changeQuestions(1, 2)">Question Set 3</button>
+    
+                <button class = "h_researcher_button" onclick="changeVisuals(1, 0)">Visual 1</button>
+                <button class = "h_researcher_button" onclick="changeVisuals(1, 1)">Visual 2</button>
+                <button class = "h_researcher_button" onclick="changeVisuals(1, 2)">Visual 3</button>
+            </div>
+        </div>
+        <button class = "h_researcher_button" onclick="confirmResearcherPage()">Continue</button>
+    </div>
+
+    <script>
+        const visualOrder = [0, 1];
+        const questionOrder = [0, 1];
+
+        function changeVisuals(i, j)
+        {
+            visualOrder[i] = j;
+        }
+        function changeQuestions(i, j)
+        {
+            questionOrder[i] = j;
+        }
+
+        function confirmResearcherPage()
+        {
+            document.getElementById("researcherPage").style.display = "none";
+            document.getElementById("introPage").style.display = "flex";
+        }
+
+    </script>
+
+
     <!--Display for the introductory screen-->
-    <div id="introPage" style="display:flex;flex-direction:column;justify-content:space-between;align-items:center;height:1080px;width:100%">
+    <div id="introPage" style="display:none;flex-direction:column;justify-content:space-between;align-items:center;height:1080px;width:100%">
         <div class="h_intro_text">Data Visualization With Ontologies</div>
         <div class="h_intro_consent">
 
@@ -210,6 +259,8 @@
             }
             else if (tutorial_value == 5)
             {
+                question_var = questionOrder[0];
+                document.getElementById("tree-container").replaceChild(visuals[visualOrder[0]], document.getElementById("tree-container").firstChild);
                 changePage();
             }
         }
@@ -748,6 +799,9 @@
                 menuQuestion.style.display = "none";
                 menuIntermission.style.display = "flex";
                 question_value = 0;
+                question_var = questionOrder[1];
+                document.getElementById("tree-container").replaceChild(visuals[visualOrder[1]], document.getElementById("tree-container").firstChild);
+                
             }
             //If the page value is above 21, then end the study, concluding that all questions have been answered 
             else if (page_value > 21) {

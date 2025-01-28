@@ -57,6 +57,21 @@ html {
     height:900px;
 }
 
+.h_researcher_button {
+    border:none;
+    background-color:var(--white-color);
+    width:700px;
+    font-size:20px;
+    padding:10px;
+}
+
+.h_researcher_button:hover {
+    background-color: rgb(200,200,200);
+}
+.h_researcher_button:active {
+    background-color: rgb(175,175,175);
+}
+
 .h_outro {
     font-size: 50px;
     color: black;
