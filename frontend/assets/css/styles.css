@@ -92,7 +92,7 @@ html {
     font-size:30px;
 
     width: 1000px;
-    height:750px;
+    height:600px;
 
     background-color:var(--white-color);
 }
@@ -246,8 +246,8 @@ html {
 }
 
 .h_calibration {
-    width: 1920px;
-    height:1080px;;
+    width: 1800px;
+    height:1000px;;
 }
 
 .calibration_parent {

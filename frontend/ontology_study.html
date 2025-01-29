@@ -26,9 +26,9 @@
 
 <!--Main body of the webpage-->
 <body class="h_main">
-    <div id="researcherPage" style="display:flex;flex-direction:column;justify-content:center;justify-content:space-evenly;align-items:center;width:100%;height:100%;">
+    <div id="researcherPage" style="display:flex;flex-direction:column;justify-content:center;align-items:center;width:100%;height:100%;">
         <div style="text-align:center;font-size:40px;"> Researcher Page </div>
-        <div style="display:flex;flex-direction:row;justify-content:center;justify-content:space-evenly;align-items:center;width:100%;height:90%;">
+        <div style="display:flex;flex-direction:row;justify-content:center;justify-content:space-evenly;align-items:center;width:100%;height:80%;">
             <div style="display:flex;flex-direction:column;align-content:center;width:700px;height:400px;justify-content:space-between;">
                 <div style="text-align:center;font-size:20px;"> Set 1 </div>
                 <button class = "h_researcher_button" onclick="changeQuestions(0, 0)">Question Set 1</button>
@@ -76,8 +76,8 @@
 
 
     <!--Display for the introductory screen-->
-    <div id="introPage" style="display:none;flex-direction:column;justify-content:space-between;align-items:center;height:1080px;width:100%">
-        <div class="h_intro_text">Data Visualization With Ontologies</div>
+    <div id="introPage" style="display:none;flex-direction:column;justify-content:space-evenly;align-items:center;height:900px;width:100%">
+        <div class="h_intro_text">Informed Consent</div>
         <div class="h_intro_consent">
 
             <!--Consent Form-->
@@ -205,9 +205,9 @@
         </div>
     </div>
     -->
-    <div id="backgroundPage" style="display:none;flex-direction:column;width:1920px;height:1080px;align-items:center;">
+    <div id="backgroundPage" style="display:none;flex-direction:column;width:1800px;height:900px;align-items:center;">
         <div style="font-size:40px;">Tutorial</div>
-        <div style="background-color:rgb(240, 240, 240);margin-bottom:20px;">
+        <div style="background-color:rgb(240, 240, 240);margin-bottom:20px;width:1800px;">
             <div id="tutorial_title" class="h_background_bullet_title">DisjointWith</div>
             <div id="tutorial_text" class="h_background_bullet_text">The classes do not and cannot share any subclasses or values. For example:<br>Class A is disjointWith Class B. Class A = [1, 2, 3], Class B = [4, 5, 6]</div>
         </div>
@@ -293,12 +293,12 @@
         ///////////////////////////////////////////////////////////////////////////////////////////
     </script>
 
-    <div id="questionPage" style="display:none;flex-direction:column;width:1920px;height:1080px;align-items:center;">
-        <div style="background-color:rgb(240, 240, 240);margin-bottom:20px;width:1920px;">
+    <div id="questionPage" style="display:none;flex-direction:column;width:1800px;height:900px;align-items:center;">
+        <div style="background-color:rgb(240, 240, 240);margin-bottom:20px;width:1800px;">
             <div id="questionTitle" class="h_background_bullet_title">DisjointWith</div>
             <div id="questionText" class="h_background_bullet_text" style="font-size:30px;">The classes do not and cannot share any subclasses or values. For example:<br>Class A is disjointWith Class B. Class A = [1, 2, 3], Class B = [4, 5, 6]</div>
         </div>
-        <div style="display:flex;flex-direction:row;margin-bottom:20px;justify-content:space-evenly;width:1920px">
+        <div style="display:flex;flex-direction:row;margin-bottom:20px;justify-content:space-evenly;width:1800px">
             <button id="pageButton1" class="ans_button" onclick="changePage(0)">Answer A</button>
             <button id="pageButton2" class="ans_button" onclick="changePage(1)">Answer B</button>
             <button id="pageButton3" class="ans_button" onclick="changePage(2)">Answer C</button>
