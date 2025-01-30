@@ -280,6 +280,9 @@ html {
     transition: background-color 0.1s linear; /* Reduced from 0.2s to 0.1s */
     pointer-events: auto !important;
     z-index: 99999; /* Ensures dots are on top */
+    outline: 2px solid black; /* Adjust thickness as needed */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+
   }
   
   

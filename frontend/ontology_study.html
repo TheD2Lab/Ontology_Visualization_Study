@@ -40,7 +40,7 @@
                 <button class = "h_researcher_button" onclick="changeVisuals(0, 2)">Visual 3</button>
             </div>
             <div style="display:flex;flex-direction:column;align-content:center;width:700px;height:400px;justify-content:space-between;">
-                <div style="text-align:center;font-size:20px;"`> Set 2 </div>
+                <div style="text-align:center;font-size:20px;"> Set 2 </div>
                 <button class = "h_researcher_button" onclick="changeQuestions(1, 0)">Question Set 1</button>
                 <button class = "h_researcher_button" onclick="changeQuestions(1, 1)">Question Set 2</button>
                 <button class = "h_researcher_button" onclick="changeQuestions(1, 2)">Question Set 3</button>
@@ -463,151 +463,6 @@
 
     <script>
         ///////////////////////////////////////////////////////////////////////////////////////////
-        // IMPORTING AND INTITIALIZING WEBGAZER EYE-TRACKING OPERATIONS
-        //
-        //
-        //// In this area, the webgazer eyetracker is intitialized by gaining permission to utilize the device's webcam
-        //// A preview image of the webcam footage is shown in the corner of the screen, and all webgazer activity is shut down when the page is closed 
-
-
-        let gazeData = []; // Array to store raw gaze data
-        let gazeTrackingEnabled = false;
-
-        // Function to initialize WebGazer
-        function startTracking() {
-            console.log('Initializing WebGazer...');
-            if (typeof webgazer === 'undefined') {
-                console.error('WebGazer is not loaded.');
-                return;
-            }
-        
-            // Start WebGazer tracking
-            webgazer
-                .setGazeListener((data, timestamp) => {
-                    if (data) {
-                        gazeData.push({
-                            x: data.x, // X-coordinate
-                            y: data.y, // Y-coordinate
-                            timestamp: timestamp // Timestamp
-                        });
-                    }
-                })
-                .begin()
-        
-            // Explicitly hide prediction points
-            webgazer.showPredictionPoints(false);
-            console.log('Prediction points disabled after starting WebGazer.');
-        
-            const gazeDot = document.getElementById('webgazerGazeDot');
-            if (gazeDot) {
-                // Initially hide the gaze dot
-                gazeDot.style.display = 'block';                
-            } else {
-                console.warn('Gaze dot element not found.');
-            }
-
-        
-            console.log('WebGazer initialized and tracking started.');
-        }
-        
-        
-        
-        // Function to show the prediction dots
-        function showPredictionDots() {
-            const gazeDot = document.getElementById('webgazerGazeDot');
-            if (gazeDot) {
-                gazeDot.style.display = 'block'; // Show dots
-                console.log('Prediction dots enabled.');
-            } else {
-                console.warn('Gaze dot element not found.');
-            }
-        }
-        
-        function hidePredictionDots() {
-            const gazeDot = document.getElementById('webgazerGazeDot');
-            if (gazeDot) {
-                gazeDot.style.display = 'block'; // Hide dots
-                console.log('Prediction dots disabled.');
-            } else {
-                console.warn('Gaze dot element not found.');
-            }
-        }
-        
-
-        // Function to enable prediction points during calibration
-        function enablePredictionPoints() {
-            if (typeof webgazer !== 'undefined') {
-                webgazer.showPredictionPoints(true); // Enable prediction points
-                console.log('Prediction points enabled for calibration.');
-            }
-        }
-
-        // Function to disable prediction points after calibration
-        function disablePredictionPoints() {
-            if (typeof webgazer !== 'undefined') {
-                webgazer.showPredictionPoints(false); // Disable prediction points
-                console.log('Prediction points disabled after calibration.');
-            }
-        }
-
-
-        // Function to download gaze data as CSV
-        function downloadGazeDataCSV() {
-            let csvContent = "data:text/csv;charset=utf-8,";
-            csvContent += "x,y,timestamp\n"; // Add CSV header
-
-            if (gazeData.length > 0) {
-                gazeData.forEach(row => {
-                    csvContent += `${row.x},${row.y},${row.timestamp}\n`;
-                });
-            } else {
-                console.warn("No gaze data to download. Creating an empty file.");
-            }
-
-            const encodedUri = encodeURI(csvContent);
-            const link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
-            link.setAttribute("download", "raw_gaze_data.csv");
-            document.body.appendChild(link); // Append link to body
-            link.click(); // Trigger download
-            document.body.removeChild(link); // Remove link after download
-            console.log("Gaze data downloaded.");
-        }
-
-        // Keyboard shortcut handler
-        document.addEventListener('keydown', function (event) {
-            // Keyboard shortcut for downloading gaze data (Ctrl+D)
-            if (event.ctrlKey && event.key === 'd') {
-                event.preventDefault(); // Prevent default browser action
-                downloadGazeDataCSV(); // Trigger CSV download
-                console.log("Gaze data CSV downloaded!");
-            }
-        });
-
-        // Automatically initialize WebGazer on page load
-        window.onload = function () {
-            console.log('Page loaded. Starting WebGazer...');
-            if (typeof webgazer !== 'undefined') {
-                startTracking();
-                gazeTrackingEnabled = true;
-            } else {
-                console.error('WebGazer not loaded properly.');
-            }
-        };
-
-        // Stop WebGazer when the page is closed
-        window.onbeforeunload = function () {
-            if (typeof webgazer !== 'undefined') {
-                webgazer.end();
-            }
-        };
-        ////
-        ////
-        ///////////////////////////////////////////////////////////////////////////////////////////
-    </script>
-
-    <script>
-        ///////////////////////////////////////////////////////////////////////////////////////////
         // UPDATING VISUALS, QUESTIONS AND VISUALIZATIONS BASED ON PAGE NUMBER
         //
         //
@@ -664,19 +519,34 @@
         document.getElementById("tree-container").appendChild(visuals[visualization_var])
 
         //Function for disabling calibration once it is completed 
-        function disableCalibration()
-        {
-            menuCalibration.style.display="none"
-            menuQuestion.style.display="flex";
-            
+        function disableCalibration() {
+            console.log('Calibration completed. Proceeding to question and answer page.');
+        
+            // Hide the calibration UI
+            document.getElementById("h_calibration").style.display = "none";
+        
+            // Hide the calibration score popup
+            document.getElementById("calibration-score-popup").style.display = "none";
+        
+            // Show the question and answer page
+            document.getElementById("questionPage").style.display = "flex";
+        
+            // Initialize the first question
             document.getElementById("questionText").innerText = pageQuestions[question_var][question_value];
-            //document.getElementById("answersText").innerText = pageAnswers[question_var][question_value];
-            document.getElementById("questionTitle").innerText = ("Question" + question_value);
-            for(let i = 0; i < 4; i++)
-            {
+            document.getElementById("questionTitle").innerText = ("Question " + question_value);
+            for(let i = 0; i < 4; i++) {
                 questionButtons[i].innerText = pageAnswers[question_var][question_value][i];
             }
+        
+            // Start main gaze tracking
+            startMainTracking(); // Call the function from eyetracking.js
+        
+            // Update calibration flag
+            calibrated = true;
         }
+        
+    
+        // Make sure the function is accessible globally
         window.disableCalibration = disableCalibration;
 
         function showWebcamElements() {
@@ -740,36 +610,13 @@
 
         }
 
-        function downloadGazeDataCSV() {
-            let csvContent = "data:text/csv;charset=utf-8,";
-            csvContent += "x,y,timestamp\n"; // Add CSV header
-        
-            if (gazeData.length > 0) {
-                gazeData.forEach(row => {
-                    csvContent += `${row.x},${row.y},${row.timestamp}\n`;
-                });
-            } else {
-                console.warn("No gaze data to download. Creating an empty file.");
-            }
-        
-            const encodedUri = encodeURI(csvContent);
-            const link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
-            link.setAttribute("download", "raw_gaze_data.csv");
-            document.body.appendChild(link); // Append link to body
-            link.click(); // Trigger download
-            document.body.removeChild(link); // Remove link after download
-        }
 
         function changePage(ans = -1) {
             if (ans !== -1) answers.push(ans);
             page_value += 1; // Increment only once
             question_value += 1;
         
-            if (page_value === 1 && !gazeTrackingEnabled) {
-                startTrackingGaze(); // Start gaze tracking
-                gazeTrackingEnabled = true; // Ensure tracking starts only once
-            }
+            // Removed the redundant gazeTrackingEnabled block
         
             if (page_value > questionNum) {
                 final_score = checkAnswers(answers);
@@ -782,6 +629,8 @@
         
             updateFrontEnd();
         }
+        
+        
         
 
         //Function for updating visuals based on the new value of page_value

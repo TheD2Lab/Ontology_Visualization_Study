@@ -1,131 +1,116 @@
-async function startTracking() {
-    console.log('Start Tracking function triggered');
+// eyetracking.js
+
+let gazeData = []; // Array to store main gaze data
+let mainGazeTrackingEnabled = false; // Flag to control main gaze tracking
+
+/**
+ * Initializes WebGazer without starting the main gaze data collection.
+ * Sets up the gaze listener but doesn't record data until enabled.
+ */
+function initializeWebGazer() {
+    console.log('Initializing WebGazer...');
     if (typeof webgazer === 'undefined') {
         console.error('WebGazer is not loaded.');
         return;
     }
-    try {
-        let isCapturing = false; // Variable to track if gaze coordinates are being captured
 
-        await webgazer.setGazeListener((data, elapsedTime) => {
-            if (data) {
-                if (!isCapturing) {
-                    console.log('Gaze coordinate collection is active and working.');
-                    isCapturing = true; // Update the flag to avoid repetitive logging
-                }
-                // Optional: You can still use these variables internally if needed
-                const xprediction = data.x;
-                const yprediction = data.y;
-                // Use the coordinates elsewhere without console logging
-            }
-        }).begin();
+    webgazer.setGazeListener((data, timestamp) => {
+        if (data && mainGazeTrackingEnabled) {
+            // Only record gaze data if main tracking is enabled
+            gazeData.push({
+                x: data.x, // X-coordinate
+                y: data.y, // Y-coordinate
+                timestamp: timestamp // Timestamp
+            });
+        }
+    }).begin()
+    .then(() => {
+        console.log('WebGazer has started.');
+        // Optionally, hide prediction points initially
+        webgazer.showPredictionPoints(false);
+    })
+    .catch((err) => {
+        console.error('WebGazer initialization failed:', err);
+    });
 
-        console.log('WebGazer initialized and tracking started.');
-        webgazer.showVideoPreview(true);
-        webgazer.showPredictionPoints(true);
-    } catch (err) {
-        console.error('Error initializing WebGazer:', err);
-    }
-}
-
-function stopTracking() {
-    webgazer.end();
+    // Optional: Hide or show webcam preview
     webgazer.showVideoPreview(false);
     webgazer.showPredictionPoints(false);
+
+    console.log('WebGazer initialized.');
 }
 
-function calibrate() {
-    const calibrationDiv = document.getElementById('calibration-div');
-    calibrationDiv.innerHTML = ''; // Clear existing points
-
-    const points = [
-        { x: 10, y: 10 },
-        { x: 90, y: 10 },
-        { x: 10, y: 90 },
-        { x: 90, y: 90 },
-        { x: 50, y: 50 }
-    ];
-
-    points.forEach((point) => {
-        const pointElement = document.createElement('div');
-        pointElement.style.position = 'absolute';
-        pointElement.style.left = `${point.x}%`;
-        pointElement.style.top = `${point.y}%`;
-        pointElement.style.width = '20px';
-        pointElement.style.height = '20px';
-        pointElement.style.backgroundColor = 'red';
-        pointElement.style.borderRadius = '50%';
-        pointElement.style.cursor = 'pointer';
-        pointElement.onclick = function () {
-            webgazer.recordScreenPosition(point.x / 100 * window.innerWidth, point.y / 100 * window.innerHeight);
-            pointElement.style.backgroundColor = 'green';
-            console.log(`Calibration point clicked at: x=${point.x}, y=${point.y}`);
-        };
-        calibrationDiv.appendChild(pointElement);
-    });
-}
-
-window.onload = function () {
-    console.log('WebGazer.js loaded.');
-    if (typeof webgazer !== 'undefined') {
-        startTracking();
-        calibrate();
-    } else {
-        console.error('WebGazer not loaded properly.');
+/**
+ * Enables main gaze data collection.
+ * This should be called after calibration is complete.
+ */
+function startMainTracking() {
+    if (!mainGazeTrackingEnabled) {
+        mainGazeTrackingEnabled = true;
+        webgazer.showPredictionPoints(false); // Disable prediction points for main tracking if desired
+        console.log('Main gaze tracking enabled.');
     }
+}
 
-    // Check if gaze is within AOI
-    function checkAOI(x, y) {
-        if (!window.loadedAOIs) return;
-        window.loadedAOIs.forEach((aoi, index) => {
-            if (
-                x >= aoi.x &&
-                x <= aoi.x + aoi.width &&
-                y >= aoi.y &&
-                y <= aoi.y + aoi.height
-            ) {
-                console.log(`Gaze is within AOI ${index + 1}`);
-            }
+/**
+ * Disables main gaze data collection.
+ * Can be used if you need to stop recording gaze data at any point.
+ */
+function stopMainTracking() {
+    if (mainGazeTrackingEnabled) {
+        mainGazeTrackingEnabled = false;
+        console.log('Main gaze tracking disabled.');
+    }
+}
+
+/**
+ * Downloads the main gaze data as a CSV file.
+ */
+function downloadGazeDataCSV() {
+    let csvContent = "data:text/csv;charset=utf-8,";
+    csvContent += "x,y,timestamp\n"; // CSV header
+
+    if (gazeData.length > 0) {
+        gazeData.forEach(row => {
+            csvContent += `${row.x},${row.y},${row.timestamp}\n`;
         });
+    } else {
+        console.warn("No gaze data to download. Creating an empty file.");
     }
 
-    // Start tracking gaze data
-    window.startTracking = function () {
-        if (isTracking) return;
-        isTracking = true;
-        console.log("Started tracking gaze data.");
-    };
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "main_gaze_data.csv");
+    document.body.appendChild(link); // Append link to body
+    link.click(); // Trigger download
+    document.body.removeChild(link); // Remove link after download
+    console.log("Main gaze data downloaded.");
+}
 
-    // Stop tracking gaze data
-    window.stopTracking = function () {
-        if (!isTracking) return;
-        isTracking = false;
-        console.log("Stopped tracking gaze data.");
-    };
+// Keyboard shortcut for downloading main gaze data (Ctrl+D)
+document.addEventListener('keydown', function (event) {
+    if (event.ctrlKey && event.key === 'd') {
+        event.preventDefault(); // Prevent default browser action
+        downloadGazeDataCSV(); // Trigger CSV download
+        console.log("Main gaze data CSV downloaded!");
+    }
+});
 
-    // Load AOI data
-    window.loadAOIs = function (aoiFilePath) {
-        fetch(aoiFilePath)
-            .then((response) => response.json())
-            .then((data) => {
-                window.loadedAOIs = data;
-                console.log("Loaded AOI data:", window.loadedAOIs);
-            })
-            .catch((err) => console.error("Error loading AOI data:", err));
-    };
-
-    // Save gaze data to JSON file
-    window.saveGazeData = function (gazeData) {
-        const blob = new Blob([JSON.stringify(gazeData)], { type: "application/json" });
-        const link = document.createElement("a");
-        link.href = URL.createObjectURL(blob);
-        link.download = "gaze_data.json";
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        console.log("Gaze data saved to file.");
-    };
-
-    // Attempt to initialize WebGazer
+// Automatically initialize WebGazer on page load without starting main tracking
+window.onload = function () {
+    console.log('Page loaded. Initializing WebGazer...');
     initializeWebGazer();
 };
+
+// Stop WebGazer when the page is closed
+window.onbeforeunload = function () {
+    if (typeof webgazer !== 'undefined') {
+        webgazer.end();
+    }
+};
+
+// Expose functions globally for access from HTML
+window.startMainTracking = startMainTracking;
+window.stopMainTracking = stopMainTracking;
+window.downloadGazeDataCSV = downloadGazeDataCSV;
