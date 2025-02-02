@@ -1,7 +1,7 @@
 function treeMap(data){
   // Specify the chart’s dimensions.
-  const width = 900;
-  const height = 900;
+  const width = 1800;
+  const height = 800;
 
   // This custom tiling function adapts the built-in binary tiling function
   // for the appropriate aspect ratio when the treemap is zoomed-in.
@@ -59,9 +59,14 @@ function treeMap(data){
     node.append("title")
         .text(d => `${name(d)}/${format(d.value)}`);
 
+    const uid = (() => {
+      let count = 0;
+      return (prefix) => `${prefix}-${count++}`;
+    })();
+
     node.append("rect")
         .attr("cursor", "pointer")
-        .attr("id", d => (d.leafUid = DOM.uid("leaf")).id)
+        .attr("id", d => (d.leafUid = uid("leaf")).id)
         .attr("fill", d => d === root ? "#fff" : d.children ? "#ccc" : "#ddd")
         .attr("stroke", "#fff")
       
@@ -77,7 +82,7 @@ function treeMap(data){
         // });
 
     node.append("clipPath")
-        .attr("id", d => (d.clipUid = DOM.uid("clip")).id)
+        .attr("id", d => (d.clipUid = uid("clip")).id)
       .append("use")
         .attr("xlink:href", d => d.leafUid.href);
 

@@ -29,42 +29,59 @@
     <div id="researcherPage" style="display:flex;flex-direction:column;justify-content:center;align-items:center;width:100%;height:100%;">
         <div style="text-align:center;font-size:40px;"> Researcher Page </div>
         <div style="display:flex;flex-direction:row;justify-content:center;justify-content:space-evenly;align-items:center;width:100%;height:80%;">
-            <div style="display:flex;flex-direction:column;align-content:center;width:700px;height:400px;justify-content:space-between;">
+            <div style="display:flex;flex-direction:column;align-items:center;width:700px;height:400px;justify-content:space-between;">
                 <div style="text-align:center;font-size:20px;"> Set 1 </div>
-                <button class = "h_researcher_button" onclick="changeQuestions(0, 0)">Question Set 1</button>
-                <button class = "h_researcher_button" onclick="changeQuestions(0, 1)">Question Set 2</button>
-                <button class = "h_researcher_button" onclick="changeQuestions(0, 2)">Question Set 3</button>
-    
-                <button class = "h_researcher_button" onclick="changeVisuals(0, 0)">Visual 1</button>
-                <button class = "h_researcher_button" onclick="changeVisuals(0, 1)">Visual 2</button>
-                <button class = "h_researcher_button" onclick="changeVisuals(0, 2)">Visual 3</button>
+                <button id="b00" class = "h_researcher_button" onclick="changeVisuals(0, 0)">Baseline</button>
+                <button id="b01" class = "h_researcher_button" onclick="changeVisuals(0, 1)">Circle Packing</button>
+                <button id="b02" class = "h_researcher_button" onclick="changeVisuals(0, 2)">Tree Map</button>
             </div>
-            <div style="display:flex;flex-direction:column;align-content:center;width:700px;height:400px;justify-content:space-between;">
+            <div style="display:flex;flex-direction:column;align-items:center;width:700px;height:400px;justify-content:space-between;">
                 <div style="text-align:center;font-size:20px;"> Set 2 </div>
-                <button class = "h_researcher_button" onclick="changeQuestions(1, 0)">Question Set 1</button>
-                <button class = "h_researcher_button" onclick="changeQuestions(1, 1)">Question Set 2</button>
-                <button class = "h_researcher_button" onclick="changeQuestions(1, 2)">Question Set 3</button>
-    
-                <button class = "h_researcher_button" onclick="changeVisuals(1, 0)">Visual 1</button>
-                <button class = "h_researcher_button" onclick="changeVisuals(1, 1)">Visual 2</button>
-                <button class = "h_researcher_button" onclick="changeVisuals(1, 2)">Visual 3</button>
+                <button id="b10" class = "h_researcher_button" onclick="changeVisuals(1, 0)">Baseline</button>
+                <button id="b11" class = "h_researcher_button" onclick="changeVisuals(1, 1)">Circle Packing</button>
+                <button id="b12" class = "h_researcher_button" onclick="changeVisuals(1, 2)">Tree Map</button>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;width:700px;height:400px;justify-content:space-between;">
+                <div style="text-align:center;font-size:20px;"> Set 2 </div>
+                <button id="b20" class = "h_researcher_button" onclick="changeVisuals(2, 0)">Baseline</button>
+                <button id="b21" class = "h_researcher_button" onclick="changeVisuals(2, 1)">Circle Packing</button>
+                <button id="b22" class = "h_researcher_button" onclick="changeVisuals(2, 2)">Tree Map</button>
             </div>
         </div>
         <button class = "h_researcher_button" onclick="confirmResearcherPage()">Continue</button>
     </div>
 
     <script>
-        const visualOrder = [0, 1];
-        const questionOrder = [0, 1];
+        const visualOrder = [0, 1, 2];
+        const visualButtons = [
+            [document.getElementById("b00"), document.getElementById("b01"), document.getElementById("b02")],
+            [document.getElementById("b10"), document.getElementById("b11"), document.getElementById("b12")],
+            [document.getElementById("b20"), document.getElementById("b21"), document.getElementById("b22")]
+        ]
 
         function changeVisuals(i, j)
         {
-            visualOrder[i] = j;
+            let currentIndex = visualOrder.indexOf(j); // Find if the value already exists
+
+            if (currentIndex !== -1) {
+                // If the value exists, swap it with the current index
+                [visualOrder[i], visualOrder[currentIndex]] = [visualOrder[currentIndex], visualOrder[i]];
+            } else {
+                // If the value doesn't exist, just update the current index
+                visualOrder[i] = j;
+            }
+            updateButtonVisual();
         }
-        function changeQuestions(i, j)
+
+        function updateButtonVisual()
         {
-            questionOrder[i] = j;
+            for(i = 0; i<visualOrder.length;i++)
+            {
+                visualButtons[i].map(b => b.disabled = false);
+                visualButtons[i][visualOrder[i]].disabled = true;
+            }
         }
+        updateButtonVisual();
 
         function confirmResearcherPage()
         {
@@ -270,7 +287,7 @@
             }
             else if (tutorial_value == 5)
             {
-                question_var = questionOrder[0];
+                question_var = visualOrder[0];
                 document.getElementById("tree-container").replaceChild(visuals[visualOrder[0]], document.getElementById("tree-container").firstChild);
                 changePage();
             }
@@ -305,6 +322,7 @@
             <button id="pageButton4" class="ans_button" onclick="changePage(3)">Answer D</button>
         </div>
         <div id="tree-container" style="background-color:rgb(240, 240, 240);width:auto;height:auto;max-height:700px;margin-bottom:20px;"></div>
+        <canvas id="aoiCanvas" width="1920" height="1080" style="position: absolute; top: 0; left: 0; z-index: 10; pointer-events: none;"></canvas>
     </div>
 
     <script>
@@ -313,7 +331,7 @@
         //List of all questions
         const pageQuestions = 
         [{
-            1: "Which class does the class #VegetarianPizza have a complementOf relationship with?",
+            1: "BASELINE QUESTION 1",
             2: "Question 1-2",
             3: "Question 1-3",
             4: "Question 1-4",
@@ -325,7 +343,7 @@
             10: "Question 1-10",
         },
         {
-            1: "Question 2-1",
+            1: "CIRCLE PACKING QUESTION 1",
             2: "Question 2-2",
             3: "Question 2-3",
             4: "Question 2-4",
@@ -337,7 +355,7 @@
             10: "Question 2-10",
         },
         {
-            1: "Question 3-1",
+            1: "TREE MAP QUESTION 1",
             2: "Question 3-2",
             3: "Question 3-3",
             4: "Question 3-4",
@@ -455,7 +473,7 @@
     </div>
 
     <div id="intermissionPage" class="h_sub" style="Display:none">
-        <div id="outroText" class="h_outro">
+        <div id="intermission" class="h_outro">
             Visual 1 complete
         </div>
         <button id="pageButton" class="ans_button" onclick="changePage()">Continue</button>
@@ -513,8 +531,9 @@
         const v1 = nodeLink(PizzaBaselineData);
         //const v2 = treeMap(PizzaTreeMapData);
         const v2 = packing(pizzaCirclePackData)
+        const v3 = treeMap(PizzaTreeMapData)
 
-        const visuals = [v1, v2]    //Variable to store both temporary visualizations
+        const visuals = [v1, v2, v3]    //Variable to store both temporary visualizations
 
         document.getElementById("tree-container").appendChild(visuals[visualization_var])
 
@@ -665,7 +684,7 @@
                 }
             } 
             //If the page value is between 0 and 22, and not equal to 11, then perform the regular assessment frontend update
-            else if (page_value > 0 && page_value <= 21 && page_value != 11) {
+            else if (page_value > 0 && page_value <= 32 && page_value != 11 && page_value != 22) {
                 menuBackground.style.display = "none";
                 menuIntermission.style.display = "none";
                 menuQuestion.style.display = "flex";
@@ -684,12 +703,23 @@
                 menuQuestion.style.display = "none";
                 menuIntermission.style.display = "flex";
                 question_value = 0;
-                question_var = questionOrder[1];
+                question_var = visualOrder[1];
+                document.getElementById("intermission").innerText = "Set 1 Completed!"
                 document.getElementById("tree-container").replaceChild(visuals[visualOrder[1]], document.getElementById("tree-container").firstChild);
                 
             }
+            else if (page_value == 22)
+            {
+                menuQuestion.style.display = "none";
+                menuIntermission.style.display = "flex";
+                question_value = 0;
+                question_var = visualOrder[2];
+                document.getElementById("intermission").innerText = "Set 2 Completed!"
+                document.getElementById("tree-container").replaceChild(visuals[visualOrder[2]], document.getElementById("tree-container").firstChild);
+                
+            }
             //If the page value is above 21, then end the study, concluding that all questions have been answered 
-            else if (page_value > 21) {
+            else if (page_value > 32) {
                 menuQuestion.style.display = "none";
                 menuOutro.style.display = "flex";
                 continueButton.style.display = "none";
