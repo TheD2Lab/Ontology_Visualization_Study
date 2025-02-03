@@ -36,7 +36,6 @@ document.addEventListener("DOMContentLoaded", function () {
   window.startCalibration = function () {
     if (isCalibrating) {
       console.warn("Already in calibration mode!");
-      return;
     }
     isCalibrating = true;
     console.log("Starting calibration...");

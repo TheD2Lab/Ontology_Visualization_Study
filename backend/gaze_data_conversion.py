@@ -206,7 +206,7 @@ def process_gaze_data(gaze_file, aoi_config_file='aoi_config.json', output_file=
 
     # Reorder columns to match BEACH-Gaze requirements
     columns_order = [
-        'MEDIA_ID', 'MEDIA_NAME', 'CNT', 'TIMETICK(f=10000000)', 'FPOGX', 'FPOGY',
+        'MEDIA_ID', 'MEDIA_NAME', 'CNT', 'TIME(f=10000000)', 'FPOGX', 'FPOGY',
         'FPOGS', 'FPOGD', 'FPOGID', 'FPOGV', 'BPOGX', 'BPOGY', 'BPOGV', 'CX', 'CY', 'CS',
         'KB', 'KBS', 'USER', 'LPCX', 'LPCY', 'LPD', 'LPS', 'LPV', 'RPCX', 'RPCY', 'RPD',
         'RPS', 'RPV', 'BKID', 'BKDUR', 'BKPMIN', 'LPMM', 'LPMMV', 'RPMM', 'RPMMV', 'DIAL',
