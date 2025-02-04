@@ -213,24 +213,6 @@
         ///////////////////////////////////////////////////////////////////////////////////////////
     </script>
 
-    <!--
-    <div id="backgroundPage" class="h_sub" style="display:none">
-        <div class="h_intro_background">
-            <div style="display:flex;height:90%;width:100%;background-color:rgb(240,240,240);flex-direction:column;">
-                <div style="font-size:50px;padding:20px;color:rgb(25,25,25);">Tutorial</div>
-
-                <div>
-                    <div id="tutorial_title" class="h_background_bullet_title">DisjointWith</div>
-                    <div id="tutorial_text" class="h_background_bullet_text">The classes do not and cannot share any subclasses or values. For example:<br>Class A is disjointWith Class B. Class A = [1, 2, 3], Class B = [4, 5, 6]</div>
-                </div>
-            </div>
-            <button id="tutorial_button" class="h_begin_button" onclick="iterateTutorial()">Next</button>
-        </div>
-        <div class="h_visual">
-            <div id="tree-container-tutorial" style="width:100%;height:100%;background-color:rgb(240,240,240);"></div>
-        </div>
-    </div>
-    -->
     <div id="backgroundPage" style="display:none;flex-direction:column;width:1800px;height:900px;align-items:center;">
         <div style="font-size:40px;">Tutorial</div>
         <div style="background-color:rgb(240, 240, 240);margin-bottom:20px;width:1800px;">
@@ -255,8 +237,8 @@
         let titles = ["What is an Ontology?", 
             "DisjointWith", 
             "UnionOf",
-            "IntersectionOf",
-            "ComplementOf"]
+            "ComplementOf",
+            "IntersectionOf"]
 
         let tutorials = ["An ontology is like a detailed map of knowledge about a specific topic or domain. It organizes information by defining concepts, their properties, and how they relate to each other, much like a family tree or a blueprint."
             + "Think of it as a way to make sure everyone understands the same ideas and relationships in the same way when discussing or working with complex information."
@@ -297,6 +279,11 @@
             if (tutorial_value < 5)
             {
                 document.getElementById("tree-container-tutorial").replaceChild(visuals_tutorial[tutorial_value], document.getElementById("tree-container-tutorial").firstChild);
+                if (tutorial_value == 4)
+                {
+                    tutorialButton.style.backgroundColor = "red";
+                    tutorialButton.style.color = "white";
+                }
             }
             else if (tutorial_value == 5)
             {
@@ -430,37 +417,6 @@
                                 [1, 0, 3, 2, 1, 2, 1, 0, 3, 2]];
     </script>
 
-    <!--
-    <div id="questionPage" class="h_sub" style="display:none">
-        
-        <div class="h_question">
-           
-            <div class = "h_sub_question">
-                <div id="questionText" style="padding:20px;width:100% - 40px;">
-                    Question1
-                </div>
-                <div id="answersText" style="white-space: pre-line;padding:20px;width:100% - 40px;">
-                    Answers1
-                </div>
-            </div>
-
-           
-            <div class="h_answer_box">
-                <button id="pageButton" class="ans_button" onclick="changePage(0)">Answer A</button>
-                <button id="pageButton" class="ans_button" onclick="changePage(1)">Answer B</button>
-                <button id="pageButton" class="ans_button" onclick="changePage(2)">Answer C</button>
-                <button id="pageButton" class="ans_button" onclick="changePage(3)">Answer D</button>
-            </div>
-        </div>
-        
-        <div class="h_visual">
-            <div id="tree-container" style="width:100%;height:100%;background-color:rgb(240,240,240);justify-content:center;align-items:center;"></div>
-        </div>
-
-        <canvas id="aoiCanvas" width="1920" height="1080" style="position: absolute; top: 0; left: 0; z-index: 10; pointer-events: none;"></canvas>
-    </div>
--->
-
     <!-- The parent container for calibration -->
     <div id="h_calibration" class="h_calibration" style="display:none">
         <div id="calibration-container" class="calibration_parent">
@@ -528,22 +484,6 @@
             document.getElementById("pageButton3"),
             document.getElementById("pageButton4")
         ]
-
-        /**
-        const v1 = document.createElement("img");   //Variable for temporary image until we have a final first visualization
-        //Establish source file and size of first temporary visualization
-        v1.src = "../p1.png";
-        v1.style.width = "100%"
-        v1.style.height = "100%"
-        */
-        /*
-        const v2 = document.createElement("img");   //Variable for temporary image until we have a final second visualization
-        //Establish source file and size of second temporary visualization
-        v2.src = "../p2.png"; 
-        v2.style.width = "100%"
-        v2.style.height = "100%"
-        */
-        
 
         const v1 = nodeLink(PizzaBaselineData);
         //const v2 = treeMap(PizzaTreeMapData);
