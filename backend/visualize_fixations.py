@@ -3,38 +3,42 @@ import matplotlib.pyplot as plt
 from sklearn.cluster import DBSCAN
 import numpy as np
 
-# Load gaze data with potential fixations (e.g., after DBSCAN processing)
-data = pd.read_csv('gaze_data.csv')
+# Load the processed gaze data (the output of gaze_data_conversion.py)
+data = pd.read_csv('all_gaze_data.csv')
 
-# Parameters for grid search (you can adjust these ranges)
-eps_values = [0.05, 0.08, 0.1, 0.12]  # Varying spatial proximity values for DBSCAN
-min_samples_values = [5, 7, 10]  # Varying min_samples values for DBSCAN
+# Identify the time column (its header should start with "TIME(")
+time_cols = [col for col in data.columns if col.startswith("TIME(")]
+if not time_cols:
+    raise ValueError("No TIME column found in the expected format.")
+time_col = time_cols[0]
 
-def apply_dbscan_and_plot(data, eps, min_samples):
-    # Normalize X, Y, and Timestamp (required for DBSCAN clustering on normalized features)   
-    data['x_normalized'] = (data['x'] - data['x'].min()) / (data['x'].max() - data['x'].min())
-    data['y_normalized'] = (data['y'] - data['y'].min()) / (data['y'].max() - data['y'].min())
-    data['timestamp_normalized'] = (data['timestamp'] - data['timestamp'].min()) / (data['timestamp'].max() - data['timestamp'].min())
+# Ensure the time column is numeric; if needed, convert it.
+data[time_col] = pd.to_numeric(data[time_col], errors='coerce')
 
-    # Apply DBSCAN for fixation detection
-    X = data[['x_normalized', 'y_normalized', 'timestamp_normalized']].values
-    db = DBSCAN(eps=eps, min_samples=min_samples).fit(X)
-    data['fixation_id'] = db.labels_
+# Since FPOGX and FPOGY are already normalized (0-1), we also need to scale time.
+# (Otherwise, the time dimension—typically ranging from 0 to tens of seconds—will dominate the Euclidean distance.)
+data['time_norm'] = (data[time_col] - data[time_col].min()) / (data[time_col].max() - data[time_col].min())
 
-    # Filter out noise points (labeled as -1 by DBSCAN)
-    fixations = data[data['fixation_id'] != -1]
+# Build the feature matrix using normalized x, y, and normalized time.
+X = data[['FPOGX', 'FPOGY', 'time_norm']].values
 
-    # Plot the fixation points with colors representing different fixation IDs
-    plt.figure(figsize=(8, 6))
-    plt.scatter(fixations['x'], fixations['y'], c=fixations['fixation_id'], cmap='rainbow', s=20)
-    plt.colorbar(label='Fixation ID')
-    plt.title(f'DBSCAN Fixations (eps={eps}, min_samples={min_samples})')
-    plt.xlabel('X Position')
-    plt.ylabel('Y Position')
-    plt.show()
+# Set DBSCAN parameters (adjust these as needed).
+eps = 0.08       # maximum distance between two samples for them to be considered as in the same neighborhood
+min_samples = 10 # minimum number of samples in a neighborhood for a point to be considered a core point
 
-# Grid search visualization
-for eps in eps_values:
-    for min_samples in min_samples_values:
-        print(f"Plotting for eps={eps}, min_samples={min_samples}")
-        apply_dbscan_and_plot(data.copy(), eps, min_samples)
+# Apply DBSCAN clustering.
+db = DBSCAN(eps=eps, min_samples=min_samples).fit(X)
+data['fixation_id'] = db.labels_
+
+# (Optional) Remove noise points (where DBSCAN labels them as -1).
+fixations = data[data['fixation_id'] != -1]
+
+# Plot the fixation points (using FPOGX and FPOGY) colored by the fixation cluster id.
+plt.figure(figsize=(8, 6))
+plt.scatter(fixations['FPOGX'], fixations['FPOGY'], c=fixations['fixation_id'],
+            cmap='rainbow', s=20)
+plt.colorbar(label='Fixation ID')
+plt.title(f'DBSCAN Fixations (eps={eps}, min_samples={min_samples})')
+plt.xlabel('FPOGX (normalized)')
+plt.ylabel('FPOGY (normalized)')
+plt.show()

@@ -518,32 +518,36 @@
 
         document.getElementById("tree-container").appendChild(visuals[visualization_var])
 
-        //Function for disabling calibration once it is completed 
         function disableCalibration() {
             console.log('Calibration completed. Proceeding to question and answer page.');
         
             // Hide the calibration UI
             document.getElementById("h_calibration").style.display = "none";
-        
             // Hide the calibration score popup
             document.getElementById("calibration-score-popup").style.display = "none";
-        
             // Show the question and answer page
             document.getElementById("questionPage").style.display = "flex";
         
-            // Initialize the first question
+            // Capture the current date/time in the required format for the TIME column
+            const qaStartTimeStr = window.getFormattedCurrentTime();
+            console.log("Q+A Start Time:", qaStartTimeStr);
+            window.qaStartTimeStr = qaStartTimeStr;
+        
+            // Capture a base tick value (for example, you might want to use a fixed offset or compute one dynamically)
+            // Here we simply hard-code the same offset as in your example.
+            window.qaStartTicks = 48860001560; // <-- change this if you want a dynamic base
+        
+            // Initialize the first question, start main gaze tracking, etc.
+            // (your existing code follows...)
             document.getElementById("questionText").innerText = pageQuestions[question_var][question_value];
             document.getElementById("questionTitle").innerText = ("Question " + question_value);
             for(let i = 0; i < 4; i++) {
                 questionButtons[i].innerText = pageAnswers[question_var][question_value][i];
             }
-        
-            // Start main gaze tracking
-            startMainTracking(); // Call the function from eyetracking.js
-        
-            // Update calibration flag
+            startMainTracking();
             calibrated = true;
         }
+        
         
     
         // Make sure the function is accessible globally
