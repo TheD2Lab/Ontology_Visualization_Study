@@ -1,7 +1,7 @@
 function treeMap(data){
   // Specify the chart’s dimensions.
   const width = 1800;
-  const height = 800;
+  const height = 700;
 
   // This custom tiling function adapts the built-in binary tiling function
   // for the appropriate aspect ratio when the treemap is zoomed-in.
