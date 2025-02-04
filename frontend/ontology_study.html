@@ -14,6 +14,10 @@
     <script src="assets/js/node-link.js"></script>
     <script src="assets/js/tree-map.js"></script>
 
+    <script src="assets/js/baseline2.js"></script>
+    <script src="assets/js/circlePack2.js"></script>
+    <script src="assets/js/treeMap2.js"></script>
+
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
     <!--Imports for data files, originally JSON but translated to Javascript for functionality-->
@@ -22,6 +26,11 @@
     <script src="assets/json/pizza-circlePack.js"></script>
     <script src="assets/json/music_base.js"></script>
     <script src="assets/json/restaurant_base.js"></script>
+
+    <script src="assets/json/citizen.js"></script>
+    <script src="assets/json/fruit-circlePack.js"></script>
+    <script src="assets/json/pasta-circlePack.js"></script>
+    <script src="assets/json/wine-base.js"></script>
 </head>
 
 <!--Main body of the webpage-->
@@ -163,7 +172,7 @@
             </div>
 
             <div style="display:flex;flex-direction:row;justify-content:center;align-items:center;">
-                <div style="font-size:15px;margin-right:10px;">I consent to all information stated above and agree to take part in the research study</div>
+                <!--<div style="font-size:15px;margin-right:10px;">I consent to all information stated above and agree to take part in the research study</div>-->
                 <input type="text" id="nameInput" style = "width: 200px; margin-right:10px;" placeholder="First + Last Name">
                 <input type="text" id="IDInput" style = "width: 100px" placeholder="Student ID #">
             </div>
@@ -228,7 +237,7 @@
             <div id="tutorial_title" class="h_background_bullet_title">DisjointWith</div>
             <div id="tutorial_text" class="h_background_bullet_text">The classes do not and cannot share any subclasses or values. For example:<br>Class A is disjointWith Class B. Class A = [1, 2, 3], Class B = [4, 5, 6]</div>
         </div>
-        <div id="tree-container-tutorial" style="background-color:rgb(240, 240, 240);width:auto;height:auto;max-height:700px;margin-bottom:20px;"></div>
+        <div id="tree-container-tutorial" style="display:flex;background-color:rgb(240, 240, 240);width:auto;height:auto;max-height:700px;margin-bottom:20px;justify-content:center;"></div>
         <button id="tutorial_button" class="h_begin_button" onclick="iterateTutorial()">Next</button>
     </div>
 
@@ -299,10 +308,14 @@
         vt1.style.width = "100%"
         vt1.style.height = "100%"
 
-        const vt2 = nodeLink(MusicBaselineData);
-        const vt3 = nodeLink(RestaurantBaselineData);
+        //const vt2 = nodeLink(MusicBaselineData);
+        //const vt3 = nodeLink(RestaurantBaselineData);
+        const vt2 = packing2(tutorialPastaCircle);
+        const vt3 = packing2(tutorialFruitCircle);
+        const vt5 = nodeLink(tutorialWineBaseline);
+        const vt4 = treeMap2(tutorialCitizenTree);
 
-        const visuals_tutorial = [vt1, vt2, vt2, vt2, vt3]    //Variable to store both temporary visualizations
+        const visuals_tutorial = [vt1, vt2, vt3, vt4, vt5]    //Variable to store both temporary visualizations
 
         document.getElementById("tree-container-tutorial").appendChild(visuals_tutorial[0])
         ////
