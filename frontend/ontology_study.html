@@ -694,10 +694,15 @@
             }
             //If the page value is above 21, then end the study, concluding that all questions have been answered 
             else if (page_value > 21) {
+                stopMainTracking();
+                
                 menuQuestion.style.display = "none";
                 menuOutro.style.display = "flex";
                 continueButton.style.display = "none";
                 document.getElementById("outroText").textContent = "Thank you for participating!";
+                
+                downloadGazeDataCSV();
+                
                 console.log(answers);
                 console.log(page_time);
             }
