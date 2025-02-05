@@ -62,7 +62,6 @@ function stopMainTracking() {
         console.log('Main gaze tracking disabled.');
     }
 }
-
 /**
  * Downloads the main gaze data as a CSV file.
  * Before writing the CSV, the timestamps are normalized so that the first value is 0.
@@ -107,7 +106,7 @@ function downloadGazeDataCSV() {
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement("a");
     link.setAttribute("href", encodedUri);
-    link.setAttribute("download", "main_gaze_data.csv");
+    link.setAttribute("download", "raw_gaze_data.csv");
     document.body.appendChild(link); // Append link to body
     link.click(); // Trigger download
     document.body.removeChild(link); // Remove link after download
