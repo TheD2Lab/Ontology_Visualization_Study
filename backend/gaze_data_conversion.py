@@ -154,83 +154,87 @@ def process_gaze_data(gaze_file, aoi_config_file='aoi_config.json', output_file=
     raw_time_header = time_header_candidates[0]
     # Extract the base time string (the part within parentheses)
     base_time_str = raw_time_header[raw_time_header.find("(")+1 : raw_time_header.find(")")]
-    
+
     # --- STEP 2: Load the raw gaze data ---
     data = pd.read_csv(gaze_file)
     # Rename the raw time column (which contains relative seconds) to an internal name.
     data = data.rename(columns={raw_time_header: "TIME_REL"})
-    
+
     # Create a temporary numeric column for clustering.
     data['TIME_NUM'] = data['TIME_REL'].astype(float)
-    
+
     # --- STEP 3: Sort data by relative time ---
     data = data.sort_values(by='TIME_NUM')
-    
+
     # --- STEP 4: Normalize X and Y coordinates ---
-    # First, record the raw minimum and maximum for x and y.
+    # Record the raw minimum and maximum for x and y.
     raw_x_min = data['x'].min()
     raw_x_max = data['x'].max()
     raw_y_min = data['y'].min()
     raw_y_max = data['y'].max()
-    # Now add normalized columns.
+    # Add normalized columns.
     data['FPOGX'] = normalize(data['x'], raw_x_min, raw_x_max)
     data['FPOGY'] = normalize(data['y'], raw_y_min, raw_y_max)
-    
+
     # --- STEP 5: Fixation detection using DBSCAN ---
-    # Use features: normalized FPOGX, FPOGY and TIME_NUM. Scale all dimensions.
+    # Use features: normalized FPOGX, FPOGY, and TIME_NUM. Scale all dimensions.
     X = data[['FPOGX', 'FPOGY', 'TIME_NUM']].values
     scaler = StandardScaler()
     X_scaled = scaler.fit_transform(X)
-    
+
     # Adjust DBSCAN parameters as needed.
-    eps = 0.5       # Increased eps (after scaling, tune as necessary)
+    eps = 0.5       # After scaling, tune as necessary.
     min_samples = 10
     db = DBSCAN(eps=eps, min_samples=min_samples).fit(X_scaled)
     # Store the raw DBSCAN labels in a temporary column.
     data['db_label'] = db.labels_
-    
+
     # Calculate fixation duration (in milliseconds) per DBSCAN cluster.
     data['FPOGD'] = data.groupby('db_label')['TIME_NUM'].transform(lambda x: (x.max() - x.min()) * 1000)
     data = calculate_fixation_validity(data)
-    
-    # --- FIXATION ID ASSIGNMENT ---
-    unique_labels = np.unique(data['db_label'])
-    fixation_id_mapping = {label: idx for idx, label in enumerate(unique_labels, start=1) if label != -1}
-    data['FPOGID'] = data['db_label'].apply(lambda x: fixation_id_mapping.get(x, -1))
-    
+
+    # --- STEP 5a: Set FPOGV based on fixation validity, but mark noise (db_label == -1) as invalid (0)
+    data['FPOGV'] = np.where(data['db_label'] == -1, 0, data['FIXATION_VALIDITY'])
+
+    # --- STEP 5b: INITIAL FIXATION ID ASSIGNMENT (based on DBSCAN clusters) ---
+    # Get only the valid (non-noise) labels.
+    valid_labels = [label for label in np.unique(data['db_label']) if label != -1]
+    # Create a mapping so that the first valid label gets mapped to 1,
+    # the second to 2, and so on.
+    fixation_id_mapping = {label: idx for idx, label in enumerate(valid_labels, start=1)}
+    # For noise points (db_label == -1), assign NaN so they can be filled.
+    data['FPOGID'] = data['db_label'].apply(lambda x: fixation_id_mapping.get(x, np.nan))
+
+    # --- STEP 5c: Fill in missing fixation IDs from neighboring valid fixations.
+    data['FPOGID'] = data['FPOGID'].ffill().bfill().astype(int)
+
+
     # --- STEP 6: AOI assignment ---
-    # First, load the AOI configuration from JSON.
     with open(aoi_config_file, 'r') as f:
         aoi_config = json.load(f)
-    # Normalize the AOI config so that it uses the same [0,1] coordinate system as the gaze.
+    # Normalize the AOI configuration to use the same [0,1] coordinate system.
     for aoi in aoi_config:
-        # Normalize x, y, width and height.
         aoi['x'] = normalize(aoi['x'], raw_x_min, raw_x_max)
         aoi['y'] = normalize(aoi['y'], raw_y_min, raw_y_max)
         aoi['width'] = aoi['width'] / (raw_x_max - raw_x_min)
         aoi['height'] = aoi['height'] / (raw_y_max - raw_y_min)
-        # (Optionally, if width is negative, adjust x accordingly and take abs.)
         if aoi['width'] < 0:
-            aoi['x'] = aoi['x'] + aoi['width']  # shift x left
+            aoi['x'] = aoi['x'] + aoi['width']
             aoi['width'] = abs(aoi['width'])
-    
-    # For each AOI in the config, add an indicator column.
-    # Here we use the normalized gaze coordinates (FPOGX, FPOGY).
+
     for index, aoi in enumerate(aoi_config):
         aoi_name = f"AOI_{index + 1}"
         data[aoi_name] = data.apply(
             lambda row: int(is_point_in_aoi(row['FPOGX'], row['FPOGY'], aoi)), axis=1
         )
-    
-    # Function to assign a single AOI label per row.
+
     def assign_aoi(row):
         for index, aoi in enumerate(aoi_config):
             if is_point_in_aoi(row['FPOGX'], row['FPOGY'], aoi):
                 return f"AOI_{index + 1}"
         return 'None'
-    
     data['AOI'] = data.apply(assign_aoi, axis=1)
-    
+
     # --- STEP 7: Fixation metrics ---
     fixation_metrics = data[data['FIXATION_VALIDITY'] == 1].groupby('FPOGID').agg({
         'FPOGX': 'mean',
@@ -242,22 +246,18 @@ def process_gaze_data(gaze_file, aoi_config_file='aoi_config.json', output_file=
     fixation_start_times = fixation_metrics[['start_time']].to_dict()['start_time']
     data['FPOGS'] = data['FPOGID'].map(fixation_start_times)
     data['FPOGS'].fillna(0, inplace=True)
-    
+
     # --- STEP 8: Add placeholder fields ---
     data = add_placeholder_fields(data)
-    
+
     # --- STEP 9: Add saccade features ---
     data = add_saccade_features(data)
-    
+
     # --- STEP 10: Prepare final output ---
-    # Rename TIME_REL back to TIME with the base time in the header.
     new_time_header = f"TIME({base_time_str})"
     data = data.rename(columns={"TIME_REL": new_time_header})
-    
-    # Drop the temporary TIME_NUM and db_label columns.
     data = data.drop(columns=["TIME_NUM", "db_label"])
-    
-    # Define the final column order. (TIMETICK remains as read from the raw file.)
+
     columns_order = [
         'MEDIA_ID', 'MEDIA_NAME', 'CNT', new_time_header, 'TIMETICK(f=10000000)',
         'FPOGX', 'FPOGY', 'FPOGS', 'FPOGD', 'FPOGID', 'FPOGV',
@@ -270,13 +270,10 @@ def process_gaze_data(gaze_file, aoi_config_file='aoi_config.json', output_file=
         'PIXS', 'PIXV', 'AOI', 'SACCADE_MAG', 'SACCADE_DIR', 'VID_FRAME'
     ]
     data = data[columns_order]
-    
-    # Save the final processed CSV.
     data.to_csv(output_file, index=False)
     print(f"Processed gaze data with AOIs saved to {output_file}")
 
 if __name__ == "__main__":
-    # Example file paths.
     gaze_file = 'raw_gaze_data.csv'
     aoi_config_file = 'aoi_config.json'
     output_file = 'all_gaze_data.csv'
