@@ -37,39 +37,52 @@
 <body class="h_main">
     <div id="researcherPage" style="display:flex;flex-direction:column;justify-content:center;align-items:center;width:100%;height:100%;">
         <div style="text-align:center;font-size:40px;"> Researcher Page </div>
-        <div style="display:flex;flex-direction:row;justify-content:center;justify-content:space-evenly;align-items:center;width:100%;height:80%;">
-            <div style="display:flex;flex-direction:column;align-items:center;width:700px;height:400px;justify-content:space-between;">
-                <div style="text-align:center;font-size:20px;"> Set 1 </div>
-                <button id="b00" class = "h_researcher_button" onclick="changeVisuals(0, 0)">Baseline</button>
-                <button id="b01" class = "h_researcher_button" onclick="changeVisuals(0, 1)">Circle Packing</button>
-                <button id="b02" class = "h_researcher_button" onclick="changeVisuals(0, 2)">Tree Map</button>
-            </div>
-            <div style="display:flex;flex-direction:column;align-items:center;width:700px;height:400px;justify-content:space-between;">
-                <div style="text-align:center;font-size:20px;"> Set 2 </div>
-                <button id="b10" class = "h_researcher_button" onclick="changeVisuals(1, 0)">Baseline</button>
-                <button id="b11" class = "h_researcher_button" onclick="changeVisuals(1, 1)">Circle Packing</button>
-                <button id="b12" class = "h_researcher_button" onclick="changeVisuals(1, 2)">Tree Map</button>
-            </div>
-            <div style="display:flex;flex-direction:column;align-items:center;width:700px;height:400px;justify-content:space-between;">
-                <div style="text-align:center;font-size:20px;"> Set 2 </div>
-                <button id="b20" class = "h_researcher_button" onclick="changeVisuals(2, 0)">Baseline</button>
-                <button id="b21" class = "h_researcher_button" onclick="changeVisuals(2, 1)">Circle Packing</button>
-                <button id="b22" class = "h_researcher_button" onclick="changeVisuals(2, 2)">Tree Map</button>
+        <div style="display:flex;flex-direction:row;justify-content:center;align-items:center;width:100%;height:80%;">
+            <div style="display:flex;flex-direction:column;align-items:center;width:700px;height:700px;justify-content:space-between;">
+                <button id="b012" class = "h_researcher_button" onclick="changeVisuals(0)">
+                    <div>Set 1</div>
+                    <div>Network -> Circle -> Tree</div>
+                </button>
+                <button id="b021" class = "h_researcher_button" onclick="changeVisuals(1)">
+                    <div>Set 2</div>
+                    <div>Network -> Tree - Circle</div>
+                </button>
+                <button id="b102" class = "h_researcher_button" onclick="changeVisuals(2)">
+                    <div>Set 3</div>
+                    <div>Circle -> Network -> Tree</div>
+                </button>
+                <button id="b120" class = "h_researcher_button" onclick="changeVisuals(3)">
+                    <div>Set 4</div>
+                    <div>Circle -> Tree -> Network</div>
+                </button>
+                <button id="b201" class = "h_researcher_button" onclick="changeVisuals(4)">
+                    <div>Set 5</div>
+                    <div>Tree -> Network -> Circle</div>
+                </button>
+                <button id="b210" class = "h_researcher_button" onclick="changeVisuals(5)">
+                    <div>Set 6</div>
+                    <div>Tree -> Circle -> Network</div>
+                </button>
             </div>
         </div>
-        <button class = "h_researcher_button" onclick="confirmResearcherPage()">Continue</button>
+        <button id = "researchContinue" class = "h_researcher_button" onclick="confirmResearcherPage()" disabled="true">Continue</button>
     </div>
 
     <script>
-        const visualOrder = [0, 1, 2];
+        let visualOrder = [0, 1, 2];
+        let visualSet = -1;
         const visualButtons = [
-            [document.getElementById("b00"), document.getElementById("b01"), document.getElementById("b02")],
-            [document.getElementById("b10"), document.getElementById("b11"), document.getElementById("b12")],
-            [document.getElementById("b20"), document.getElementById("b21"), document.getElementById("b22")]
+        document.getElementById("b012"),
+        document.getElementById("b021"),
+        document.getElementById("b102"),
+        document.getElementById("b120"),
+        document.getElementById("b201"),
+        document.getElementById("b210")
         ]
 
-        function changeVisuals(i, j)
+        function changeVisuals(i)
         {
+            /*
             let currentIndex = visualOrder.indexOf(j); // Find if the value already exists
 
             if (currentIndex !== -1) {
@@ -80,17 +93,24 @@
                 visualOrder[i] = j;
             }
             updateButtonVisual();
-        }
+            */
 
-        function updateButtonVisual()
-        {
-            for(i = 0; i<visualOrder.length;i++)
-            {
-                visualButtons[i].map(b => b.disabled = false);
-                visualButtons[i][visualOrder[i]].disabled = true;
-            }
+            let orders = [
+            [0, 1, 2],
+            [0, 2, 1],
+            [1, 0, 2],
+            [1, 2, 0],
+            [2, 0, 1],
+            [2, 1, 0]
+            ]
+            visualSet = i;
+            visualOrder = orders[visualSet];
+
+            visualButtons.map(b => b.disabled = false);
+            visualButtons[visualSet].disabled = true;
+
+            document.getElementById("researchContinue").disabled = false;
         }
-        updateButtonVisual();
 
         function confirmResearcherPage()
         {
@@ -172,7 +192,7 @@
             </div>
 
             <div style="display:flex;flex-direction:row;justify-content:center;align-items:center;">
-                <!--<div style="font-size:15px;margin-right:10px;">I consent to all information stated above and agree to take part in the research study</div>-->
+                <div style="font-size:11px;margin-right:10px;">By entering your name and student ID in these boxes, you indicate that you understand the above conditions of participation in this study, that you have had the opportunity to have your questions answered by the researcher, and that you consent to participate in this research.</div>
                 <input type="text" id="nameInput" style = "width: 200px; margin-right:10px;" placeholder="First + Last Name">
                 <input type="text" id="IDInput" style = "width: 100px" placeholder="Student ID #">
             </div>
@@ -262,7 +282,7 @@
 
             "intersectionOf a class A and class B is the set of instances that are in both. "
             + "\n\nFor example, a class WhiteWine can be defined as the intersection of the class Wine and the set of things that are white in color. In other words, if something is white and a wine, then it is an instance of WhiteWine."
-            + "\n\nThis example is being shown using a Baseline visualization. Click on a node to expand its contents or to highlight its connections. Nodes can be moved-around and manipulated anywhere in the screenspace. Use the scroll-wheel to zoom in or out.",
+            + "\n\nThis example is being shown using a Network visualization. Click on a node to expand its contents or to highlight its connections. Nodes can be moved-around and manipulated anywhere in the screenspace. Use the scroll-wheel to zoom in or out.",
             ]
 
         tutorialTitle.innerText = titles[0];
@@ -315,7 +335,7 @@
     </script>
 
     <div id="questionPage" style="display:none;flex-direction:column;width:1800px;height:900px;align-items:center;">
-        <div style="background-color:rgb(240, 240, 240);margin-bottom:20px;width:1800px;">
+        <div style="background-color:rgb(240, 240, 240);margin-bottom:20px;width:1800px;min-height:150px;">
             <div id="questionTitle" class="h_background_bullet_title">DisjointWith</div>
             <div id="questionText" class="h_background_bullet_text" style="font-size:30px;">The classes do not and cannot share any subclasses or values. For example:<br>Class A is disjointWith Class B. Class A = [1, 2, 3], Class B = [4, 5, 6]</div>
         </div>
@@ -330,91 +350,131 @@
     </div>
 
     <script>
-        const questionNum = 10;
+        const questionNum = 8;
 
         //List of all questions
         const pageQuestions = 
+        //Baseline/Network Visual Questions
         [{
-            1: "BASELINE QUESTION 1",
-            2: "Question 1-2",
-            3: "Question 1-3",
-            4: "Question 1-4",
-            5: "Question 1-5",
-            6: "Question 1-6",
-            7: "Question 1-7",
-            8: "Question 1-8",
-            9: "Question 1-9",
-            10: "Question 1-10",
+            1: "How is the class CheesyPizza defined?",
+            2: "Is the following statement true or false: the intersectionOf Pizza and MeatTopping is MeatyPizza",
+            3: "Is the following statement true or false: NonVegetarianPizza is a subclass of the complementOf VegetarianPizza",
+            4: "VegetarianPizza must have neither SeafoodTopping nor MeatTopping, what does this mean?",
+            5: "The class Spiciness describes 3 levels of spiciness including Hot, Medium and Mild. These levels are defined using which relationship",
+            6: "The toppings of a NamedPizza called Margherita is defined as the unionOf two toppings, which are? ",
+            7: "Is the following statement true or false: HerbSpiceTopping has two subclasses CajunSpiceTopping and RosemaryTopping, which are disjointWith each other.",
+            8: "DeepPanBase is a PizzaBase that is disjointWith which class?",
         },
+        //Circle Packing Questions
         {
-            1: "CIRCLE PACKING QUESTION 1",
-            2: "Question 2-2",
-            3: "Question 2-3",
-            4: "Question 2-4",
-            5: "Question 2-5",
-            6: "Question 2-6",
-            7: "Question 2-7",
-            8: "Question 2-8",
-            9: "Question 2-9",
-            10: "Question 2-10",
+            1: "Is the following statement true or false: the intersectionOf Pizza and ThinAndCrispyBase is ThinAndCrispyPizza?",
+            2: "Which of the following best describes the class VegetarianPizza1?",
+            3: "The subclasses of VegetarianPizza must be complementOf?",
+            4: "Is the following statement true or false: since a VegetarianPizza can have neither SeafoodTopping nor MeatTopping, these two classes - SeafoodTopping and MeatTopping - must be complementOf each other. ",
+            5: "The toppings of a NamedPizza called FruttiDiMare is defined as the unionOf three toppings, which are?  ",
+            6: "Napoletana is a NamePizza defined as the unionOf how many toppings?",
+            7: "ChickenTopping is a MeatTopping that is disjointWith which class?",
+            8: "Can a topping belonging to the class PizzaBase also belong to another class PizzaTopping?",
         },
+        //Tree Map Questions
         {
-            1: "TREE MAP QUESTION 1",
-            2: "Question 3-2",
-            3: "Question 3-3",
-            4: "Question 3-4",
-            5: "Question 3-5",
-            6: "Question 3-6",
-            7: "Question 3-7",
-            8: "Question 3-8",
-            9: "Question 3-9",
-            10: "Question 3-10",
+            1: "Which of the following best describes the class SpicyPizza?",
+            2: "How is the class SpicyTopping defined?",
+            3: "Fill in the blank: since any Pizza that is not a VegetarianPizza is a NonVegetarianPizza, then the subclass of VegetarianPizza must be ____ NonVegetarianPizza. ",
+            4: "In the context of defining allowable toppings for VegetarianPizza, which class is SeafoodTopping complementOf?",
+            5: "Soho is a NamePizza defined as the unionOf how many toppings? ",
+            6: "American is a NamedPizza with 3 toppings including MozzarellaTopping, PeperoniSausageTopping, and TomatoTopping. These toppings are defined using which relationship? ",
+            7: "Can a topping belonging to the class SlicedTomatoTopping also belong to another class  SundriedTomatoTopping?",
+            8: "Is the following statement true or false: all subclasses of NamePizza (e.g., American, Cajun, FourSeasons, etc.) are disjointWith each other. ",
         }];
 
         //List of all answers
         const pageAnswers = 
         [{
-            1: ["A","B","C","D"],
-            2: ["A","B","C","D"],
-            3: ["A","B","C","D"],
-            4: ["A","B","C","D"],
-            5: ["A","B","C","D"],
-            6: ["A","B","C","D"],
-            7: ["A","B","C","D"],
-            8: ["A","B","C","D"],
-            9: ["A","B","C","D"],
-            10: ["A","B","C","D"]
+            1: ["The union of Pizza and CheeseTopping",
+                "The intersection of Pizza and PizzaTopping",
+                "The union of Pizza and PizzaTopping ",
+                "The intersection of Pizza and CheeseTopping"],
+            2: ["True","False"],
+            3: ["True","False"],
+            4: ["SeafoodTopping is disjointWith MeatTopping",
+                "SeafoodTopping is complementOf MeatTopping",
+                "SeafoodTopping is unionOf MeatTopping",
+                "SeafoodTopping is intersectionOf MeatTopping"],
+            5: ["disjointWith",
+                "complementOf",
+                "unionOf",
+                "intersectionOf"],
+            6: ["MushroomTopping & TomatoTopping",
+                "MozzarellaTopping & TomatoTopping",
+                "CheeseTopping & TomatoTopping",
+                "MozzarellaTopping & CheeseTopping"],
+            7: ["True", "False"],
+            8: ["StuffedCrustBase",
+                "CheeseCrustBase",
+                "ThinAndCrispyBase",
+                "ThinPanBase"],
         },
         {
-            1: ["A","B","C","D"],
-            2: ["A","B","C","D"],
-            3: ["A","B","C","D"],
-            4: ["A","B","C","D"],
-            5: ["A","B","C","D"],
-            6: ["A","B","C","D"],
-            7: ["A","B","C","D"],
-            8: ["A","B","C","D"],
-            9: ["A","B","C","D"],
-            10: ["A","B","C","D"]
+            1: ["True","False"],
+            2: ["Any Pizza that intersects CheeseTopping",
+                "Any Pizza that intersects NutTopping",
+                "Any Pizza that intersects SauceTopping",
+                "Any Pizza that intersects VegetarianTopping"],
+            3: [,"MeatyPizza",
+                "NonVegetarianPizza",
+                "SeafoodPizza",
+                "CheesyPizza"],
+            4: ["True","False"],
+            5: ["FruitTopping, CheeseTopping, TomatoTopping",
+                "OliveTopping, PepperTopping, TomatoTopping",
+                "GarlicTopping, MixedSeafoodTopping, TomatoTopping",
+                "SpinachTopping, NutTopping, TomatoTopping"],
+            6: ["4","5","6","7"],
+            7: ["HamTopping",
+                "MeatTopping",
+                "PizzaTopping",
+                "Food"],
+            8: ["Yes, because PizzaBase and PizzaTopping are unionOf Pizza",
+                "No, because PizzaBase and PizzaTopping are intersectionOf Pizza",
+                "Yes, because PizzaBase and PizzaTopping are complementOf Pizza",
+                "No, because PizzaBase and PizzaTopping are disjointWith one another"],
         },
         {
-            1: ["A","B","C","D"],
-            2: ["A","B","C","D"],
-            3: ["A","B","C","D"],
-            4: ["A","B","C","D"],
-            5: ["A","B","C","D"],
-            6: ["A","B","C","D"],
-            7: ["A","B","C","D"],
-            8: ["A","B","C","D"],
-            9: ["A","B","C","D"],
-            10: ["A","B","C","D"]
+            1: ["Any Pizza that intersections SpicyTopping",
+                "Any PizzaTopping that intersects Spiciness",
+                "Any PizzaTopping that intersects SpicyTopping",
+                "Any SpicyTopping that intersects Spiciness"],
+            2: ["The unionOf Medium and Mild",
+                "The intersectionOf Spiciness and Medium",
+                "The intersectionOf PizzaTopping and Hot",
+                "The unionOf Spiciness and Mild"],
+            3: ["DisjointWith",
+                "ComplementOf",
+                "UnionOf",
+                "IntersectionOf"],
+            4: ["DisjointWith",
+                "MeatTopping",
+                "UnionOf",
+                "IntersectionOf"],
+            5: ["4","5","6","7"],
+            6: ["DisjointWith",
+                "ComplementOf",
+                "IntersectionOf",
+                "UnionOf"],
+            7: ["Yes, because SlicedTomatoTopping and SundriedTomatoTopping are unionOf TomatoTopping",
+                "No, because SlicedTomatoTopping and SundriedTomatoTopping are intersectionOf one another",
+                "Yes, because SlicedTomatoTopping and SundriedTomatoTopping are complementOf one another",
+                "No, because SlicedTomatoTopping and SundriedTomatoTopping are disjointWith one another"],
+            8: ["True","False"],
         }
         ];
 
         //List of all correct answers (by index)
-        const pageSolutions =   [[1, 0, 3, 2, 1, 2, 1, 0, 3, 2], 
-                                [1, 0, 3, 2, 1, 2, 1, 0, 3, 2], 
-                                [1, 0, 3, 2, 1, 2, 1, 0, 3, 2]];
+        const pageSolutions =   [
+            [3, 0, 0, 1, 2, 1, 0, 2], 
+            [0, 3, 1, 0, 2, 1, 0, 3], 
+            [0, 2, 1, 1, 2, 3, 3, 0]];
     </script>
 
     <!-- The parent container for calibration -->
@@ -465,7 +525,12 @@
         var question_var = 1;       //The index for which questions/answer options will be used: either 0, 1, or 2
         var visualization_var = 0;  //The binary index for which type of visualization will be used: either 0 or 1
         let answers = [];           //Variable to keep track of user answers
+
         let page_time = [];         //Variable to keep track of the time spent on each page by the user
+        let page_time_temp = [];
+        let page_index = 0
+
+
         let calibrated = false;
 
         let startTime = new Date().getTime();   //Variable to keep track of the time spent on the current page. This begins as soon as the page is loaded, meaning the first value can most-likely be disgarded 
@@ -506,7 +571,10 @@
         
             // Show the question and answer page
             document.getElementById("questionPage").style.display = "flex";
-        
+
+            startTime = new Date().getTime();
+            page_time_temp.push(startTime);
+            
             // Initialize the first question
             document.getElementById("questionText").innerText = pageQuestions[question_var][question_value];
             document.getElementById("questionTitle").innerText = ("Question " + question_value);
@@ -596,13 +664,7 @@
         
             if (page_value > questionNum) {
                 final_score = checkAnswers(answers);
-            }
-        
-            const endTime = new Date().getTime();
-            const timeSpent = (endTime - startTime) / 1000.0;
-            page_time.push(timeSpent);
-            startTime = endTime;
-        
+            }    
             updateFrontEnd();
         }
         
@@ -641,7 +703,7 @@
                 }
             } 
             //If the page value is between 0 and 22, and not equal to 11, then perform the regular assessment frontend update
-            else if (page_value > 0 && page_value <= 32 && page_value != 11 && page_value != 22) {
+            else if (page_value > 0 && page_value <= 26 && page_value != 9 && page_value != 18) {
                 menuBackground.style.display = "none";
                 menuIntermission.style.display = "none";
                 menuQuestion.style.display = "flex";
@@ -650,12 +712,35 @@
                 document.getElementById("questionTitle").innerText = ("Question" + question_value);
                 for(let i = 0; i < 4; i++)
                 {
+                    //Disable 2 of the question buttons if the possible answers are only true and false
+                    if (pageAnswers[question_var][question_value].length == 2)
+                    {
+                        questionButtons[2].style.display = "none";
+                        questionButtons[3].style.display = "none";
+                    }
+                    else
+                    {
+                        questionButtons[2].style.display = "inline-block";
+                        questionButtons[3].style.display = "inline-block";
+                    }
                     questionButtons[i].innerText = pageAnswers[question_var][question_value][i];
                 }
                 //document.getElementById("answersText").innerText = pageAnswers[question_var][question_value];
+
+                if(page_value == 1 || page_value == 10 || page_value == 19)
+                {
+                    startTime = new Date().getTime();
+                    page_time_temp.push(startTime);
+                }
+                else
+                {
+                    const endTime = new Date().getTime();
+                    const timeSpent = (endTime - startTime) / 1000.0;
+                    page_time_temp.push(timeSpent);
+                }
             } 
             //If the page value is equal to 11, cut in an intermission to change question/visualization styles
-            else if (page_value == 11)
+            else if (page_value == 9)
             {
                 menuQuestion.style.display = "none";
                 menuIntermission.style.display = "flex";
@@ -663,9 +748,16 @@
                 question_var = visualOrder[1];
                 document.getElementById("intermission").innerText = "Set 1 Completed!"
                 document.getElementById("tree-container").replaceChild(visuals[visualOrder[1]], document.getElementById("tree-container").firstChild);
+
+                const endTime = new Date().getTime();
+                const timeSpent = (endTime - startTime) / 1000.0;
+                page_time_temp.push(timeSpent);
+
+                page_time.push(page_time_temp);
+                page_time_temp = [];
                 
             }
-            else if (page_value == 22)
+            else if (page_value == 18)
             {
                 menuQuestion.style.display = "none";
                 menuIntermission.style.display = "flex";
@@ -673,16 +765,33 @@
                 question_var = visualOrder[2];
                 document.getElementById("intermission").innerText = "Set 2 Completed!"
                 document.getElementById("tree-container").replaceChild(visuals[visualOrder[2]], document.getElementById("tree-container").firstChild);
+
+                const endTime = new Date().getTime();
+                const timeSpent = (endTime - startTime) / 1000.0;
+                page_time_temp.push(timeSpent);
+
+                page_time.push(page_time_temp);
+                page_time_temp = [];
                 
             }
             //If the page value is above 21, then end the study, concluding that all questions have been answered 
-            else if (page_value > 32) {
+            else if (page_value > 26) {
                 menuQuestion.style.display = "none";
                 menuOutro.style.display = "flex";
                 continueButton.style.display = "none";
                 document.getElementById("outroText").textContent = "Thank you for participating!";
-                console.log(answers);
+
+                const endTime = new Date().getTime();
+                const timeSpent = (endTime - startTime) / 1000.0;
+                page_time_temp.push(timeSpent);
+
+                page_time.push(page_time_temp);
+                page_time_temp = [];
+
+                //USER ANSWERS, CORRECT ANSWERS, AND PAGE TIME
                 console.log(page_time);
+                console.log(answers);
+                console.log(pageSolutions[0].concat(pageSolutions[1], pageSolutions[2]));
             }
         }
         
