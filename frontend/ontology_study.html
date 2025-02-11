@@ -18,6 +18,12 @@
     <script src="assets/js/circlePack2.js"></script>
     <script src="assets/js/treeMap2.js"></script>
 
+    <script src="assets/js/node-link3.js"></script>
+    <script src="assets/js/circle-packing3.js"></script>
+    <script src="assets/js/circlePack-fruits.js"></script>
+    <script src="assets/js/tree-map3.js"></script>
+
+
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
     <!--Imports for data files, originally JSON but translated to Javascript for functionality-->
@@ -321,10 +327,10 @@
 
         //const vt2 = nodeLink(MusicBaselineData);
         //const vt3 = nodeLink(RestaurantBaselineData);
-        const vt2 = packing2(tutorialPastaCircle);
-        const vt3 = packing2(tutorialFruitCircle);
-        const vt5 = nodeLink(tutorialWineBaseline);
-        const vt4 = treeMap2(tutorialCitizenTree);
+        const vt2 = packing3(tutorialPastaCircle);
+        const vt3 = fruitsPacking(tutorialFruitCircle);
+        const vt5 = nodeLink3(tutorialWineBaseline);
+        const vt4 = treeMap3(tutorialCitizenTree);
 
         const visuals_tutorial = [vt1, vt2, vt3, vt4, vt5]    //Variable to store both temporary visualizations
 
@@ -550,10 +556,10 @@
             document.getElementById("pageButton4")
         ]
 
-        const v1 = nodeLink(PizzaBaselineData);
+        const v1 = nodeLink3(PizzaBaselineData);
         //const v2 = treeMap(PizzaTreeMapData);
-        const v2 = packing(pizzaCirclePackData)
-        const v3 = treeMap(PizzaTreeMapData)
+        const v2 = packing3(pizzaCirclePackData)
+        const v3 = treeMap3(PizzaTreeMapData)
 
         const visuals = [v1, v2, v3]    //Variable to store both temporary visualizations
 
