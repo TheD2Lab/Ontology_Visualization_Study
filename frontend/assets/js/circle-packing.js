@@ -1,6 +1,6 @@
  function packing(data){
   // visual dimension
-    const width = 900;
+    const width = 700;
     const height = width;
   
     const color = d3.scaleLinear()

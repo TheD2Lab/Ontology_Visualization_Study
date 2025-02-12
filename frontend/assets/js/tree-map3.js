@@ -1,7 +1,7 @@
-function treeMap(data){
+function treeMap3(data){
   // Specify the chart’s dimensions.
   const width = 1800;
-  const height = 700;
+  const height = 670;
 
   // This custom tiling function adapts the built-in binary tiling function
   // for the appropriate aspect ratio when the treemap is zoomed-in.
@@ -14,6 +14,11 @@ function treeMap(data){
       child.y1 = y0 + child.y1 / height * (y1 - y0);
     }
   }
+
+  const uid = (() => {
+    let count = 0;
+    return (prefix) => `${prefix}-${count++}`;
+  })();
 
   // Compute the layout.
   const hierarchy = d3.hierarchy(data)
@@ -31,8 +36,8 @@ function treeMap(data){
 
   const color = d3.scaleLinear()
     .domain([0, 5])
-      .range(["hsl(0, 0%,100%)", "hsl(0,0%,50%)"])
-      .interpolate(d3.interpolateHcl);
+      .range(["voilet", "#B0C2D8"])
+      .interpolate(d3.interpolateRgb);
 
   // Create the SVG container.
   const svg = d3.create("svg")
@@ -59,27 +64,11 @@ function treeMap(data){
     node.append("title")
         .text(d => `${name(d)}/${format(d.value)}`);
 
-    const uid = (() => {
-      let count = 0;
-      return (prefix) => `${prefix}-${count++}`;
-    })();
-
     node.append("rect")
         .attr("cursor", "pointer")
         .attr("id", d => (d.leafUid = uid("leaf")).id)
-        .attr("fill", d => d === root ? "#fff" : d.children ? "#ccc" : "#ddd")
+        .attr("fill", d => d === root ? "#B5C3DE" : color(d.value))
         .attr("stroke", "#fff")
-      
-        // .on("mouseover", function(d) {
-        //   // On mouseover, change the stroke (outline)
-        //   d3.select(this).transition()
-        //     .attr("fill", "grey")
-        // })
-        // .on("mouseout", function(d) {
-        //   // On mouseout, restore the original stroke (outline)
-        //   d3.select(this).transition()
-        //     .attr("fill", d => d === root ? "#fff" : d.children ? "#ccc" : "#ddd")
-        // });
 
     node.append("clipPath")
         .attr("id", d => (d.clipUid = uid("clip")).id)
@@ -92,12 +81,9 @@ function treeMap(data){
       .selectAll("tspan")
       .data(d => {
         const childrenCount = d.children ? d.children.length:0;
-        // return (d === root ? name(d) : d.data.name).split(/(?=[A-Z][^A-Z])/g).concat(`(${childrenCount}${childrenCount === 1 ? '' : ''})`);
         return (d === root ? `${name(d)} (${childrenCount})`: `${d.data.name} (${childrenCount})`);
       })
       .join("tspan")
-        // .attr("x", 5)
-        // .attr("y", (d, i, nodes) => `${(i === nodes.length - 1) * 0.3 + 1.1 + i * 0.9}em`)
         .attr("x", d=> {d === root ? ((d, i, nodes) => `${(i === nodes.length - 1.2) * 0.7 + 1.1 + i * 1.9}em`) : 5})
         .attr("y", 15)
         .attr("fill-opacity", (d, i, nodes) => i === nodes.length - 1 ? 0.7 : null)
@@ -105,22 +91,6 @@ function treeMap(data){
         .attr("dy", "0.35em")
         .text(d => d);
 
-    // node.append("nameText")
-    //     .attr("clip-path", d => d.clipUid)
-    //     .attr("font-weight", d => d === root ? "bold" : null)
-    //     .selectAll("tspan")
-    //     .data(d => {
-    //       const childrenCount = d.children ? d.children.length:0;
-    //       return `${name(d)}: ${format(d.value)} (${childrenCount})`;
-    //     })
-    //     .join("tspan")
-    //       .attr("x", (d, i, nodes) => (x(d.x0) + x(d.x1)) / 2)
-    //       .attr("y", (d, i, nodes) => (y(d.y0) + y(d.y1)) / 2)
-    //       .attr("fill-opacity", (d, i, nodes) => i === nodes.length - 1 ? 0.7 : null)
-    //       .attr("font-weight", (d, i, nodes) => i === nodes.length - 1 ? "normal" : null)
-    //       .attr("dy", "0.35em")
-    //       .text(d => d);
-        
     group.call(position, root);
   }
 

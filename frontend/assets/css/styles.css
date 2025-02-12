@@ -51,6 +51,7 @@ html {
     display:flex;
     flex-direction:column;
     align-items:center;
+    justify-content:center;
     width:1824px;
     height:900px;
 }
@@ -58,9 +59,10 @@ html {
 .h_researcher_button {
     border:none;
     background-color:var(--white-color);
-    width:700px;
-    font-size:20px;
+    width:500px;
+    font-size:15px;
     padding:10px;
+    margin-bottom:10px;
 }
 
 .h_researcher_button:hover {
@@ -74,6 +76,8 @@ html {
     font-size: 50px;
     color: black;
     padding: 20px;
+
+    margin-bottom:20px;
 
     background-color:var(--white-color);
 }
@@ -92,7 +96,7 @@ html {
     font-size:30px;
 
     width: 1000px;
-    height:750px;
+    height:600px;
 
     background-color:var(--white-color);
 }
@@ -155,7 +159,7 @@ html {
     padding:20px;
     padding-top:5px;
 
-    font-size:20px;
+    font-size:18px;
 }
 
 .h_begin_button {
@@ -218,8 +222,9 @@ html {
     background-color:var(--white-color);
     padding:5px;
 
-    width:450px;
-    font-size:20px;
+    width:400px;
+    min-height:45px;
+    font-size:15px;
 }
 
 #aoiCanvas {
@@ -246,8 +251,8 @@ html {
 }
 
 .h_calibration {
-    width: 1920px;
-    height:1080px;;
+    width: 1800px;
+    height:1000px;;
 }
 
 .calibration_parent {
