@@ -300,8 +300,6 @@
             tutorialTitle.innerText = titles[tutorial_value];
             tutorialText.innerText = tutorials[tutorial_value];
 
-            console.log(tutorial_value);
-
             if (tutorial_value < 5)
             {
                 document.getElementById("tree-container-tutorial").replaceChild(visuals_tutorial[tutorial_value], document.getElementById("tree-container-tutorial").firstChild);
@@ -356,8 +354,6 @@
     </div>
 
     <script>
-        const questionNum = 8;
-
         //List of all questions
         const pageQuestions = 
         //Baseline/Network Visual Questions
@@ -373,8 +369,8 @@
         },
         //Circle Packing Questions
         {
-            1: "Is the following statement true or false: the intersectionOf Pizza and ThinAndCrispyBase is ThinAndCrispyPizza?",
-            2: "Which of the following best describes the class VegetarianPizza1?",
+            1: "Which of the following best describes the class VegetarianPizza1?",
+            2: "Is the following statement true or false: the intersectionOf Pizza and ThinAndCrispyBase is ThinAndCrispyPizza?",
             3: "The subclasses of VegetarianPizza must be complementOf?",
             4: "Is the following statement true or false: since a VegetarianPizza can have neither SeafoodTopping nor MeatTopping, these two classes - SeafoodTopping and MeatTopping - must be complementOf each other. ",
             5: "The toppings of a NamedPizza called FruttiDiMare is defined as the unionOf three toppings, which are?  ",
@@ -422,11 +418,11 @@
                 "ThinPanBase"],
         },
         {
-            1: ["True","False"],
-            2: ["Any Pizza that intersects CheeseTopping",
+            1: ["Any Pizza that intersects CheeseTopping",
                 "Any Pizza that intersects NutTopping",
                 "Any Pizza that intersects SauceTopping",
                 "Any Pizza that intersects VegetarianTopping"],
+            2: ["True","False"],
             3: [,"MeatyPizza",
                 "NonVegetarianPizza",
                 "SeafoodPizza",
@@ -533,7 +529,6 @@
         let answers = [];           //Variable to keep track of user answers
 
         let page_time = [];         //Variable to keep track of the time spent on each page by the user
-        let page_time_temp = [];
         let page_index = 0
 
 
@@ -579,7 +574,7 @@
             document.getElementById("questionPage").style.display = "flex";
 
             startTime = new Date().getTime();
-            page_time_temp.push(startTime);
+            page_time.push(startTime);
             
             // Initialize the first question
             document.getElementById("questionText").innerText = pageQuestions[question_var][question_value];
@@ -664,13 +659,24 @@
         function changePage(ans = -1) {
             if (ans !== -1) answers.push(ans);
             page_value += 1; // Increment only once
-            question_value += 1;
-        
-            // Removed the redundant gazeTrackingEnabled block
-        
-            if (page_value > questionNum) {
-                final_score = checkAnswers(answers);
-            }    
+
+            if (page_value == 9)
+            {
+                question_value = 0;
+                question_var = visualOrder[1];
+                document.getElementById("intermission").innerText = "Set 1 Completed!"
+                document.getElementById("tree-container").replaceChild(visuals[visualOrder[1]], document.getElementById("tree-container").firstChild);
+            }
+            else if (page_value == 17)
+            {
+                question_value = 0;
+                question_var = visualOrder[2];
+                document.getElementById("intermission").innerText = "Set 1 Completed!"
+                document.getElementById("tree-container").replaceChild(visuals[visualOrder[2]], document.getElementById("tree-container").firstChild);
+            }
+
+            question_value += 1;  
+
             updateFrontEnd();
         }
         
@@ -709,7 +715,7 @@
                 }
             } 
             //If the page value is between 0 and 22, and not equal to 11, then perform the regular assessment frontend update
-            else if (page_value > 0 && page_value <= 26 && page_value != 9 && page_value != 18) {
+            else if (page_value > 0 && page_value <= 24) {
                 menuBackground.style.display = "none";
                 menuIntermission.style.display = "none";
                 menuQuestion.style.display = "flex";
@@ -731,21 +737,21 @@
                     }
                     questionButtons[i].innerText = pageAnswers[question_var][question_value][i];
                 }
-                //document.getElementById("answersText").innerText = pageAnswers[question_var][question_value];
 
-                if(page_value == 1 || page_value == 10 || page_value == 19)
+                if (page_value == 1)
                 {
                     startTime = new Date().getTime();
-                    page_time_temp.push(startTime);
+                    page_time.push(startTime);
                 }
                 else
                 {
                     const endTime = new Date().getTime();
                     const timeSpent = (endTime - startTime) / 1000.0;
-                    page_time_temp.push(timeSpent);
+                    page_time.push(timeSpent);
                 }
             } 
             //If the page value is equal to 11, cut in an intermission to change question/visualization styles
+            /**
             else if (page_value == 9)
             {
                 menuQuestion.style.display = "none";
@@ -780,8 +786,9 @@
                 page_time_temp = [];
                 
             }
+                */
             //If the page value is above 21, then end the study, concluding that all questions have been answered 
-            else if (page_value > 26) {
+            else if (page_value > 24) {
                 menuQuestion.style.display = "none";
                 menuOutro.style.display = "flex";
                 continueButton.style.display = "none";
@@ -789,30 +796,13 @@
 
                 const endTime = new Date().getTime();
                 const timeSpent = (endTime - startTime) / 1000.0;
-                page_time_temp.push(timeSpent);
-
-                page_time.push(page_time_temp);
-                page_time_temp = [];
+                page_time.push(timeSpent);
 
                 //USER ANSWERS, CORRECT ANSWERS, AND PAGE TIME
-                console.log(page_time);
-                console.log(answers);
-                console.log(pageSolutions[0].concat(pageSolutions[1], pageSolutions[2]));
+                console.log("PAGE TIME: " + page_time);
+                console.log("ANSWERS: " + answers);
+                console.log("SOLUTIONS: " + pageSolutions[0].concat(pageSolutions[1], pageSolutions[2]));
             }
-        }
-        
-
-        function checkAnswers(ans_list)
-        {
-            let correct_ans = 0
-            for (i = 0; i < questionNum; i++)
-            {
-                if (ans_list[i] === pageSolutions[question_var][i])
-                {
-                    correct_ans++;
-                }
-            }
-            return correct_ans;
         }
         ////
         ////
