@@ -88,19 +88,6 @@
 
         function changeVisuals(i)
         {
-            /*
-            let currentIndex = visualOrder.indexOf(j); // Find if the value already exists
-
-            if (currentIndex !== -1) {
-                // If the value exists, swap it with the current index
-                [visualOrder[i], visualOrder[currentIndex]] = [visualOrder[currentIndex], visualOrder[i]];
-            } else {
-                // If the value doesn't exist, just update the current index
-                visualOrder[i] = j;
-            }
-            updateButtonVisual();
-            */
-
             let orders = [
             [0, 1, 2],
             [0, 2, 1],
@@ -305,8 +292,8 @@
                 document.getElementById("tree-container-tutorial").replaceChild(visuals_tutorial[tutorial_value], document.getElementById("tree-container-tutorial").firstChild);
                 if (tutorial_value == 4)
                 {
-                    tutorialButton.style.backgroundColor = "red";
-                    tutorialButton.style.color = "white";
+                    console.log("change");
+                    tutorialButton.innerText = "STOP HERE";
                 }
             }
             else if (tutorial_value == 5)
@@ -349,7 +336,7 @@
             <button id="pageButton3" class="ans_button" onclick="changePage(2)">Answer C</button>
             <button id="pageButton4" class="ans_button" onclick="changePage(3)">Answer D</button>
         </div>
-        <div id="tree-container" style="background-color:rgb(240, 240, 240);width:auto;height:auto;max-height:700px;margin-bottom:20px;"></div>
+        <div id="tree-container" style="display:flex;background-color:rgb(240, 240, 240);width:auto;height:auto;max-height:700px;margin-bottom:20px;justify-content:center;"></div>
         <canvas id="aoiCanvas" width="1920" height="1080" style="position: absolute; top: 0; left: 0; z-index: 10; pointer-events: none;"></canvas>
     </div>
 
@@ -358,99 +345,99 @@
         const pageQuestions = 
         //Baseline/Network Visual Questions
         [{
-            1: "How is the class CheesyPizza defined?",
-            2: "Is the following statement true or false: the intersectionOf Pizza and MeatTopping is MeatyPizza",
-            3: "Is the following statement true or false: NonVegetarianPizza is a subclass of the complementOf VegetarianPizza",
-            4: "VegetarianPizza must have neither SeafoodTopping nor MeatTopping, what does this mean?",
-            5: "The class Spiciness describes 3 levels of spiciness including Hot, Medium and Mild. These levels are defined using which relationship",
-            6: "The toppings of a NamedPizza called Margherita is defined as the unionOf two toppings, which are? ",
-            7: "Is the following statement true or false: HerbSpiceTopping has two subclasses CajunSpiceTopping and RosemaryTopping, which are disjointWith each other.",
-            8: "DeepPanBase is a PizzaBase that is disjointWith which class?",
+            1: "How is the class 'CheesyPizza' defined?",
+            2: "Is the following statement true or false: the intersectionOf 'Pizza' and 'MeatTopping' is 'MeatyPizza'",
+            3: "Is the following statement true or false: 'NonVegetarianPizza' is a subclass of the complementOf 'VegetarianPizza'",
+            4: "'VegetarianPizza' must have neither 'SeafoodTopping' nor 'MeatTopping', what does this mean?",
+            5: "The class 'Spiciness' describes 3 levels of spiciness including 'Hot', 'Medium' and 'Mild'. These levels are defined using which relationship",
+            6: "The toppings of a 'NamedPizza' called 'Margherita' is defined as the unionOf two toppings, which are? ",
+            7: "Is the following statement true or false: 'HerbSpiceTopping' has two subclasses 'CajunSpiceTopping' and 'RosemaryTopping', which are disjointWith each other.",
+            8: "'DeepPanBase' is a 'PizzaBase' that is disjointWith which class?",
         },
         //Circle Packing Questions
         {
-            1: "Which of the following best describes the class VegetarianPizza1?",
-            2: "Is the following statement true or false: the intersectionOf Pizza and ThinAndCrispyBase is ThinAndCrispyPizza?",
-            3: "The subclasses of VegetarianPizza must be complementOf?",
-            4: "Is the following statement true or false: since a VegetarianPizza can have neither SeafoodTopping nor MeatTopping, these two classes - SeafoodTopping and MeatTopping - must be complementOf each other. ",
-            5: "The toppings of a NamedPizza called FruttiDiMare is defined as the unionOf three toppings, which are?  ",
-            6: "Napoletana is a NamePizza defined as the unionOf how many toppings?",
-            7: "ChickenTopping is a MeatTopping that is disjointWith which class?",
-            8: "Can a topping belonging to the class PizzaBase also belong to another class PizzaTopping?",
+            1: "Which of the following best describes the class 'VegetarianPizza1?'",
+            2: "Is the following statement true or false: the intersectionOf 'Pizza' and 'ThinAndCrispyBase' is 'ThinAndCrispyPizza'?",
+            3: "The subclasses of 'VegetarianPizza' must be complementOf?",
+            4: "Is the following statement true or false: since a 'VegetarianPizza' can have neither 'SeafoodTopping' nor 'MeatTopping', these two classes - 'SeafoodTopping' and 'MeatTopping' - must be complementOf each other. ",
+            5: "The toppings of a 'NamedPizza' called 'FruttiDiMare' is defined as the unionOf three toppings, which are?  ",
+            6: "'Napoletana' is a 'NamePizza' defined as the unionOf how many toppings?",
+            7: "'ChickenTopping' is a 'MeatTopping' that is disjointWith which class?",
+            8: "Can a topping belonging to the class 'PizzaBase' also belong to another class 'PizzaTopping'?",
         },
         //Tree Map Questions
         {
-            1: "Which of the following best describes the class SpicyPizza?",
-            2: "How is the class SpicyTopping defined?",
-            3: "Fill in the blank: since any Pizza that is not a VegetarianPizza is a NonVegetarianPizza, then the subclass of VegetarianPizza must be ____ NonVegetarianPizza. ",
-            4: "In the context of defining allowable toppings for VegetarianPizza, which class is SeafoodTopping complementOf?",
-            5: "Soho is a NamePizza defined as the unionOf how many toppings? ",
-            6: "American is a NamedPizza with 3 toppings including MozzarellaTopping, PeperoniSausageTopping, and TomatoTopping. These toppings are defined using which relationship? ",
-            7: "Can a topping belonging to the class SlicedTomatoTopping also belong to another class  SundriedTomatoTopping?",
-            8: "Is the following statement true or false: all subclasses of NamePizza (e.g., American, Cajun, FourSeasons, etc.) are disjointWith each other. ",
+            1: "Which of the following best describes the class 'SpicyPizza?'",
+            2: "How is the class 'SpicyTopping' defined?",
+            3: "Fill in the blank: since any 'Pizza' that is not a 'VegetarianPizza' is a 'NonVegetarianPizza', then the subclass of 'VegetarianPizza' must be ____ 'NonVegetarianPizza'. ",
+            4: "In the context of defining allowable toppings for 'VegetarianPizza', which class is 'SeafoodTopping' complementOf?",
+            5: "'Soho' is a 'NamePizza' defined as the unionOf how many toppings? ",
+            6: "'American' is a 'NamedPizza' with 3 toppings including 'MozzarellaTopping', 'PeperoniSausageTopping', and 'TomatoTopping'. These toppings are defined using which relationship? ",
+            7: "Can a topping belonging to the class 'SlicedTomatoTopping' also belong to another class  'SundriedTomatoTopping'?",
+            8: "Is the following statement true or false: all subclasses of 'NamePizza' (e.g., 'American', 'Cajun', 'FourSeasons', etc.) are disjointWith each other. ",
         }];
 
         //List of all answers
         const pageAnswers = 
         [{
-            1: ["The union of Pizza and CheeseTopping",
-                "The intersection of Pizza and PizzaTopping",
-                "The union of Pizza and PizzaTopping ",
-                "The intersection of Pizza and CheeseTopping"],
+            1: ["The union of 'Pizza' and 'CheeseTopping'",
+                "The intersection of 'Pizza' and 'PizzaTopping'",
+                "The union of 'Pizza' and 'PizzaTopping'",
+                "The intersection of 'Pizza' and 'CheeseTopping'"],
             2: ["True","False"],
             3: ["True","False"],
-            4: ["SeafoodTopping is disjointWith MeatTopping",
-                "SeafoodTopping is complementOf MeatTopping",
-                "SeafoodTopping is unionOf MeatTopping",
-                "SeafoodTopping is intersectionOf MeatTopping"],
+            4: ["'SeafoodTopping' is disjointWith 'MeatTopping'",
+                "'SeafoodTopping' is complementOf 'MeatTopping'",
+                "'SeafoodTopping' is unionOf 'MeatTopping'",
+                "'SeafoodTopping' is intersectionOf 'MeatTopping'"],
             5: ["disjointWith",
                 "complementOf",
                 "unionOf",
                 "intersectionOf"],
-            6: ["MushroomTopping & TomatoTopping",
-                "MozzarellaTopping & TomatoTopping",
-                "CheeseTopping & TomatoTopping",
-                "MozzarellaTopping & CheeseTopping"],
+            6: ["'MushroomTopping' & 'TomatoTopping'",
+                "'MozzarellaTopping' & 'TomatoTopping'",
+                "'CheeseTopping' & 'TomatoTopping'",
+                "'MozzarellaTopping' & 'CheeseTopping'"],
             7: ["True", "False"],
-            8: ["StuffedCrustBase",
-                "CheeseCrustBase",
-                "ThinAndCrispyBase",
-                "ThinPanBase"],
+            8: ["'StuffedCrustBase'",
+                "'CheeseCrustBase'",
+                "'ThinAndCrispyBase'",
+                "'ThinPanBase'"],
         },
         {
-            1: ["Any Pizza that intersects CheeseTopping",
-                "Any Pizza that intersects NutTopping",
-                "Any Pizza that intersects SauceTopping",
-                "Any Pizza that intersects VegetarianTopping"],
+            1: ["Any Pizza that intersects 'CheeseTopping'",
+                "Any Pizza that intersects 'NutTopping'",
+                "Any Pizza that intersects 'SauceTopping'",
+                "Any Pizza that intersects 'VegetarianTopping'"],
             2: ["True","False"],
-            3: [,"MeatyPizza",
-                "NonVegetarianPizza",
-                "SeafoodPizza",
-                "CheesyPizza"],
+            3: ["'MeatyPizza'",
+                "'NonVegetarianPizza'",
+                "'SeafoodPizza'",
+                "'CheesyPizza'"],
             4: ["True","False"],
-            5: ["FruitTopping, CheeseTopping, TomatoTopping",
-                "OliveTopping, PepperTopping, TomatoTopping",
-                "GarlicTopping, MixedSeafoodTopping, TomatoTopping",
-                "SpinachTopping, NutTopping, TomatoTopping"],
+            5: ["'FruitTopping', 'CheeseTopping', 'TomatoTopping'",
+                "'OliveTopping', 'PepperTopping', 'TomatoTopping'",
+                "'GarlicTopping', 'MixedSeafoodTopping', 'TomatoTopping'",
+                "'SpinachTopping', 'NutTopping', 'TomatoTopping'"],
             6: ["4","5","6","7"],
-            7: ["HamTopping",
-                "MeatTopping",
-                "PizzaTopping",
-                "Food"],
-            8: ["Yes, because PizzaBase and PizzaTopping are unionOf Pizza",
-                "No, because PizzaBase and PizzaTopping are intersectionOf Pizza",
-                "Yes, because PizzaBase and PizzaTopping are complementOf Pizza",
-                "No, because PizzaBase and PizzaTopping are disjointWith one another"],
+            7: ["'HamTopping'",
+                "'MeatTopping'",
+                "'PizzaTopping'",
+                "'Food'"],
+            8: ["Yes, because 'PizzaBase' and 'PizzaTopping' are unionOf 'Pizza'",
+                "No, because 'PizzaBase' and 'PizzaTopping' are intersectionOf 'Pizza'",
+                "Yes, because 'PizzaBase' and 'PizzaTopping' are complementOf 'Pizza'",
+                "No, because 'PizzaBase' and 'PizzaTopping' are disjointWith one another"],
         },
         {
-            1: ["Any Pizza that intersections SpicyTopping",
-                "Any PizzaTopping that intersects Spiciness",
-                "Any PizzaTopping that intersects SpicyTopping",
-                "Any SpicyTopping that intersects Spiciness"],
-            2: ["The unionOf Medium and Mild",
-                "The intersectionOf Spiciness and Medium",
-                "The intersectionOf PizzaTopping and Hot",
-                "The unionOf Spiciness and Mild"],
+            1: ["Any 'Pizza' that intersections 'SpicyTopping'",
+                "Any 'PizzaTopping' that intersects 'Spiciness'",
+                "Any 'PizzaTopping' that intersects 'SpicyTopping'",
+                "Any 'SpicyTopping' that intersects 'Spiciness'"],
+            2: ["The unionOf 'Medium' and 'Mild'",
+                "The intersectionOf 'Spiciness' and 'Medium'",
+                "The intersectionOf 'PizzaTopping' and 'Hot'",
+                "The unionOf 'Spiciness' and 'Mild'"],
             3: ["DisjointWith",
                 "ComplementOf",
                 "UnionOf",
@@ -464,10 +451,10 @@
                 "ComplementOf",
                 "IntersectionOf",
                 "UnionOf"],
-            7: ["Yes, because SlicedTomatoTopping and SundriedTomatoTopping are unionOf TomatoTopping",
-                "No, because SlicedTomatoTopping and SundriedTomatoTopping are intersectionOf one another",
-                "Yes, because SlicedTomatoTopping and SundriedTomatoTopping are complementOf one another",
-                "No, because SlicedTomatoTopping and SundriedTomatoTopping are disjointWith one another"],
+            7: ["Yes, because 'SlicedTomatoTopping' and 'SundriedTomatoTopping' are unionOf 'TomatoTopping'",
+                "No, because 'SlicedTomatoTopping' and 'SundriedTomatoTopping' are intersectionOf one another",
+                "Yes, because 'SlicedTomatoTopping' and 'SundriedTomatoTopping' are complementOf one another",
+                "No, because 'SlicedTomatoTopping' and 'SundriedTomatoTopping' are disjointWith one another"],
             8: ["True","False"],
         }
         ];
@@ -715,7 +702,7 @@
                 menuQuestion.style.display = "flex";
         
                 document.getElementById("questionText").innerText = pageQuestions[question_var][question_value];
-                document.getElementById("questionTitle").innerText = ("Question" + question_value);
+                document.getElementById("questionTitle").innerText = ("Question " + page_value);
                 for(let i = 0; i < 4; i++)
                 {
                     //Disable 2 of the question buttons if the possible answers are only true and false
@@ -741,46 +728,10 @@
                 {
                     const endTime = new Date().getTime();
                     const timeSpent = (endTime - startTime) / 1000.0;
+                    startTime = endTime;
                     page_time.push(timeSpent);
                 }
             } 
-            //If the page value is equal to 11, cut in an intermission to change question/visualization styles
-            /**
-            else if (page_value == 9)
-            {
-                menuQuestion.style.display = "none";
-                menuIntermission.style.display = "flex";
-                question_value = 0;
-                question_var = visualOrder[1];
-                document.getElementById("intermission").innerText = "Set 1 Completed!"
-                document.getElementById("tree-container").replaceChild(visuals[visualOrder[1]], document.getElementById("tree-container").firstChild);
-
-                const endTime = new Date().getTime();
-                const timeSpent = (endTime - startTime) / 1000.0;
-                page_time_temp.push(timeSpent);
-
-                page_time.push(page_time_temp);
-                page_time_temp = [];
-                
-            }
-            else if (page_value == 18)
-            {
-                menuQuestion.style.display = "none";
-                menuIntermission.style.display = "flex";
-                question_value = 0;
-                question_var = visualOrder[2];
-                document.getElementById("intermission").innerText = "Set 2 Completed!"
-                document.getElementById("tree-container").replaceChild(visuals[visualOrder[2]], document.getElementById("tree-container").firstChild);
-
-                const endTime = new Date().getTime();
-                const timeSpent = (endTime - startTime) / 1000.0;
-                page_time_temp.push(timeSpent);
-
-                page_time.push(page_time_temp);
-                page_time_temp = [];
-                
-            }
-                */
             //If the page value is above 21, then end the study, concluding that all questions have been answered 
             else if (page_value > 24) {
                 // Stop the gaze data tracking immediately.
@@ -801,9 +752,28 @@
                 console.log("ANSWERS: " + answers);
                 console.log("SOLUTIONS: " + pageSolutions[0].concat(pageSolutions[1], pageSolutions[2]));
 
+                console.log(checkScore());
+
                 // Automatically download the gaze data CSV.
                 downloadGazeDataCSV();
             }
+        }
+
+        function checkScore()
+        {
+            results = [];
+            final_answers = pageSolutions[0].concat(pageSolutions[1], pageSolutions[2]);
+            temp = 0.0;
+            for (i = 0; i < 24; i++)
+            {   
+                results.push(final_answers[i] == answers[i] ? 1:0);
+                if (final_answers[i] == answers[i])
+                {
+                    temp++;
+                }
+            }
+            results.push((temp/24.0));
+            return results;
         }
         ////
         ////
