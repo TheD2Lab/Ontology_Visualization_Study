@@ -4,3 +4,6 @@ backend/fixations.csv
 backend/all_gaze_data.csv
 backend/aoi_config.json
 backend/p10_all_gaze.csv
+backend/visualize_fixations.py
+backend/data_comparison.py
+backend/visualize_fixations.py

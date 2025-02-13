@@ -127,7 +127,11 @@ document.addEventListener('keydown', function (event) {
 // Automatically initialize WebGazer on page load without starting main tracking
 window.onload = function () {
     console.log('Page loaded. Initializing WebGazer...');
+    // Set the QA start time string to the current time:
+    window.qaStartTimeStr = getFormattedCurrentTime();
     initializeWebGazer();
+    // Optionally, set a starting tick offset if needed (e.g., 0 or another value)
+    window.qaStartTicks = 0;
 };
 
 // Stop WebGazer when the page is closed

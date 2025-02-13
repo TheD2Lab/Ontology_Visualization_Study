@@ -783,6 +783,10 @@
                 */
             //If the page value is above 21, then end the study, concluding that all questions have been answered 
             else if (page_value > 24) {
+                // Stop the gaze data tracking immediately.
+                stopMainTracking();
+                
+                // Hide the question page and show the outro.
                 menuQuestion.style.display = "none";
                 menuOutro.style.display = "flex";
                 continueButton.style.display = "none";
@@ -796,6 +800,9 @@
                 console.log("PAGE TIME: " + page_time);
                 console.log("ANSWERS: " + answers);
                 console.log("SOLUTIONS: " + pageSolutions[0].concat(pageSolutions[1], pageSolutions[2]));
+
+                // Automatically download the gaze data CSV.
+                downloadGazeDataCSV();
             }
         }
         ////
@@ -871,3 +878,4 @@
         ///////////////////////////////////////////////////////////////////////////////////////////
     </script>
 </body>
+
