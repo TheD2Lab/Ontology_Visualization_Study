@@ -203,6 +203,9 @@
         const IDField = document.getElementById('IDInput');
         const button = document.getElementById('consentButton');
 
+        window.user_id = "";
+        window.user_name = "";
+
         function checkInput()
         {
             console.log("Check");
@@ -215,11 +218,12 @@
 
         // Attach the input event listener to the input field
         nameField.addEventListener('input', function() {
-            console.log("YES")
             checkInput();
+            window.user_name = nameField.value;
         });
         IDField.addEventListener('input', function() {
             checkInput();
+            window.user_id = IDField.value;
         });
         ////
         ////
@@ -300,7 +304,9 @@
             {
                 question_var = visualOrder[0];
                 document.getElementById("tree-container").replaceChild(visuals[visualOrder[0]], document.getElementById("tree-container").firstChild);
-                changePage();
+                let user_name = nameField.value;
+                let user_id =  IDField.value;
+                changePage(-1, user_name, user_id);
             }
         }
 
@@ -636,10 +642,10 @@
 
         }
 
-
         function changePage(ans = -1) {
             if (ans !== -1) answers.push(ans);
             page_value += 1; // Increment only once
+
 
             if (page_value == 9)
             {
@@ -660,8 +666,6 @@
 
             updateFrontEnd();
         }
-        
-        
         
 
         //Function for updating visuals based on the new value of page_value
@@ -752,7 +756,21 @@
                 console.log("ANSWERS: " + answers);
                 console.log("SOLUTIONS: " + pageSolutions[0].concat(pageSolutions[1], pageSolutions[2]));
 
-                console.log(checkScore());
+                let results = checkScore();
+
+                let date = new Date(page_time[0]);
+
+                text_content = `User Name: ${window.user_name}\nUser ID: ${window.user_id}\nUser Score: ${results}\nUser Time: ${page_time.toString()}\n\nTranslated Unix: ${date.toString()}`;
+                let blob = new Blob([text_content], { type: "text/plain" });
+
+                let a = document.createElement("a");
+                a.href = URL.createObjectURL(blob);
+                a.download = "user_info.txt";  // File name
+
+                // Append, click, and remove the element
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
 
                 // Automatically download the gaze data CSV.
                 downloadGazeDataCSV();
