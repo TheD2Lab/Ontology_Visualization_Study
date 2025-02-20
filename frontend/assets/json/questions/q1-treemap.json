@@ -1,0 +1,81 @@
+{
+    "name": "Food", "value": 100,
+    "children": [
+        {"name": "IceCream", "value": 100, "color": "#A2D8D8"},
+        {"name": "PizzaBase", "value": 100, "color": "#FFDAB9",
+        "children": [
+            {"name": "DeepPanBase", "value": 100, "color": "#FFDAB9"},
+            {"name": "ThinAndCrispyBase", "value": 100, "color": "#FFDAB9"}
+        ]},
+        {
+            "name": "Pizza", "value": 100, "color": "#ADD8E4",
+            "children": [
+                {"name": "UnclosedPizza", "value": 100, "color": "#ADD8E4"},
+                {"name": "CheesyPizza", "value": 100, "color": "#ADD8E4"},
+                {"name": "InterestingPizza", "value": 100, "color": "#ADD8E4"},
+                {"name": "MeatyPizza", "value": 100, "color": "#ADD8E4"},
+                {"name": "NamedPizza", "value": 100, "color": "#ADD8E4",
+                    "children": [
+                        {"name": "American", "value": 100, "color": "#ADD8E4"},
+                        {"name": "AmericanHot", "value": 100, "color": "#ADD8E4"},
+                        {"name": "Cajun", "value": 100, "color": "#ADD8E4"},
+                        {"name": "Capricciosa", "value": 100, "color": "#ADD8E4"},
+                        {"name": "Caprina", "value": 100, "color": "#ADD8E4"},
+                        {"name": "Fiorentina", "value": 100, "color": "#ADD8E4"},
+                        {"name": "FourSeasons", "value": 100, "color": "#ADD8E4"},  
+                        {"name": "FruittiDiMare", "value": 100, "color": "#ADD8E4"},
+                        {"name": "Giardiniera", "value": 100, "color": "#ADD8E4"},
+                        {"name": "LaReine", "value": 100, "color": "#ADD8E4"},
+                        {"name": "Margherita", "value": 100, "color": "#ADD8E4"},
+                        {"name": "Mushroom", "value": 100, "color": "#ADD8E4"},
+                        {"name": "Napoletana", "value": 100, "color": "#ADD8E4"},
+                        {"name": "Parmense", "value": 100, "color": "#ADD8E4"},
+                        {"name": "PolloAdAstra", "value": 100, "color": "#ADD8E4"},
+                        {"name": "PrinceCarlo", "value": 100, "color": "#ADD8E4"},
+                        {"name": "QuattroFormaggi", "value": 100, "color": "#ADD8E4"},
+                        {"name": "Rosa", "value": 100, "color": "#ADD8E4"},
+                        {"name": "Siciliana", "value": 100, "color": "#ADD8E4"},
+                        {"name": "SloppyGiuseppe", "value": 100, "color": "#ADD8E4"},
+                        {"name": "Soho", "value": 100, "color": "#ADD8E4"},
+                        {"name": "Veneziana", "value": 100, "color": "#ADD8E4"}
+                ]},
+                {"name": "NonVegetarianPizza", "value": 100, "color": "#ADD8E4"},
+                {"name": "RealItalianPizza", "value": 100, "color": "#ADD8E4"},
+                {"name": "SpicyPizzaEquivalent", "value": 100, "color": "#ADD8E4"},
+                {"name": "ThinAndCrispyPizza", "value": 100, "color": "#ADD8E4"},
+                {"name": "VegetarianPizza", "value": 100, "color": "#ADD8E4"},
+                {"name": "VegetarianPizza1", "value": 100, "color": "#ADD8E4"},
+                {"name": "VegetarianPizza2", "value": 100, "color": "#ADD8E4"},
+                {"name": "SpicyPizza", "value": 100, "color": "#B7C2D3"}
+            ]
+    },
+    {"name": "", "value": 100, "color": "#CFAFB1",
+        "children": [
+                {"name": "Pizza", "value": 100, "color": "#ADD8E4"},
+                {"name": "", "value": 100, "color": "#B7C2D3",
+                    "children": [
+                    {"name": "SpicyPizza", "value": 100, "color": "#B7C2D3"}
+                ]},
+                {"name": "SpicyTopping", "value": 100, "color": "#CFAFB1"}
+            ]
+    },
+    {"name": "PizzaTopping", "value": 100, "color": "#F08080",
+        "children": [
+            {"name": "SpicyTopping", "value": 100, "color": "#CFAFB1",
+                "children": [
+                    {"name": "SpicyPizza", "value": 100, "color": "#B7C2D3"}
+                ]
+            },
+            {"name": "CheeseTopping", "value": 100, "color": "#F08080"},
+            {"name": "FruitTopping", "value": 100, "color": "#F08080"},
+            {"name": "HerbSpiceTopping", "value": 100, "color": "#F08080"},
+            {"name": "MeatTopping", "value": 100, "color": "#F08080"},
+            {"name": "NutTopping", "value": 100, "color": "#F08080"},
+            {"name": "SauceTopping", "value": 100, "color": "#F08080"},
+            {"name": "SeafoodTopping", "value": 100, "color": "#F08080"},
+            {"name": "VegetableTopping", "value": 100, "color": "#F08080"},
+            {"name": "VegetarianTopping", "value": 100, "color": "#F08080"}
+        ]
+    }
+    ]
+}

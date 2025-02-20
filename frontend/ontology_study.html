@@ -9,20 +9,10 @@
     <script src="assets/js/eyetracking.js"></script>
     <script src="assets/js/calibration.js"></script>
 
-    <!--Imports for ontology visualizations in Javascript format-->
-    <script src="assets/js/circle-packing.js"></script>
-    <script src="assets/js/node-link.js"></script>
-    <script src="assets/js/tree-map.js"></script>
-
-    <script src="assets/js/baseline2.js"></script>
-    <script src="assets/js/circlePack2.js"></script>
-    <script src="assets/js/treeMap2.js"></script>
-
     <script src="assets/js/node-link3.js"></script>
     <script src="assets/js/circle-packing3.js"></script>
     <script src="assets/js/circlePack-fruits.js"></script>
     <script src="assets/js/tree-map3.js"></script>
-
 
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
@@ -237,6 +227,7 @@
             <div id="tutorial_text" class="h_background_bullet_text">The classes do not and cannot share any subclasses or values. For example:<br>Class A is disjointWith Class B. Class A = [1, 2, 3], Class B = [4, 5, 6]</div>
         </div>
         <div id="tree-container-tutorial" style="display:flex;background-color:rgb(240, 240, 240);width:auto;height:auto;max-height:700px;margin-bottom:20px;justify-content:center;"></div>
+        <video id = "tutorial_video" controls height = "700" style = "margin-bottom:20px;display:none" src="./assets/mp4/wine-intersectionOf.mp4"></video>
         <button id="tutorial_button" class="h_begin_button" onclick="iterateTutorial()">Next</button>
     </div>
 
@@ -247,9 +238,19 @@
         //
         //// In this area, the tutorial pages for each ontology relationship are displayed. Once all have been shown, it will move onto the actual test
         let tutorial_value = 0;
+
+        let video_sources = [
+            "./assets/mp4/pasta-disjointWith.mp4",
+            "./assets/mp4/fruit-unionOf.mp4",
+            "./assets/mp4/citizen-complementOf.mp4",
+            "./assets/mp4/wine-intersectionOf.mp4",
+        ]
+
         const tutorialTitle = document.getElementById("tutorial_title");
         const tutorialText = document.getElementById("tutorial_text");
         const tutorialButton = document.getElementById("tutorial_button");
+        const tutorialVisual = document.getElementById("tree-container-tutorial");
+        const tutorialVideo = document.getElementById("tutorial_video");
 
         let titles = ["What is an Ontology?", 
             "DisjointWith", 
@@ -262,24 +263,24 @@
             + "\n\nClasses = represent concepts or sets of instsances in the domain"
             + "\n\nInstances = specific objects b elonging to respective Classes"
             + "\n\nRelations = used to associate Classes, Instances, or any other entity within the ontology"
-            + "\n\nFor example, a Wine class represents all wines that exist. The Wine class can be defined with subclasses such as Red Wine, White Wine, and Rose Wine. In other words, these subclasses have one shared superclass."
-            + "\n\nThe figure shows the relations between classes and instances in the wine domain. PinotNoir class has one instance: MoutadamPinotNoir. The Winery class has two instances: Mountadam and Elyse. The FineFlavor class has three instances: Delicate, Moderate and Strong. MountadamPinotNoir is associated with two other instances ussing relations MadeFrom and HasFlavor.",
+            + "\n\nFor example, a 'Wine' class represents all wines that exist. The 'Wine' class can be defined with subclasses such as 'Red Wine', 'White Wine', and 'Rose Wine'. In other words, these subclasses have one shared superclass."
+            + "\n\nThe figure shows the relations between classes and instances in the wine domain. 'PinotNoir' class has one instance: 'MoutadamPinotNoir'. The 'Winery' class has two instances: 'Mountadam' and 'Elyse'. The 'FineFlavor' class has three instances: 'Delicate', 'Moderate' and 'Strong'. 'MountadamPinotNoir' is associated with two other instances ussing relations MadeFrom and 'HasFlavor'.",
 
             "DisjointWith guarantees that an instance of one class cannot simultaneously be an instance of another specified class. "
-            + "\n\nFor example, given two classes: Pasta and Fruit, that are stated to be disjoint with each other, we can deduce that if A is an instance of Pasta, then A is not an instance of Fruit."
-            + "\n\nThis example is being shown using a Circle Packing visualization. Click on a circle to expand or condense the entities contained inside of it.",
+            + "\n\nFor example, given two classes: 'Pasta' and 'Fruit', that are stated to be disjoint with each other, we can deduce that if A is an instance of 'Pasta', then A is not an instance of 'Fruit'."
+            + "\n\nThis example will be demonstrated in the video below using a network visualization:",
 
             "unionOf states a combination of two or more classes, where the resulting class contains all instances present in either of the original class. "
-            + "\n\nFor example, given two classes: SweetFruit and NonSweetFruit, we can state that a third class: Fruit is the union of SweetFruit and NonSweetFruit."
-            + "\n\nThis example is being shown using a Circle Packing visualization. Click on a circle to expand or condense the entities contained inside of it.",
+            + "\n\nFor example, given two classes: 'SweetFruit' and 'NonSweetFruit', we can state that a third class: 'Fruit' is the union of 'SweetFruit' and 'NonSweetFruit'."
+            + "\n\nThis example will be demonstrated in the video below using a circle packing visualization:",
 
             "complementOf selects all instances from the domain of discourse that do not belong to a certain class. "
-            + "\n\nFor example, given two classes: Children and SeniorCitizens, to express Children are not SeniorCitizens, we would essentially state that Children is a subclass of the complement of SeniorCitizens."
-            + "\n\nThis example is being shown using a Tree Map visualization. Click on a labeled box to view all entities contained inside of it. Click the label in the far top-left corner to condense the box.",
+            + "\n\nFor example, given two classes: 'Children' and 'SeniorCitizens', to express 'Children' are not 'SeniorCitizens', we would essentially state that Children is a subclass of the complement of 'SeniorCitizens'."
+            + "\n\nThis example will be demonstrated in the video below using a tree map visualization:",
 
             "intersectionOf a class A and class B is the set of instances that are in both. "
-            + "\n\nFor example, a class WhiteWine can be defined as the intersection of the class Wine and the set of things that are white in color. In other words, if something is white and a wine, then it is an instance of WhiteWine."
-            + "\n\nThis example is being shown using a Network visualization. Click on a node to expand its contents or to highlight its connections. Nodes can be moved-around and manipulated anywhere in the screenspace. Use the scroll-wheel to zoom in or out.",
+            + "\n\nFor example, a class 'WhiteWine' can be defined as the intersection of the class 'Wine' and the set of things that are white in color. In other words, if something is white and a wine, then it is an instance of 'WhiteWine'."
+            + "\n\nThis example will be demonstrated in the video below using a circle packing visualization:",
             ]
 
         tutorialTitle.innerText = titles[0];
@@ -291,9 +292,19 @@
             tutorialTitle.innerText = titles[tutorial_value];
             tutorialText.innerText = tutorials[tutorial_value];
 
-            if (tutorial_value < 5)
+            if (tutorial_value == 1)
             {
-                document.getElementById("tree-container-tutorial").replaceChild(visuals_tutorial[tutorial_value], document.getElementById("tree-container-tutorial").firstChild);
+                tutorialVisual.style.display = "none";
+                tutorialVideo.style.display = "inline-block";
+                tutorialVideo.src = video_sources[0];
+                tutorialVideo.load();
+            }
+            else if (tutorial_value < 5)
+            {
+                //document.getElementById("tree-container-tutorial").replaceChild(visuals_tutorial[tutorial_value], document.getElementById("tree-container-tutorial").firstChild);
+                tutorialVideo.src = video_sources[tutorial_value - 1];
+                tutorialVideo.load();
+
                 if (tutorial_value == 4)
                 {
                     console.log("change");
@@ -745,7 +756,7 @@
                 menuQuestion.style.display = "none";
                 menuOutro.style.display = "flex";
                 continueButton.style.display = "none";
-                document.getElementById("outroText").textContent = "Thank you for participating!";
+                document.getElementById("outroText").textContent = "Thank you for participating! Please raise your hand and let the researcher know you are done";
 
                 const endTime = new Date().getTime();
                 const timeSpent = (endTime - startTime) / 1000.0;
@@ -760,7 +771,7 @@
 
                 let date = new Date(page_time[0]);
 
-                text_content = `User Name: ${window.user_name}\nUser ID: ${window.user_id}\nUser Score: ${results}\nUser Time: ${page_time.toString()}\n\nTranslated Unix: ${date.toString()}`;
+                text_content = `User Name: ${window.user_name}\nUser ID: ${window.user_id}\nQuestion Set: ${(question_var + 1)}\nUser Score: ${results}\nUser Time: ${page_time.toString()}\nTotal Time: ${page_time.slice(1).reduce((sum, num) => sum + num, 0)}\n\nTranslated Unix: ${date.toString()}`;
                 let blob = new Blob([text_content], { type: "text/plain" });
 
                 let a = document.createElement("a");
