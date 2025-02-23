@@ -4,6 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://webgazer.cs.brown.edu/webgazer.js"></script>
     <script src="https://d3js.org/d3.v7.min.js"></script>
+
     <!-- <script src="assets/js/webgazer.js"></script> -->
     <script src="assets/js/aoi-selection.js"></script>
     <script src="assets/js/eyetracking.js"></script>
@@ -13,6 +14,11 @@
     <script src="assets/js/circle-packing3.js"></script>
     <script src="assets/js/circlePack-fruits.js"></script>
     <script src="assets/js/tree-map3.js"></script>
+
+    <script src="assets/js/CirclePack.js"></script>
+    <script src="assets/js/TreeMap.js"></script>
+
+    <script src="assets/json/circlePack.js"></script>
 
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
@@ -27,6 +33,8 @@
     <script src="assets/json/fruit-circlePack.js"></script>
     <script src="assets/json/pasta-circlePack.js"></script>
     <script src="assets/json/wine-base.js"></script>
+
+    <script type="text/javascript" src="./The Pizza Ontology_files/jquery-1.8.3.min.js"></script>
 </head>
 
 <!--Main body of the webpage-->
@@ -353,7 +361,8 @@
             <button id="pageButton3" class="ans_button" onclick="changePage(2)">Answer C</button>
             <button id="pageButton4" class="ans_button" onclick="changePage(3)">Answer D</button>
         </div>
-        <div id="tree-container" style="display:flex;background-color:rgb(240, 240, 240);width:auto;height:auto;max-height:700px;margin-bottom:20px;justify-content:center;"></div>
+        <div id="tree-container" style="display:none;background-color:rgb(240, 240, 240);width:auto;height:auto;max-height:700px;margin-bottom:20px;justify-content:center;"></div>
+        <iframe id="baselineContainer" src="./The Pizza Ontology.html" style="min-height:700px; width:1800px" scrolling="no"></iframe>
         <canvas id="aoiCanvas" width="1920" height="1080" style="position: absolute; top: 0; left: 0; z-index: 10; pointer-events: none;"></canvas>
     </div>
 
@@ -557,8 +566,10 @@
 
         const v1 = nodeLink3(PizzaBaselineData);
         //const v2 = treeMap(PizzaTreeMapData);
-        const v2 = packing3(pizzaCirclePackData)
-        const v3 = treeMap3(PizzaTreeMapData)
+        //const v2 = packing3(pizzaCirclePackData)
+        const v2 = circlePack(circlePackData);
+        //const v3 = treeMap3(PizzaTreeMapData)
+        const v3 = treeMap();
 
         const visuals = [v1, v2, v3]    //Variable to store both temporary visualizations
 
@@ -656,20 +667,48 @@
         function changePage(ans = -1) {
             if (ans !== -1) answers.push(ans);
             page_value += 1; // Increment only once
-
+            
+            if (page_value == 0)
+            {
+                if(visualSet != 0 && visualSet != 1)
+                {
+                    document.getElementById("baselineContainer").style.display = "none";
+                    document.getElementById("tree-container").style.display = "flex";
+                }
+            }
 
             if (page_value == 9)
             {
+                if(visualSet == 0 || visualSet == 1)
+                {
+                    document.getElementById("baselineContainer").style.display = "none";
+                    document.getElementById("tree-container").style.display = "flex";
+                }
+                else if(visualSet == 2 || visualSet == 4)
+                {
+                    document.getElementById("baselineContainer").style.display = "inline";
+                    document.getElementById("tree-container").style.display = "none";
+                }
+
                 question_value = 0;
                 question_var = visualOrder[1];
-                document.getElementById("intermission").innerText = "Set 1 Completed!"
                 document.getElementById("tree-container").replaceChild(visuals[visualOrder[1]], document.getElementById("tree-container").firstChild);
             }
             else if (page_value == 17)
             {
+                if(visualSet == 2 || visualSet == 4)
+                {
+                    document.getElementById("baselineContainer").style.display = "none";
+                    document.getElementById("tree-container").style.display = "flex";
+                }
+                else if(visualSet == 3 || visualSet == 5)
+                {
+                    document.getElementById("baselineContainer").style.display = "inline";
+                    document.getElementById("tree-container").style.display = "none";
+                }
+
                 question_value = 0;
                 question_var = visualOrder[2];
-                document.getElementById("intermission").innerText = "Set 1 Completed!"
                 document.getElementById("tree-container").replaceChild(visuals[visualOrder[2]], document.getElementById("tree-container").firstChild);
             }
 
@@ -771,7 +810,7 @@
 
                 let date = new Date(page_time[0]);
 
-                text_content = `User Name: ${window.user_name}\nUser ID: ${window.user_id}\nQuestion Set: ${(question_var + 1)}\nUser Score: ${results}\nUser Time: ${page_time.toString()}\nTotal Time: ${page_time.slice(1).reduce((sum, num) => sum + num, 0)}\n\nTranslated Unix: ${date.toString()}`;
+                text_content = `User Name: ${window.user_name}\nUser ID: ${window.user_id}\nQuestion Set: ${(visualSet + 1)}\nUser Score: ${results}\nUser Time: ${page_time.toString()}\nTotal Time: ${page_time.slice(1).reduce((sum, num) => sum + num, 0)}\n\nTranslated Unix: ${date.toString()}`;
                 let blob = new Blob([text_content], { type: "text/plain" });
 
                 let a = document.createElement("a");
