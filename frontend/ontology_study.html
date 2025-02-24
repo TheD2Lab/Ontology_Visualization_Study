@@ -73,8 +73,15 @@
     </div>
 
     <script>
-        let visualOrder = [0, 1, 2];
-        let visualSet = -1;
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        // ESTABLISHING THE ORDER OF VISUALIZATIONS DURING THE ASSESSMENT 
+        //
+        //
+        //// In this area, the researcher will be able to select from predetermined sets of visualizations in order to add variety to study sessions
+        let visualOrder = [0, 1, 2];        //The current order of visualizations
+        let visualSet = -1;                 //The number of the visualization order chosen (-1 until one is selected)
+
+        //The buttons used to select from the 6 different visualization sets 
         const visualButtons = [
         document.getElementById("b012"),
         document.getElementById("b021"),
@@ -84,8 +91,10 @@
         document.getElementById("b210")
         ]
 
+        //Function for letting the researcher choose a new set of visualizations
         function changeVisuals(i)
         {
+            //The 6 sets of possible visualization orders
             let orders = [
             [0, 1, 2],
             [0, 2, 1],
@@ -94,17 +103,23 @@
             [2, 0, 1],
             [2, 1, 0]
             ]
+
+            //Set the visual set and visual order to that selected by the researcher 
             visualSet = i;
             visualOrder = orders[visualSet];
 
+            //Enable all buttons, and only disabled the one that is currently selected, ensuring the researcher won't select it again
             visualButtons.map(b => b.disabled = false);
             visualButtons[visualSet].disabled = true;
 
+            //Enable the researcher to move forward 
             document.getElementById("researchContinue").disabled = false;
         }
 
+        //Function for confirming the researcher page selection, only usable once a visualization set has been selected
         function confirmResearcherPage()
         {
+            //Move the page to the main consent form 
             document.getElementById("researcherPage").style.display = "none";
             document.getElementById("introPage").style.display = "flex";
         }
@@ -197,12 +212,12 @@
         //
         //
         //// In this area, the eventlistener will watch for changes in the website (on this page, just the checkbox) and will update it based on whether the box has been checked or not 
-        const nameField = document.getElementById('nameInput');
-        const IDField = document.getElementById('IDInput');
-        const button = document.getElementById('consentButton');
+        const nameField = document.getElementById('nameInput');     //The textbox for the user's full name
+        const IDField = document.getElementById('IDInput');         //The textbox for the user's student id number
+        const button = document.getElementById('consentButton');    //The button that will be used to officially "sign" the consent form
 
-        window.user_id = "";
-        window.user_name = "";
+        window.user_id = "";        //Establish a global variable to be used later: the user's student id
+        window.user_name = "";      //Establish a global variable to be used later: the user's full name 
 
         function checkInput()
         {
@@ -245,8 +260,9 @@
         //
         //
         //// In this area, the tutorial pages for each ontology relationship are displayed. Once all have been shown, it will move onto the actual test
-        let tutorial_value = 0;
+        let tutorial_value = 0;     //Value to keep track of which page of the tutorial is currently displayed 
 
+        //The four interactive videos that will be used in the tutorial
         let video_sources = [
             "./assets/mp4/pasta-disjointWith.mp4",
             "./assets/mp4/fruit-unionOf.mp4",
@@ -254,18 +270,20 @@
             "./assets/mp4/wine-intersectionOf.mp4",
         ]
 
-        const tutorialTitle = document.getElementById("tutorial_title");
-        const tutorialText = document.getElementById("tutorial_text");
-        const tutorialButton = document.getElementById("tutorial_button");
-        const tutorialVisual = document.getElementById("tree-container-tutorial");
-        const tutorialVideo = document.getElementById("tutorial_video");
+        const tutorialTitle = document.getElementById("tutorial_title");                //The main title text of the tutorial page
+        const tutorialText = document.getElementById("tutorial_text");                  //The inner text of the tutorial page
+        const tutorialButton = document.getElementById("tutorial_button");              //The button on the tutorial page to proceed forward
+        const tutorialVisual = document.getElementById("tree-container-tutorial");      //The tree container of the tutorial page, used to hold visualizations
+        const tutorialVideo = document.getElementById("tutorial_video");                //The video container of the tutorial page, used to hold interactive videos 
 
+        //All titles to be used in the tutorial
         let titles = ["What is an Ontology?", 
             "DisjointWith", 
             "UnionOf",
             "ComplementOf",
             "IntersectionOf"]
 
+        //All inner text blocks that will be used in the tutorial 
         let tutorials = ["An ontology is like a detailed map of knowledge about a specific topic or domain. It organizes information by defining concepts, their properties, and how they relate to each other, much like a family tree or a blueprint."
             + "Think of it as a way to make sure everyone understands the same ideas and relationships in the same way when discussing or working with complex information."
             + "\n\nClasses = represent concepts or sets of instsances in the domain"
@@ -291,56 +309,62 @@
             + "\n\nThis example will be demonstrated in the video below using a circle packing visualization:",
             ]
 
-        tutorialTitle.innerText = titles[0];
-        tutorialText.innerText = tutorials[0];
+        //Set the title and inner text of the tutorial page to the first predetermined values 
+        tutorialTitle.innerText = titles[0];       
+        tutorialText.innerText = tutorials[0];     
 
+        //Iterate through the tutorial, only displaying the appropriate information and media
         function iterateTutorial()
         {
+            //Iterate the tutorial page value, and change the titles and inner text accordingly 
             tutorial_value = tutorial_value + 1;
             tutorialTitle.innerText = titles[tutorial_value];
             tutorialText.innerText = tutorials[tutorial_value];
 
+            //If the second page of the tutorial has been reached 
             if (tutorial_value == 1)
             {
+                //After the first tutorial page, change the media from the still image to an interactive video
                 tutorialVisual.style.display = "none";
                 tutorialVideo.style.display = "inline-block";
                 tutorialVideo.src = video_sources[0];
                 tutorialVideo.load();
             }
+            //If the video tutorial is already being displayed...
             else if (tutorial_value < 5)
             {
-                //document.getElementById("tree-container-tutorial").replaceChild(visuals_tutorial[tutorial_value], document.getElementById("tree-container-tutorial").firstChild);
+                //Change the tutorial video to the following video, and reload it 
                 tutorialVideo.src = video_sources[tutorial_value - 1];
                 tutorialVideo.load();
 
-                if (tutorial_value == 4)
-                {
-                    console.log("change");
-                    tutorialButton.innerText = "STOP HERE";
-                }
+                //Once the final page of the tutorial is reached, change the button text to signal a stopping point 
+                if (tutorial_value == 4) tutorialButton.innerText = "STOP HERE";
             }
+            //Once the final page of the tutorial is completed...
             else if (tutorial_value == 5)
             {
+                //Set up the first assessment question, and save information obtained earlier in the consent form 
                 question_var = visualOrder[0];
                 document.getElementById("tree-container").replaceChild(visuals[visualOrder[0]], document.getElementById("tree-container").firstChild);
                 let user_name = nameField.value;
                 let user_id =  IDField.value;
+
+                //Change the page, signaling the tutorial is completed 
                 changePage(-1, user_name, user_id);
             }
         }
 
-        const vt1 = document.createElement("img");   //Variable for temporary image until we have a final second visualization
+        const vt1 = document.createElement("img");   //The first visual of the tutorial, which is a still image 
+
         //Establish source file and size of second temporary visualization
         vt1.src = "../ontologyExample.png"; 
         vt1.style.width = "100%"
         vt1.style.height = "100%"
 
-        //const vt2 = nodeLink(MusicBaselineData);
-        //const vt3 = nodeLink(RestaurantBaselineData);
-        const vt2 = packing3(tutorialPastaCircle);
-        const vt3 = fruitsPacking(tutorialFruitCircle);
-        const vt5 = nodeLink3(tutorialWineBaseline);
-        const vt4 = treeMap3(tutorialCitizenTree);
+        const vt2 = packing3(tutorialPastaCircle);          //The first interactive visual in the tutorial 
+        const vt3 = fruitsPacking(tutorialFruitCircle);     //The second interactive visual in the tutorial 
+        const vt5 = nodeLink3(tutorialWineBaseline);        //The third interactive visual in the tutorial 
+        const vt4 = treeMap3(tutorialCitizenTree);          //The fourth interactive visual in the tutorial 
 
         const visuals_tutorial = [vt1, vt2, vt3, vt4, vt5]    //Variable to store both temporary visualizations
 
@@ -664,21 +688,27 @@
 
         }
 
+        //Function to change the main assessment page
         function changePage(ans = -1) {
+            //If an answer is provided as a parameter, push it to the answers list
             if (ans !== -1) answers.push(ans);
-            page_value += 1; // Increment only once
+            //Increment the page value
+            page_value += 1;
             
+            //If the assessment page has just been opened
             if (page_value == 0)
             {
+                //Check to see if the network visualization needs to be implemented or removed
                 if(visualSet != 0 && visualSet != 1)
                 {
                     document.getElementById("baselineContainer").style.display = "none";
                     document.getElementById("tree-container").style.display = "flex";
                 }
             }
-
-            if (page_value == 9)
+            //If question 9 is reached, and it will now move to the second visualiation
+            else if (page_value == 9)
             {
+                //Check to see if the network visualization needs to be implemented or removed
                 if(visualSet == 0 || visualSet == 1)
                 {
                     document.getElementById("baselineContainer").style.display = "none";
@@ -690,12 +720,17 @@
                     document.getElementById("tree-container").style.display = "none";
                 }
 
+                //Reset the question value
                 question_value = 0;
+                //Set the new question set to that of the new visualiation
                 question_var = visualOrder[1];
+                //Replace the current visualization with the following 
                 document.getElementById("tree-container").replaceChild(visuals[visualOrder[1]], document.getElementById("tree-container").firstChild);
             }
+            //If question 17 is reached, and it will now move to the third visualization
             else if (page_value == 17)
             {
+                //Check to see if the network visualization needs to be implemented or removed
                 if(visualSet == 2 || visualSet == 4)
                 {
                     document.getElementById("baselineContainer").style.display = "none";
@@ -707,13 +742,18 @@
                     document.getElementById("tree-container").style.display = "none";
                 }
 
+                //Reset the question value
                 question_value = 0;
+                //Set the new question set to that of the new visualiation
                 question_var = visualOrder[2];
+                //Replace the current visualization with the following 
                 document.getElementById("tree-container").replaceChild(visuals[visualOrder[2]], document.getElementById("tree-container").firstChild);
             }
 
+            //Increment the question value
             question_value += 1;  
 
+            //Run function to update the frontend webpage visuals 
             updateFrontEnd();
         }
         
@@ -722,13 +762,14 @@
         //Iterates through different if-statements to check whether the condition for displaying certain pages is met 
         function updateFrontEnd() 
         {
-            //If the page value is equal to 0, begin the calibration sequence
+            //If the page value is equal to 0, begin the tutorial sequence
             if (page_value == 0)
             {
                 menuIntro.style.display = "none";
                 menuBackground.style.display = "flex";
             }
             else if (page_value === 1) {
+                //If calibration has not yet been completed, then begin the calibration sequence
                 if (!calibrated)
                 {
                     menuIntro.style.display = "none";
@@ -743,20 +784,25 @@
                     
                     console.log("calibration started");
                 }
+                //If the calibration has been completed, then disable calibration and move on to the assessment 
                 else
                 {
                     console.log("STOPPING CALIBRATION");
                     disableCalibration();
                 }
             } 
-            //If the page value is between 0 and 22, and not equal to 11, then perform the regular assessment frontend update
+            //If the page value is between 0 and 24 then perform the regular assessment frontend update
             else if (page_value > 0 && page_value <= 24) {
+                //Ensure the assessment page is displayed, regardless of whether or not it already is 
                 menuBackground.style.display = "none";
                 menuIntermission.style.display = "none";
                 menuQuestion.style.display = "flex";
         
+                //Replace the page questions and titles with the appropriate question values
                 document.getElementById("questionText").innerText = pageQuestions[question_var][question_value];
                 document.getElementById("questionTitle").innerText = ("Question " + page_value);
+
+                //Iterate through the answer buttons to replace them with the appropriate possible answers 
                 for(let i = 0; i < 4; i++)
                 {
                     //Disable 2 of the question buttons if the possible answers are only true and false
@@ -773,11 +819,13 @@
                     questionButtons[i].innerText = pageAnswers[question_var][question_value][i];
                 }
 
+                //Once the assessment begins, push the current Unix timestamp to the page time list
                 if (page_value == 1)
                 {
                     startTime = new Date().getTime();
                     page_time.push(startTime);
                 }
+                //If the assessment has already begun, push the amount of time spent on the question by the user 
                 else
                 {
                     const endTime = new Date().getTime();
@@ -797,6 +845,7 @@
                 continueButton.style.display = "none";
                 document.getElementById("outroText").textContent = "Thank you for participating! Please raise your hand and let the researcher know you are done";
 
+                //Calculate the amount of time spent by the user on the final page 
                 const endTime = new Date().getTime();
                 const timeSpent = (endTime - startTime) / 1000.0;
                 page_time.push(timeSpent);
@@ -806,16 +855,18 @@
                 console.log("ANSWERS: " + answers);
                 console.log("SOLUTIONS: " + pageSolutions[0].concat(pageSolutions[1], pageSolutions[2]));
 
+                //Calculate the user score 
                 let results = checkScore();
-
                 let date = new Date(page_time[0]);
 
+                //Append all necessary information that will be exported in the user info txt file to a blob
                 text_content = `User Name: ${window.user_name}\nUser ID: ${window.user_id}\nQuestion Set: ${(visualSet + 1)}\nUser Score: ${results}\nUser Time: ${page_time.toString()}\nTotal Time: ${page_time.slice(1).reduce((sum, num) => sum + num, 0)}\n\nTranslated Unix: ${date.toString()}`;
                 let blob = new Blob([text_content], { type: "text/plain" });
 
+                //Push the blob information to a txt file to be exported
                 let a = document.createElement("a");
                 a.href = URL.createObjectURL(blob);
-                a.download = "user_info.txt";  // File name
+                a.download = "user_info.txt"; 
 
                 // Append, click, and remove the element
                 document.body.appendChild(a);
@@ -827,11 +878,15 @@
             }
         }
 
+        //Calculate the score of the user for each question (0 for wrong, 1 for right) and the final score value out of 1.0
         function checkScore()
         {
             results = [];
+            //Concat the solutions of each question set into a single list
             final_answers = pageSolutions[0].concat(pageSolutions[1], pageSolutions[2]);
             temp = 0.0;
+
+            //For each question, compare the user response with the predetermined correct answer, and push a 0 or 1 value accordingly 
             for (i = 0; i < 24; i++)
             {   
                 results.push(final_answers[i] == answers[i] ? 1:0);
@@ -873,38 +928,7 @@
                         //Prevent default browser activity, and instead run the function to save AOI selections as a JSON file 
                         saveAOIs();
                         break;  
-                    //Keyboard shortcut for updating the question/answer value to the first set of questions
-                    case '1':
-                        //Prevent default browser activity, and instead run the function to begin the calibration sequence 
-                        question_var = 0;
-                        
-                        break;
-                    //Keyboard shortcut for updating the question/answer value to the second set of questions
-                    case '2':
-                        //Prevent default browser activity, and instead run the function to begin the calibration sequence 
-                        question_var = 1;
-                        
-                        break;
-                    //Keyboard shortcut for updating the question/answer value to the third set of questions
-                    case '3':
-                        //Prevent default browser activity, and instead run the function to begin the calibration sequence 
-                        question_var = 2;
-                        
-                        break;
-                    case '4':
-                        //Prevent default browser activity, and instead run the function to begin the calibration sequence 
-                        console.log("Visual set: 1");
-                        visualization_var = 0;
-                        document.getElementById("tree-container").replaceChild(visuals[visualization_var], document.getElementById("tree-container").firstChild);
-                        
-                        break;
-                    case '5':
-                        //Prevent default browser activity, and instead run the function to begin the calibration sequence
-                        console.log("Visual set: 2");
-                        visualization_var = 1;
-                        document.getElementById("tree-container").replaceChild(visuals[visualization_var], document.getElementById("tree-container").firstChild);
-                        
-                        break;
+                    //Skip the calibration sequence (useful for bug testing)
                     case 'p':
                         disableCalibration();
                         break;
