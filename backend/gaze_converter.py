@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 import numpy as np
 import json
@@ -146,20 +147,15 @@ def add_placeholder_fields(data):
 def process_gaze_data(gaze_file, aoi_config_file='aoi_config.json', output_file='processed_gaze_data.csv', fixation_file='fixations.csv'):
     # --- STEP 1: Read header to extract base time ---
     raw_columns = pd.read_csv(gaze_file, nrows=0).columns
-    # Look for a column name starting with "TIME("
     time_header_candidates = [col for col in raw_columns if col.startswith("TIME(")]
     if not time_header_candidates:
         raise ValueError("Could not find a TIME column in the expected format.")
     raw_time_header = time_header_candidates[0]
-    # Extract the base time string (the part within parentheses)
     base_time_str = raw_time_header[raw_time_header.find("(")+1 : raw_time_header.find(")")]
 
     # --- STEP 2: Load the raw gaze data ---
     data = pd.read_csv(gaze_file)
-    # Rename the raw time column (which contains relative seconds) to an internal name.
     data = data.rename(columns={raw_time_header: "TIME_REL"})
-
-    # Create a temporary numeric column for clustering.
     data['TIME_NUM'] = data['TIME_REL'].astype(float)
 
     # --- STEP 3: Sort data by relative time using a stable sort (mergesort) ---
@@ -177,7 +173,7 @@ def process_gaze_data(gaze_file, aoi_config_file='aoi_config.json', output_file=
     X = data[['FPOGX', 'FPOGY', 'TIME_NUM']].values
     scaler = StandardScaler()
     X_scaled = scaler.fit_transform(X)
-    eps = 0.3    # After scaling, tune as necessary.
+    eps = 0.3    # Tune as necessary after scaling.
     min_samples = 5
     db = DBSCAN(eps=eps, min_samples=min_samples).fit(X_scaled)
     data['db_label'] = db.labels_
@@ -189,35 +185,43 @@ def process_gaze_data(gaze_file, aoi_config_file='aoi_config.json', output_file=
     valid_labels = [label for label in np.unique(data['db_label']) if label != -1]
     fixation_id_mapping = {label: idx for idx, label in enumerate(valid_labels, start=1)}
     data['FPOGID'] = data['db_label'].apply(lambda x: fixation_id_mapping.get(x, np.nan))
-    # Fill missing fixation IDs (from noise points) using forward/backward fill and cast to int.
     data['FPOGID'] = data['FPOGID'].ffill().bfill().fillna(0).astype(int)
-
     print("Unique DBSCAN labels:", np.unique(data['db_label']))
 
     # --- STEP 5c: Renumber FPOGIDs sequentially based on fixation start time ---
     valid_mask = data['FIXATION_VALIDITY'] == 1
     fixation_start_times = data.loc[valid_mask].groupby('FPOGID')['TIME_NUM'].min()
-    # Sort the fixation clusters by their start time using a stable sort.
     sorted_fixation_ids = fixation_start_times.sort_values().index
     new_fixation_ids = {old: new for new, old in enumerate(sorted_fixation_ids, start=1)}
-    # Map the old fixation IDs to the new sequential IDs (and cast explicitly to int).
     data.loc[valid_mask, 'FPOGID'] = data.loc[valid_mask, 'FPOGID'].map(new_fixation_ids).astype(int)
-    # For any remaining missing values (if any), fill forward/backward.
     data['FPOGID'] = data['FPOGID'].ffill().bfill().fillna(0).astype(int)
 
     # --- STEP 6: AOI assignment with custom names ---
-    with open(aoi_config_file, 'r') as f:
-        aoi_config = json.load(f)
-    for aoi in aoi_config:
-        aoi['x'] = normalize(aoi['x'], raw_x_min, raw_x_max)
-        aoi['y'] = normalize(aoi['y'], raw_y_min, raw_y_max)
-        aoi['width'] = aoi['width'] / (raw_x_max - raw_x_min)
-        aoi['height'] = aoi['height'] / (raw_y_max - raw_y_min)
-        if aoi['width'] < 0:
-            aoi['x'] += aoi['width']
-            aoi['width'] = abs(aoi['width'])
-
+    if os.path.exists(aoi_config_file):
+        try:
+            with open(aoi_config_file, 'r') as f:
+                aoi_config = json.load(f)
+        except json.JSONDecodeError:
+            print(f"Error: AOI configuration file '{aoi_config_file}' is not in a valid JSON format.")
+            aoi_config = []
+    else:
+        print(f"Warning: AOI configuration file '{aoi_config_file}' not found. Proceeding without AOIs.")
+        aoi_config = []
+        
+    if aoi_config:
+        for aoi in aoi_config:
+            aoi['x'] = normalize(aoi['x'], raw_x_min, raw_x_max)
+            aoi['y'] = normalize(aoi['y'], raw_y_min, raw_y_max)
+            aoi['width'] = aoi['width'] / (raw_x_max - raw_x_min)
+            aoi['height'] = aoi['height'] / (raw_y_max - raw_y_min)
+            if aoi['width'] < 0:
+                aoi['x'] += aoi['width']
+                aoi['width'] = abs(aoi['width'])
+    
     def assign_aoi(row):
+        if not aoi_config:
+            return "None"
+        # For two AOIs, use custom labels.
         if len(aoi_config) == 2:
             if is_point_in_aoi(row['FPOGX'], row['FPOGY'], aoi_config[0]):
                 return "AOI_Q"
@@ -231,7 +235,10 @@ def process_gaze_data(gaze_file, aoi_config_file='aoi_config.json', output_file=
                     return f"AOI_{index + 1}"
             return "None"
 
-    data['AOI'] = data.apply(assign_aoi, axis=1)
+    # Default AOI assignment if no AOI config exists.
+    data['AOI'] = "None"
+    if aoi_config:
+        data['AOI'] = data.apply(assign_aoi, axis=1)
 
     # --- STEP 7: Fixation metrics ---
     fixation_metrics = data[data['FIXATION_VALIDITY'] == 1].groupby('FPOGID').agg({

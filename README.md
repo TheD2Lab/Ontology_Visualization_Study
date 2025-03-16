@@ -141,11 +141,10 @@ The "gaze_conversion.py" script processes the raw gaze data into a format which 
 Input files required to run gaze_converter.py: 
  
 1. raw_gaze_data.csv 
-2. aoi_config.json (if there is no aoi_config.json present, please refer to step #2 to create your own AOIs) 
  
 How to run: `python3 gaze_conversion.py` 
  
-This will produce two files: fixations.csv and all_gaze_data.csv. 
+This will produce: all_gaze_data.csv
 
 All_gaze_data.csv contains the following headers, which are used to pass into BEACHGaze: 
  
