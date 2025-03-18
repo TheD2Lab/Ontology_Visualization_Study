@@ -29,7 +29,7 @@ A webcam must be enabled to record gaze and the web browser must have permission
 
 In an example use case, a browser-based eye tracking study is designed to compare three interactive visualizations in their support to users who are new to ontological relations in OWL such as unionOf, complementOf, disjointWith, and intersectionOf. The study presents a website showing a list of tasks that a user completes with the support of three different visualizations. During their interactions with the given visualizations, their eye gaze is automatically recorded. 
 
-To view this example study , open (e.g., by simply dragging) the file "ontology_study.html" in a web browser.  
+To view this example study, open (e.g., by simply dragging) the file "ontology_study.html" in a web browser.  
 
  
 ## 4. Defining AOIs 
@@ -65,7 +65,7 @@ AOIs can be defined by a researcher either before or after a study.
 
 In the sample example above, two AOIs have been defined. The X and Y values represent the top left corner of that AOI on the screen, using pixel coordinates. The width and height specify the dimensions of the AOI, extending rightward and downward from the top left corner. 
 
-This means that AOI_1 starts at (100 , 200) and extends 300 pixels to the right and 150 pixels down, while AOI_2 starts at (500, 100), extending 250 pixels to the right and 200 pixels down. The y-coordinates follow a top-left origin system, where increasing y values will move downward on the screen. . 
+This means that AOI_1 starts at (100 , 200) and extends 300 pixels to the right and 150 pixels down, while AOI_2 starts at (500, 100), extending 250 pixels to the right and 200 pixels down. The y-coordinates follow a top-left origin system, where increasing y values will move downward on the screen. 
 
  
 ## 5. Start/Ending Recordings and Post Gaze Data Capturing 
@@ -85,11 +85,7 @@ function startMainTracking() {
 } 
 ``` 
 
- 
-
 This function is then placed anywhere on the html file where the user would want to begin tracking.  
-
- 
 
 For example, in the code below, the startMainTracking function (which disableCalibration() calls), is executed when the user clicks on the “proceed-button”. 
 
@@ -101,7 +97,6 @@ For example, in the code below, the startMainTracking function (which disableCal
 
 ``` 
 
- 
 
 It automatically stops recording and downloads the raw_gaze_data.csv file to your “Downloads” folder through the "downloadGazeDataCSV()" function (from eyetracking.js). 
  
@@ -118,14 +113,18 @@ x,y,TIME(YYYY/MM/DD HH:MM:SS.sss),TIMETICK(f=10000000)
 775.2518,542.1353,0.53100,48860134931 
 ``` 
  
-* "x" and "y" - Screen coordinates of the gaze 
+* "x" and "y" - Screen coordinates of a fixationnthe gaze. Similarly to the AOIs, they follow the same coordinate system, starting from the top left corner of the screen 
 * TIME(...) - Normalized time in seconds (the first value is set to zero) 
-* TIMETICK(f=10000000) - A tick value computed using a base offset and the elapsed time it took the user to complete the study 
+* TIMETICK(f=10000000) - A high precision time measurement that keeps track of elapsed time during the recording. F=10000000 means that the time is recorded in units of 10 million ticks per second. This allows for a more precise timekeeping. To calculate this, we use the following formula: 
+
+Timetick = Base + (Time x 10,000,000). The Base is 48860001560. So we have... 
+
+48860001560 + (0.26120 x 10,000,000) = 48860065596 
 
 In the example above, 773.8807,537.9750,0.26120,48860065596 means: 
 
-X (773.8807) and Y (537.9750) are the coordinates on the screen for a specific gaze point. 0.26120 refers to how many seconds has passed since the start of the eye tracking (0.00000) and 48860065596 is a UNIX timestamp 
- 
+X (773.8807) and Y (537.9750) are the coordinates on the screen for a specific gaze point. 0.26120 refers to how many seconds has passed since the start of the eye tracking (0.00000) and 48860065596 is the timetick. 
+
 This raw file is used as input for the gaze conversion process 
  
 ## 6. Gaze Conversion 
@@ -138,13 +137,22 @@ The "gaze_conversion.py" script processes the raw gaze data into a format which 
 * Saccade Metrics: Computes saccade magnitude and direction between fixations 
 * Placeholder Fields: Adds additional fields to maintain compatibility with BEACHGaze 
  
+## 6.1. When AOIs are not defined 
+ 
 Input files required to run gaze_converter.py: 
  
 1. raw_gaze_data.csv 
  
-How to run: `python3 gaze_conversion.py` 
+## 6.2. When AOIs are defined 
  
-This will produce: all_gaze_data.csv
+Input files required to run gaze_converter.py: 
+ 
+1. raw_gaze_data.csv 
+2. aoi_config.json 
+ 
+## 6.3. How to run: `python3 gaze_conversion.py` 
+ 
+This will produce: all_gaze_data.csv 
 
 All_gaze_data.csv contains the following headers, which are used to pass into BEACHGaze: 
  
@@ -242,28 +250,14 @@ DIAL - 0
 DIALV - 0 
 GSR - 0 
 GSRV - 0 
-
- 
-
 HR – 0 
-
- 
 HRV - 0 
- 
-
 HRP - 0 
- 
-
 IBI - 0 
-
 TTL0 – 0 
-
 TTL1 – 0 
-
 TTL2 – 0 
-
 TTL3 – 0 
-
 TTL4 - 0 
 TTL5 - 0 
 TTL6 - 0 
