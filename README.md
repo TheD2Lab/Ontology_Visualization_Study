@@ -282,6 +282,17 @@ LPMM and RPMM must be 4 (millimeters) and both LPMMV and RPMMV must be 1 (meanin
 
 FPOGID must be sequential values (starting from 1, 2, ...) 
 
+## 7.0 How to Visualize Dataset Fixations:
+
+Using the python file: "visualize_fixations_with_aoi.py",
+
+You can change the DBSCAN parameters which appear as "eps" and "min_samples" to whichever values work best for the dataset presented.
+
+Make sure to change line 16 to reflect the correct name of the dataset you wish to visualize fixations for. The dataset must be placed within the "\Ontology_Visualization_Study\backend" directory.
+
+Lines 55-56 within the "visualize_fixations_with_aoi.py" file contain the DBSCAN parameters "eps" and "min_samples". As it stands, they are 0.03 and 4, however you can change them to any parameters that result in the best fixation clusters for the given dataset.
+
+
  
  
  
