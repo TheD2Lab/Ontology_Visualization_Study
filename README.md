@@ -292,6 +292,8 @@ Make sure to change line 16 to reflect the correct name of the dataset you wish 
 
 Lines 55-56 within the "visualize_fixations_with_aoi.py" file contain the DBSCAN parameters "eps" and "min_samples". As it stands, they are 0.03 and 4, however you can change them to any parameters that result in the best fixation clusters for the given dataset.
 
+NOTE: "eps" specifies the maximum distance between points for them to be considered part of the same neighborhood and "min_samples" indicates the minimum number of points that must lie within that eps‑neighborhood for a point to qualify as a core point.
+
 
  
  
