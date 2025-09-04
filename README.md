@@ -39,7 +39,9 @@ AOIs can be defined by a researcher either before or after a study.
 - **Defining Areas:** 
   - Press **Ctrl + Z** to start. 
   - Drag and drop to create boxes. 
-  - Press **Ctrl + X** to save as **aoi_config.json**. 
+  - Press **Ctrl + X** to save as **aoi_config.json**.
+
+- Note that AOIs can only be defined in the actual study page, i.e., once you have arrived on a page that shows visualizations along with questions and answer choices above (not during pages showing tutorial videos or calibration steps), the Ctrl + Z functionality should be active then.
  
 - **An example AOI Configuration Output: aoi_config.json ** 
 
